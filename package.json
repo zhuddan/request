@@ -13,13 +13,21 @@
     "request"
   ],
   "exports": {
-    ".": {
-      "import": {
-        "types": "./dist/index.d.mts",
-        "default": "./dist/index.js"
-      }
+    "./request": {
+      "types": "./dist/request.d.ts",
+      "import": "./dist/request.js",
+      "require": "./dist/request.cjs"
     },
-    "./*": "./*"
+    "./uni": {
+      "types": "./dist/uni.d.ts",
+      "import": "./dist/uni.js",
+      "require": "./dist/uni.cjs"
+    },
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
   },
   "main": "index.js",
   "files": [
