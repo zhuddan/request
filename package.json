@@ -15,21 +15,23 @@
   "exports": {
     "./request": {
       "types": "./dist/request.d.ts",
-      "import": "./dist/request.esm.js",
-      "require": "./dist/request.cjs.js"
+      "import": "./dist/request.js",
+      "require": "./dist/request.cjs"
     },
     "./uni": {
       "types": "./dist/uni.d.ts",
-      "import": "./dist/uni.esm.js",
-      "require": "./dist/uni.cjs.js"
+      "import": "./dist/uni.js",
+      "require": "./dist/uni.cjs"
     },
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.esm.js",
-      "require": "./dist/index.cjs.js"
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
     }
   },
-  "main": "index.js",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "files": [
     "dist/*"
   ],
