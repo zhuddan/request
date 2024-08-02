@@ -18,6 +18,7 @@ export default defineConfig(() => {
     minify: false, // 'terser',
     clean: true,
     treeshake: true,
+    moduleResolution: 'node', // Ensure node module resolution
     external: [
       './request',
       './uni',
