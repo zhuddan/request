@@ -13,6 +13,11 @@
     "request"
   ],
   "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
     "./request": {
       "types": "./dist/request.d.ts",
       "import": "./dist/request.js",
@@ -23,11 +28,12 @@
       "import": "./dist/uni.js",
       "require": "./dist/uni.cjs"
     },
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
-    }
+    "./shared": {
+      "types": "./dist/shared.d.ts",
+      "import": "./dist/shared.js",
+      "require": "./dist/shared.cjs"
+    },
+    "./dist/*": "./dist/*"
   },
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
