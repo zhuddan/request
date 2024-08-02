@@ -1,22 +1,6 @@
 import { AxiosResponse, AxiosRequestConfig } from 'axios';
+import { ResponseResult } from './shared';
 
-/**
- * @description 请求方法
- */
-declare enum RequestMethodsEnum {
-    GET = "GET",
-    POST = "POST",
-    PUT = "PUT",
-    DELETE = "DELETE"
-}
-/**
- * @description headers ContentType
- */
-declare enum ContentTypeEnum {
-    JSON = "application/json;charset=UTF-8",
-    FORM_URLENCODED = "application/x-www-form-urlencoded;charset=UTF-8",
-    FORM_DATA = "multipart/form-data;charset=UTF-8"
-}
 /**
  * 拦截器
  */
@@ -38,12 +22,6 @@ interface RequestBaseConfig extends AxiosRequestConfig {
 interface BaseRequestGetResponseConfig {
     getResponse: true;
 }
-type ResponseResult<T extends object = object> = {
-    code: number;
-    status: number;
-    msg: string;
-    message: string;
-} & T;
 type RequestConfig<T extends object> = RequestBaseConfig & T;
 /**
  * RequestConfig 配置( 去除 method 为了给具体请求函数使用 get / post ...)
@@ -97,4 +75,4 @@ declare class Request<CustomConfig extends object> {
     request<D extends object>(config: RequestConfig<CustomConfig>): Promise<ResponseResult<D>>;
 }
 
-export { ContentTypeEnum, Request, type RequestBaseConfig, type RequestConfig, type RequestConfigWithoutMethod, type RequestGetConfigWithoutMethod, type RequestInterceptors, RequestMethodsEnum, type ResponseResult };
+export { Request, type RequestBaseConfig, type RequestConfig, type RequestConfigWithoutMethod, type RequestGetConfigWithoutMethod, type RequestInterceptors };

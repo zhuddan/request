@@ -1,30 +1,9 @@
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
-
 import axios from 'axios'
 import { merge } from 'lodash-es'
 import Qs from 'qs'
-
-/**
- * @description 请求方法
- */
-export enum RequestMethodsEnum {
-  GET = 'GET',
-  POST = 'POST',
-  PUT = 'PUT',
-  DELETE = 'DELETE',
-}
-
-/**
- * @description headers ContentType
- */
-export enum ContentTypeEnum {
-  // json
-  JSON = 'application/json;charset=UTF-8',
-  // form-data qs
-  FORM_URLENCODED = 'application/x-www-form-urlencoded;charset=UTF-8',
-  // form-data  upload
-  FORM_DATA = 'multipart/form-data;charset=UTF-8',
-}
+import type { ResponseResult } from './shared'
+import { ContentTypeEnum, RequestMethodsEnum } from './shared'
 
 /**
  * 拦截器
@@ -48,13 +27,6 @@ export interface RequestBaseConfig extends AxiosRequestConfig {
 interface BaseRequestGetResponseConfig {
   getResponse: true
 };
-
-export type ResponseResult<T extends object = object> = {
-  code: number
-  status: number
-  msg: string
-  message: string
-} & T
 
 export type RequestConfig<T extends object> = RequestBaseConfig & T
 /**

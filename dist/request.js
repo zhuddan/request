@@ -3,6 +3,7 @@
 var axios = require('axios');
 var lodashEs = require('lodash-es');
 var Qs = require('qs');
+var shared = require('./shared');
 
 function _interopDefault (e) { return e && e.__esModule ? e : { default: e }; }
 
@@ -10,19 +11,6 @@ var axios__default = /*#__PURE__*/_interopDefault(axios);
 var Qs__default = /*#__PURE__*/_interopDefault(Qs);
 
 // src/request.ts
-var RequestMethodsEnum = /* @__PURE__ */ ((RequestMethodsEnum2) => {
-  RequestMethodsEnum2["GET"] = "GET";
-  RequestMethodsEnum2["POST"] = "POST";
-  RequestMethodsEnum2["PUT"] = "PUT";
-  RequestMethodsEnum2["DELETE"] = "DELETE";
-  return RequestMethodsEnum2;
-})(RequestMethodsEnum || {});
-var ContentTypeEnum = /* @__PURE__ */ ((ContentTypeEnum2) => {
-  ContentTypeEnum2["JSON"] = "application/json;charset=UTF-8";
-  ContentTypeEnum2["FORM_URLENCODED"] = "application/x-www-form-urlencoded;charset=UTF-8";
-  ContentTypeEnum2["FORM_DATA"] = "multipart/form-data;charset=UTF-8";
-  return ContentTypeEnum2;
-})(ContentTypeEnum || {});
 var Request = class {
   /**
    *
@@ -80,7 +68,7 @@ var Request = class {
       method: "POST",
       data: formData,
       headers: {
-        "Content-type": "multipart/form-data;charset=UTF-8" /* FORM_DATA */
+        "Content-type": shared.ContentTypeEnum.FORM_DATA
       }
     });
   }
@@ -92,7 +80,7 @@ var Request = class {
     var _a;
     const headers = config.headers || this.baseConfig.headers;
     const contentType = (headers == null ? void 0 : headers["Content-Type"]) || (headers == null ? void 0 : headers["content-type"]);
-    if (contentType !== "application/x-www-form-urlencoded;charset=UTF-8" /* FORM_URLENCODED */ || config.data && typeof config.data == "object" && Object.keys(config.data.length) || ((_a = config.method) == null ? void 0 : _a.toUpperCase()) === "GET" /* GET */) {
+    if (contentType !== shared.ContentTypeEnum.FORM_URLENCODED || config.data && typeof config.data == "object" && Object.keys(config.data.length) || ((_a = config.method) == null ? void 0 : _a.toUpperCase()) === shared.RequestMethodsEnum.GET) {
       return config;
     }
     return {
@@ -118,6 +106,4 @@ var Request = class {
   }
 };
 
-exports.ContentTypeEnum = ContentTypeEnum;
 exports.Request = Request;
-exports.RequestMethodsEnum = RequestMethodsEnum;

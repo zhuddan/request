@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@dcloudio/types':
+        specifier: ^3.4.12
+        version: 3.4.12
       axios:
         specifier: ^1.7.3
         version: 1.7.3
@@ -132,6 +135,9 @@ packages:
     resolution: {integrity: sha512-0MhX9/B4iL6Re04jPrttDm+BsP8y6mS7byuv0BvXgdXhbV5PdlsHt55dvNsuBCPZ7xq1oTAOOuotR9NFbQyMSA==}
     bundledDependencies:
       - is-unicode-supported
+
+  '@dcloudio/types@3.4.12':
+    resolution: {integrity: sha512-xSFDhBCm4bqdRBO9mBj7wySz7fzOv9sMeK9VMI21tHvZbT2bIdGMU5o+kJ/J4H2+N5+7SW2kDY+aIzZs94DAOg==}
 
   '@dprint/formatter@0.3.0':
     resolution: {integrity: sha512-N9fxCxbaBOrDkteSOzaCqwWjso5iAe+WJPsHC021JfHNj2ThInPNEF13ORDKta3llq5D1TlclODCvOvipH7bWQ==}
@@ -2264,6 +2270,8 @@ snapshots:
       '@clack/core': 0.3.4
       picocolors: 1.0.1
       sisteransi: 1.0.5
+
+  '@dcloudio/types@3.4.12': {}
 
   '@dprint/formatter@0.3.0': {}
 

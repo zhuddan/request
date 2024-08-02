@@ -17,6 +17,10 @@ export default defineConfig(() => {
     minify: false, // 'terser',
     clean: true,
     treeshake: true,
-    external: ['./request', './uni'],
+    external: [
+      './request',
+      './uni',
+      './shared',
+    ],
   }
 })

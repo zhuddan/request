@@ -1,21 +1,9 @@
 import axios from 'axios';
 import { merge } from 'lodash-es';
 import Qs from 'qs';
+import { ContentTypeEnum, RequestMethodsEnum } from './shared';
 
 // src/request.ts
-var RequestMethodsEnum = /* @__PURE__ */ ((RequestMethodsEnum2) => {
-  RequestMethodsEnum2["GET"] = "GET";
-  RequestMethodsEnum2["POST"] = "POST";
-  RequestMethodsEnum2["PUT"] = "PUT";
-  RequestMethodsEnum2["DELETE"] = "DELETE";
-  return RequestMethodsEnum2;
-})(RequestMethodsEnum || {});
-var ContentTypeEnum = /* @__PURE__ */ ((ContentTypeEnum2) => {
-  ContentTypeEnum2["JSON"] = "application/json;charset=UTF-8";
-  ContentTypeEnum2["FORM_URLENCODED"] = "application/x-www-form-urlencoded;charset=UTF-8";
-  ContentTypeEnum2["FORM_DATA"] = "multipart/form-data;charset=UTF-8";
-  return ContentTypeEnum2;
-})(ContentTypeEnum || {});
 var Request = class {
   /**
    *
@@ -73,7 +61,7 @@ var Request = class {
       method: "POST",
       data: formData,
       headers: {
-        "Content-type": "multipart/form-data;charset=UTF-8" /* FORM_DATA */
+        "Content-type": ContentTypeEnum.FORM_DATA
       }
     });
   }
@@ -85,7 +73,7 @@ var Request = class {
     var _a;
     const headers = config.headers || this.baseConfig.headers;
     const contentType = (headers == null ? void 0 : headers["Content-Type"]) || (headers == null ? void 0 : headers["content-type"]);
-    if (contentType !== "application/x-www-form-urlencoded;charset=UTF-8" /* FORM_URLENCODED */ || config.data && typeof config.data == "object" && Object.keys(config.data.length) || ((_a = config.method) == null ? void 0 : _a.toUpperCase()) === "GET" /* GET */) {
+    if (contentType !== ContentTypeEnum.FORM_URLENCODED || config.data && typeof config.data == "object" && Object.keys(config.data.length) || ((_a = config.method) == null ? void 0 : _a.toUpperCase()) === RequestMethodsEnum.GET) {
       return config;
     }
     return {
@@ -111,4 +99,4 @@ var Request = class {
   }
 };
 
-export { ContentTypeEnum, Request, RequestMethodsEnum };
+export { Request };
