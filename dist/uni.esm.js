@@ -1,7 +1,16 @@
-import { merge } from 'lodash-es';
+import { merge_default } from './chunk-HFMSTPUA.esm.js';
+import './chunk-5ZBWKCU3.esm.js';
 
 // src/uni.ts
 var UniRequest = class {
+  /**
+   * 基础配置
+   */
+  baseConfig;
+  /**
+   * 拦截器
+   */
+  interceptors;
   /**
    * @param options 基础配置
    * @param interceptors 拦截器
@@ -26,7 +35,7 @@ var UniRequest = class {
   }
   async request(config) {
     var _a, _b, _c, _d, _e, _f, _g, _h;
-    let _config = merge({}, this.baseConfig, config);
+    let _config = merge_default({}, this.baseConfig, config);
     try {
       _config = await ((_b = (_a = this.interceptors) == null ? void 0 : _a.request) == null ? void 0 : _b.call(_a, _config)) || _config;
     } catch (error) {

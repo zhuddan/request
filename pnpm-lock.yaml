@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@dcloudio/types':
-        specifier: ^3.4.12
-        version: 3.4.12
       axios:
         specifier: ^1.7.3
         version: 1.7.3
@@ -24,6 +21,9 @@ importers:
       '@antfu/eslint-config':
         specifier: ^2.24.1
         version: 2.24.1(@vue/compiler-sfc@3.4.35)(eslint-plugin-format@0.1.2(eslint@9.5.0))(eslint@9.5.0)(typescript@5.5.4)
+      '@dcloudio/types':
+        specifier: ^3.4.12
+        version: 3.4.12
       '@types/lodash-es':
         specifier: ^4.17.12
         version: 4.17.12

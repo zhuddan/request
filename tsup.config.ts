@@ -5,6 +5,7 @@ export default defineConfig(() => {
     entry: {
       uni: 'src/uni.ts',
       request: 'src/request.ts',
+      shared: 'src/shared.ts',
       index: 'src/index.ts',
     },
     dts: {
@@ -22,5 +23,12 @@ export default defineConfig(() => {
       './uni',
       './shared',
     ],
+    noExternal: ['qs', 'lodash-es'],
+    outExtension({ format }) {
+      return {
+        js: `.${format}.js`,
+        // dts: '.xxxxxxxx',
+      }
+    },
   }
 })
