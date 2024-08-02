@@ -15,18 +15,18 @@
   "exports": {
     "./request": {
       "types": "./dist/request.d.ts",
-      "import": "./dist/request.js",
-      "require": "./dist/request.cjs"
+      "import": "./dist/request.mjs",
+      "require": "./dist/request.js"
     },
     "./uni": {
       "types": "./dist/uni.d.ts",
-      "import": "./dist/uni.js",
-      "require": "./dist/uni.cjs"
+      "import": "./dist/uni.mjs",
+      "require": "./dist/uni.js"
     },
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
     }
   },
   "main": "index.js",
