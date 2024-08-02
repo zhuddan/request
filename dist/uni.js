@@ -1,5 +1,7 @@
+'use strict';
+
 // src/uni.ts
 function uni() {
 }
 
-export { uni };
+exports.uni = uni;
