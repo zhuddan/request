@@ -3,10 +3,10 @@ import { defineConfig } from 'tsup'
 export default defineConfig(() => {
   return {
     entry: {
+      index: 'src/index.ts',
       uni: 'src/uni.ts',
       request: 'src/request.ts',
       shared: 'src/shared.ts',
-      index: 'src/index.ts',
     },
     dts: {
       // entry: './src/index.ts', // Generate declaration files for index.ts
@@ -18,7 +18,6 @@ export default defineConfig(() => {
     minify: false, // 'terser',
     clean: true,
     treeshake: true,
-    moduleResolution: 'node', // Ensure node module resolution
     external: [
       './request',
       './uni',
