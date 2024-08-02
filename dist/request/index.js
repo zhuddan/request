@@ -1,7 +1,7 @@
-import { merge_default } from './chunk-PG762B4D.js';
-import { __commonJS, __toESM } from './chunk-JSBRDJBE.js';
+import { merge_default } from '../chunk-PG762B4D.js';
+import '../chunk-WVJTSHNZ.js';
+import { __commonJS, __toESM } from '../chunk-JSBRDJBE.js';
 import axios from 'axios';
-import { ContentTypeEnum, RequestMethodsEnum } from './shared';
 
 // node_modules/.pnpm/es-errors@1.3.0/node_modules/es-errors/index.js
 var require_es_errors = __commonJS({
@@ -2196,7 +2196,7 @@ var HttpRequest = class {
       method: "POST",
       data: formData,
       headers: {
-        "Content-type": ContentTypeEnum.FORM_DATA
+        "Content-type": "multipart/form-data;charset=UTF-8" /* FORM_DATA */
       }
     });
   }
@@ -2208,7 +2208,7 @@ var HttpRequest = class {
     var _a;
     const headers = config.headers || this.baseConfig.headers;
     const contentType = (headers == null ? void 0 : headers["Content-Type"]) || (headers == null ? void 0 : headers["content-type"]);
-    if (contentType !== ContentTypeEnum.FORM_URLENCODED || config.data && typeof config.data == "object" && Object.keys(config.data.length) || ((_a = config.method) == null ? void 0 : _a.toUpperCase()) === RequestMethodsEnum.GET) {
+    if (contentType !== "application/x-www-form-urlencoded;charset=UTF-8" /* FORM_URLENCODED */ || config.data && typeof config.data == "object" && Object.keys(config.data.length) || ((_a = config.method) == null ? void 0 : _a.toUpperCase()) === "GET" /* GET */) {
       return config;
     }
     return {

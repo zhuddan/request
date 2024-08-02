@@ -1,5 +1,5 @@
 import { AxiosResponse, AxiosRequestConfig } from 'axios';
-import { ResponseResult } from './shared';
+import { ResponseResult } from '../shared/index.mjs';
 
 /**
  * 拦截器

@@ -3,10 +3,10 @@ import { defineConfig } from 'tsup'
 export default defineConfig(() => {
   return {
     entry: {
-      index: 'src/index.ts',
-      uni: 'src/uni.ts',
-      request: 'src/request.ts',
-      shared: 'src/shared.ts',
+      'index': 'src/index.ts',
+      'uni/index': 'src/uni/index.ts',
+      'request/index': 'src/request/index.ts',
+      'shared/index': 'src/shared/index.ts',
     },
     dts: {
       // entry: './src/index.ts', // Generate declaration files for index.ts
