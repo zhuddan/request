@@ -26,8 +26,7 @@ export default defineConfig(() => {
     noExternal: ['qs', 'lodash-es'],
     outExtension({ format }) {
       return {
-        js: `.${format}.js`,
-        // dts: '.xxxxxxxx',
+        js: `.${format === 'cjs' ? 'cjs' : 'js'}`,
       }
     },
   }
