@@ -37,7 +37,7 @@ export type RequestGetConfigWithoutMethod<T extends object> = Omit<RequestBaseCo
 /**
  * 实现
  */
-export class Request<CustomConfig extends object> {
+export class HttpRequest<CustomConfig extends object> {
   /**
    * @description axios 实例
    */

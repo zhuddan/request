@@ -4,7 +4,7 @@ import Qs from 'qs';
 import { ContentTypeEnum, RequestMethodsEnum } from './shared';
 
 // src/request.ts
-var Request = class {
+var HttpRequest = class {
   /**
    *
    * @param options 基础配置
@@ -99,4 +99,4 @@ var Request = class {
   }
 };
 
-export { Request };
+export { HttpRequest };

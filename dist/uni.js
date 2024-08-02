@@ -3,7 +3,7 @@
 var lodashEs = require('lodash-es');
 
 // src/uni.ts
-var HttpRequest = class {
+var UniRequest = class {
   /**
    * @param options 基础配置
    * @param interceptors 拦截器
@@ -47,4 +47,4 @@ var HttpRequest = class {
   }
 };
 
-exports.HttpRequest = HttpRequest;
+exports.UniRequest = UniRequest;

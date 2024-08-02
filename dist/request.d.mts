@@ -31,7 +31,7 @@ type RequestGetConfigWithoutMethod<T extends object> = Omit<RequestBaseConfig, '
 /**
  * 实现
  */
-declare class Request<CustomConfig extends object> {
+declare class HttpRequest<CustomConfig extends object> {
     /**
      * @description axios 实例
      */
@@ -75,4 +75,4 @@ declare class Request<CustomConfig extends object> {
     request<D extends object>(config: RequestConfig<CustomConfig>): Promise<ResponseResult<D>>;
 }
 
-export { Request, type RequestBaseConfig, type RequestConfig, type RequestConfigWithoutMethod, type RequestGetConfigWithoutMethod, type RequestInterceptors };
+export { HttpRequest, type RequestBaseConfig, type RequestConfig, type RequestConfigWithoutMethod, type RequestGetConfigWithoutMethod, type RequestInterceptors };

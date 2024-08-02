@@ -11,7 +11,7 @@ var axios__default = /*#__PURE__*/_interopDefault(axios);
 var Qs__default = /*#__PURE__*/_interopDefault(Qs);
 
 // src/request.ts
-var Request = class {
+var HttpRequest = class {
   /**
    *
    * @param options 基础配置
@@ -106,4 +106,4 @@ var Request = class {
   }
 };
 
-exports.Request = Request;
+exports.HttpRequest = HttpRequest;

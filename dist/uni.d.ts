@@ -7,19 +7,19 @@ interface UniAppResponse<T extends BaseResponse = BaseResponse> extends UniApp.R
 /**
  * 拦截器
  */
-interface HttpRequestInterceptors<T extends object> {
-    request?: (value: HttpRequestConfig<T>) => HttpRequestConfig<T> | Promise<HttpRequestConfig<T>>;
+interface UniRequestInterceptors<T extends object> {
+    request?: (value: UniRequestConfig<T>) => UniRequestConfig<T> | Promise<UniRequestConfig<T>>;
     requestError?: (error: any) => (Promise<any> | any);
     response?: ((value: {
-        config: HttpRequestConfig<T>;
+        config: UniRequestConfig<T>;
         response: UniAppResponse;
     }) => UniAppResponse | Promise<UniAppResponse>);
     responseError?: (error: any) => (Promise<any> | any);
 }
 /**
- * HttpRequest 请求配置
+ * UniRequestBaseConfig 请求配置
  */
-interface HttpBaseRequestConfig extends Partial<UniNamespace.RequestOptions> {
+interface UniRequestBaseConfig extends Partial<UniNamespace.RequestOptions> {
     /**
      * 公共url
      */
@@ -40,25 +40,25 @@ interface HttpBaseRequestConfig extends Partial<UniNamespace.RequestOptions> {
 /**
  *  返回原生响应 UniAppResponse<T>
  */
-interface HttpBaseRequestGetResponseConfig {
+interface UniRequestGetResponseConfig {
     getResponse: true;
 }
 /**
  * 用户自定义请求配置
  */
-type HttpRequestConfig<T extends object> = HttpBaseRequestConfig & T;
+type UniRequestConfig<T extends object> = UniRequestBaseConfig & T;
 /**
  * 用户自定义请求配置
  */
-type HttpRequestConfigWithoutMethod<T extends object> = RequiredProperty<Omit<HttpBaseRequestConfig, 'method'>, 'url'> & T;
+type UniRequestConfigWithoutMethod<T extends object> = RequiredProperty<Omit<UniRequestBaseConfig, 'method'>, 'url'> & T;
 /**
  * 用户自定义 get 请求配置 get 请求参设置请使用 params 而不是 data
  */
-type HttpRequestGetConfigWithoutMethod<T extends object> = RequiredProperty<Omit<HttpBaseRequestConfig, 'method' | 'data'>, 'url'> & T;
+type UniRequestGetConfigWithoutMethod<T extends object> = RequiredProperty<Omit<UniRequestBaseConfig, 'method' | 'data'>, 'url'> & T;
 /**
  * 实现
  */
-declare class HttpRequest<T extends object> {
+declare class UniRequest<T extends object> {
     /**
      * 基础配置
      */
@@ -71,17 +71,17 @@ declare class HttpRequest<T extends object> {
      * @param options 基础配置
      * @param interceptors 拦截器
      */
-    constructor(options: HttpRequestConfig<T>, interceptors?: HttpRequestInterceptors<T>);
-    get<D extends object>(config: HttpRequestGetConfigWithoutMethod<T> & HttpBaseRequestGetResponseConfig): Promise<UniAppResponse<ResponseResult<D>>>;
-    get<D extends object>(config: HttpRequestGetConfigWithoutMethod<T>): Promise<ResponseResult<D>>;
-    post<D extends object>(config: HttpRequestConfigWithoutMethod<T> & HttpBaseRequestGetResponseConfig): Promise<UniAppResponse<ResponseResult<D>>>;
-    post<D extends object>(config: HttpRequestConfigWithoutMethod<T>): Promise<ResponseResult<D>>;
-    put<D extends object>(config: HttpRequestConfigWithoutMethod<T> & HttpBaseRequestGetResponseConfig): Promise<UniAppResponse<ResponseResult<D>>>;
-    put<D extends object>(config: HttpRequestConfigWithoutMethod<T>): Promise<ResponseResult<D>>;
-    delete<D extends object>(config: HttpRequestConfigWithoutMethod<T> & HttpBaseRequestGetResponseConfig): Promise<UniAppResponse<ResponseResult<D>>>;
-    delete<D extends object>(config: HttpRequestConfigWithoutMethod<T>): Promise<ResponseResult<D>>;
-    request<D extends object>(config: HttpRequestConfig<T> & HttpBaseRequestGetResponseConfig): Promise<UniAppResponse<ResponseResult<D>>>;
-    request<D extends object>(config: HttpRequestConfig<T>): Promise<ResponseResult<D>>;
+    constructor(options: UniRequestConfig<T>, interceptors?: UniRequestInterceptors<T>);
+    get<D extends object>(config: UniRequestGetConfigWithoutMethod<T> & UniRequestGetResponseConfig): Promise<UniAppResponse<ResponseResult<D>>>;
+    get<D extends object>(config: UniRequestGetConfigWithoutMethod<T>): Promise<ResponseResult<D>>;
+    post<D extends object>(config: UniRequestConfigWithoutMethod<T> & UniRequestGetResponseConfig): Promise<UniAppResponse<ResponseResult<D>>>;
+    post<D extends object>(config: UniRequestConfigWithoutMethod<T>): Promise<ResponseResult<D>>;
+    put<D extends object>(config: UniRequestConfigWithoutMethod<T> & UniRequestGetResponseConfig): Promise<UniAppResponse<ResponseResult<D>>>;
+    put<D extends object>(config: UniRequestConfigWithoutMethod<T>): Promise<ResponseResult<D>>;
+    delete<D extends object>(config: UniRequestConfigWithoutMethod<T> & UniRequestGetResponseConfig): Promise<UniAppResponse<ResponseResult<D>>>;
+    delete<D extends object>(config: UniRequestConfigWithoutMethod<T>): Promise<ResponseResult<D>>;
+    request<D extends object>(config: UniRequestConfig<T> & UniRequestGetResponseConfig): Promise<UniAppResponse<ResponseResult<D>>>;
+    request<D extends object>(config: UniRequestConfig<T>): Promise<ResponseResult<D>>;
 }
 
-export { type HttpBaseRequestConfig, HttpRequest, type HttpRequestConfig, type HttpRequestInterceptors };
+export { UniRequest, type UniRequestBaseConfig, type UniRequestConfig, type UniRequestInterceptors };

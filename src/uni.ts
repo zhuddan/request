@@ -9,16 +9,16 @@ interface UniAppResponse<T extends BaseResponse = BaseResponse> extends UniApp.R
 /**
  * 拦截器
  */
-export interface HttpRequestInterceptors<T extends object> {
-  request?: (value: HttpRequestConfig<T>) => HttpRequestConfig<T> | Promise<HttpRequestConfig<T>>
+export interface UniRequestInterceptors<T extends object> {
+  request?: (value: UniRequestConfig<T>) => UniRequestConfig<T> | Promise<UniRequestConfig<T>>
   requestError?: (error: any) => (Promise<any> | any)
-  response?: ((value: { config: HttpRequestConfig<T>, response: UniAppResponse }) => UniAppResponse | Promise<UniAppResponse>)
+  response?: ((value: { config: UniRequestConfig<T>, response: UniAppResponse }) => UniAppResponse | Promise<UniAppResponse>)
   responseError?: (error: any) => (Promise<any> | any)
 }
 /**
- * HttpRequest 请求配置
+ * UniRequestBaseConfig 请求配置
  */
-export interface HttpBaseRequestConfig extends Partial<UniNamespace.RequestOptions> {
+export interface UniRequestBaseConfig extends Partial<UniNamespace.RequestOptions> {
   /**
    * 公共url
    */
@@ -40,74 +40,74 @@ export interface HttpBaseRequestConfig extends Partial<UniNamespace.RequestOptio
 /**
  *  返回原生响应 UniAppResponse<T>
  */
-interface HttpBaseRequestGetResponseConfig {
+interface UniRequestGetResponseConfig {
   getResponse: true
 };
 
 /**
  * 用户自定义请求配置
  */
-export type HttpRequestConfig<T extends object> = HttpBaseRequestConfig & T
+export type UniRequestConfig<T extends object> = UniRequestBaseConfig & T
 
 /**
  * 用户自定义请求配置
  */
-type HttpRequestConfigWithoutMethod<T extends object> = RequiredProperty<Omit<HttpBaseRequestConfig, 'method'>, 'url'> & T
+type UniRequestConfigWithoutMethod<T extends object> = RequiredProperty<Omit<UniRequestBaseConfig, 'method'>, 'url'> & T
 
 /**
  * 用户自定义 get 请求配置 get 请求参设置请使用 params 而不是 data
  */
-type HttpRequestGetConfigWithoutMethod<T extends object> = RequiredProperty<Omit<HttpBaseRequestConfig, 'method' | 'data'>, 'url'> & T
+type UniRequestGetConfigWithoutMethod<T extends object> = RequiredProperty<Omit<UniRequestBaseConfig, 'method' | 'data'>, 'url'> & T
 /**
  * 实现
  */
-export class HttpRequest<T extends object> {
+export class UniRequest<T extends object> {
   /**
    * 基础配置
    */
-  private baseConfig: HttpRequestConfig<T>
+  private baseConfig: UniRequestConfig<T>
   /**
    * 拦截器
    */
-  private interceptors?: HttpRequestInterceptors<T>
+  private interceptors?: UniRequestInterceptors<T>
   /**
    * @param options 基础配置
    * @param interceptors 拦截器
    */
-  constructor(options: HttpRequestConfig<T>, interceptors?: HttpRequestInterceptors<T>) {
+  constructor(options: UniRequestConfig<T>, interceptors?: UniRequestInterceptors<T>) {
     this.baseConfig = {
       ...options,
     }
     this.interceptors = interceptors
   }
 
-  get<D extends object>(config: HttpRequestGetConfigWithoutMethod<T> & HttpBaseRequestGetResponseConfig): Promise<UniAppResponse<ResponseResult<D>>>
-  get<D extends object>(config: HttpRequestGetConfigWithoutMethod<T>): Promise<ResponseResult<D>>
-  get<D extends object>(config: HttpRequestGetConfigWithoutMethod<T>): Promise<UniAppResponse<D> | ResponseResult<D>> {
+  get<D extends object>(config: UniRequestGetConfigWithoutMethod<T> & UniRequestGetResponseConfig): Promise<UniAppResponse<ResponseResult<D>>>
+  get<D extends object>(config: UniRequestGetConfigWithoutMethod<T>): Promise<ResponseResult<D>>
+  get<D extends object>(config: UniRequestGetConfigWithoutMethod<T>): Promise<UniAppResponse<D> | ResponseResult<D>> {
     return this.request({ ...config, method: 'GET' })
   }
 
-  post<D extends object>(config: HttpRequestConfigWithoutMethod<T> & HttpBaseRequestGetResponseConfig): Promise<UniAppResponse<ResponseResult<D>>>
-  post<D extends object>(config: HttpRequestConfigWithoutMethod<T>): Promise<ResponseResult<D>>
-  post<D extends object>(config: HttpRequestConfigWithoutMethod<T>): Promise<UniAppResponse<D> | ResponseResult<D>> {
+  post<D extends object>(config: UniRequestConfigWithoutMethod<T> & UniRequestGetResponseConfig): Promise<UniAppResponse<ResponseResult<D>>>
+  post<D extends object>(config: UniRequestConfigWithoutMethod<T>): Promise<ResponseResult<D>>
+  post<D extends object>(config: UniRequestConfigWithoutMethod<T>): Promise<UniAppResponse<D> | ResponseResult<D>> {
     return this.request({ ...config, method: 'POST' })
   }
 
-  put<D extends object>(config: HttpRequestConfigWithoutMethod<T> & HttpBaseRequestGetResponseConfig): Promise<UniAppResponse<ResponseResult<D>>>
-  put<D extends object>(config: HttpRequestConfigWithoutMethod<T>): Promise<ResponseResult<D>>
-  put<D extends object>(config: HttpRequestConfigWithoutMethod<T>): Promise<UniAppResponse<D> | ResponseResult<D>> {
+  put<D extends object>(config: UniRequestConfigWithoutMethod<T> & UniRequestGetResponseConfig): Promise<UniAppResponse<ResponseResult<D>>>
+  put<D extends object>(config: UniRequestConfigWithoutMethod<T>): Promise<ResponseResult<D>>
+  put<D extends object>(config: UniRequestConfigWithoutMethod<T>): Promise<UniAppResponse<D> | ResponseResult<D>> {
     return this.request({ ...config, method: 'PUT' })
   }
 
-  delete<D extends object>(config: HttpRequestConfigWithoutMethod<T> & HttpBaseRequestGetResponseConfig): Promise<UniAppResponse<ResponseResult<D>>>
-  delete<D extends object>(config: HttpRequestConfigWithoutMethod<T>): Promise<ResponseResult<D>>
-  delete<D extends object>(config: HttpRequestConfigWithoutMethod<T>): Promise<UniAppResponse<D> | ResponseResult<D>> {
+  delete<D extends object>(config: UniRequestConfigWithoutMethod<T> & UniRequestGetResponseConfig): Promise<UniAppResponse<ResponseResult<D>>>
+  delete<D extends object>(config: UniRequestConfigWithoutMethod<T>): Promise<ResponseResult<D>>
+  delete<D extends object>(config: UniRequestConfigWithoutMethod<T>): Promise<UniAppResponse<D> | ResponseResult<D>> {
     return this.request({ ...config, method: 'DELETE' })
   }
 
-  async request<D extends object>(config: HttpRequestConfig<T> & HttpBaseRequestGetResponseConfig): Promise<UniAppResponse<ResponseResult<D>>>
-  async request<D extends object>(config: HttpRequestConfig<T>): Promise<ResponseResult<D>>
-  async request<D extends object>(config: HttpRequestConfig<T>): Promise<UniAppResponse<D> | ResponseResult<D>> {
+  async request<D extends object>(config: UniRequestConfig<T> & UniRequestGetResponseConfig): Promise<UniAppResponse<ResponseResult<D>>>
+  async request<D extends object>(config: UniRequestConfig<T>): Promise<ResponseResult<D>>
+  async request<D extends object>(config: UniRequestConfig<T>): Promise<UniAppResponse<D> | ResponseResult<D>> {
     let _config = merge({}, this.baseConfig, config)
     try {
       _config = await this.interceptors?.request?.(_config) || _config
