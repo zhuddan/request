@@ -84,4 +84,4 @@ declare class UniRequest<T extends object> {
     request<D extends object>(config: UniRequestConfig<T>): Promise<ResponseResult<D>>;
 }
 
-export { UniRequest, type UniRequestBaseConfig, type UniRequestConfig, type UniRequestInterceptors };
+export { UniRequest, type UniRequestBaseConfig, type UniRequestConfig, type UniRequestInterceptors, UniRequest as default };

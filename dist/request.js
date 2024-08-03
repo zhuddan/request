@@ -2233,5 +2233,6 @@ var HttpRequest = class {
     return this.axiosInstance.request(_config);
   }
 };
+var request_default = HttpRequest;
 
-export { HttpRequest };
+export { HttpRequest, request_default as default };

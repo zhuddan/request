@@ -1,5 +1,7 @@
 'use strict';
 
+Object.defineProperty(exports, '__esModule', { value: true });
+
 var axios = require('axios');
 var shared = require('./shared');
 
@@ -3304,6 +3306,7 @@ var HttpRequest = class {
     return this.axiosInstance.request(_config);
   }
 };
+var request_default = HttpRequest;
 /*! Bundled license information:
 
 lodash-es/lodash.js:
@@ -3319,3 +3322,4 @@ lodash-es/lodash.js:
 */
 
 exports.HttpRequest = HttpRequest;
+exports.default = request_default;

@@ -53,5 +53,6 @@ var UniRequest = class {
     }
   }
 };
+var uni_default = UniRequest;
 
-export { UniRequest };
+export { UniRequest, uni_default as default };

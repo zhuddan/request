@@ -1,5 +1,7 @@
 'use strict';
 
+Object.defineProperty(exports, '__esModule', { value: true });
+
 // node_modules/.pnpm/lodash-es@4.17.21/node_modules/lodash-es/_freeGlobal.js
 var freeGlobal = typeof global == "object" && global && global.Object === Object && global;
 var freeGlobal_default = freeGlobal;
@@ -1091,6 +1093,7 @@ var UniRequest = class {
     }
   }
 };
+var uni_default = UniRequest;
 /*! Bundled license information:
 
 lodash-es/lodash.js:
@@ -1106,3 +1109,4 @@ lodash-es/lodash.js:
 */
 
 exports.UniRequest = UniRequest;
+exports.default = uni_default;

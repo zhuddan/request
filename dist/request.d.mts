@@ -75,4 +75,4 @@ declare class HttpRequest<CustomConfig extends object> {
     request<D extends object>(config: RequestConfig<CustomConfig>): Promise<ResponseResult<D>>;
 }
 
-export { HttpRequest, type RequestBaseConfig, type RequestConfig, type RequestConfigWithoutMethod, type RequestGetConfigWithoutMethod, type RequestInterceptors };
+export { HttpRequest, type RequestBaseConfig, type RequestConfig, type RequestConfigWithoutMethod, type RequestGetConfigWithoutMethod, type RequestInterceptors, HttpRequest as default };
