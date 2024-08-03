@@ -14,26 +14,46 @@
   ],
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./*": "./*",
+    "./shared": {
+      "import": {
+        "types": "./dist/shared.d.mts",
+        "default": "./dist/shared.js"
+      },
+      "require": {
+        "types": "./dist/shared.d.ts",
+        "default": "./dist/shared.cjs"
+      }
     },
     "./request": {
-      "types": "./dist/request.d.ts",
-      "import": "./dist/request.js",
-      "require": "./dist/request.cjs"
+      "import": {
+        "types": "./dist/request.d.mts",
+        "default": "./dist/request.js"
+      },
+      "require": {
+        "types": "./dist/request.d.ts",
+        "default": "./dist/request.cjs"
+      }
     },
     "./uni": {
-      "types": "./dist/uni.d.ts",
-      "import": "./dist/uni.js",
-      "require": "./dist/uni.cjs"
-    },
-    "./shared": {
-      "types": "./dist/shared.d.ts",
-      "import": "./dist/shared.js",
-      "require": "./dist/shared.cjs"
-    },
-    "./dist/*": "./dist/*"
+      "import": {
+        "types": "./dist/uni.d.mts",
+        "default": "./dist/uni.js"
+      },
+      "require": {
+        "types": "./dist/uni.d.ts",
+        "default": "./dist/uni.cjs"
+      }
+    }
   },
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
