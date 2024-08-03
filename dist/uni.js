@@ -1,7 +1,7 @@
-import { merge_default } from '../chunk-PG762B4D.js';
-import '../chunk-JSBRDJBE.js';
+import { merge_default } from './chunk-PG762B4D.js';
+import './chunk-JSBRDJBE.js';
 
-// src/uni/index.ts
+// src/uni.ts
 var UniRequest = class {
   /**
    * 基础配置

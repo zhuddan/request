@@ -1,4 +1,4 @@
-import { ResponseResult, RequiredProperty } from '../shared/index.mjs';
+import { ResponseResult, RequiredProperty } from './shared';
 
 type BaseResponse = string | object | ArrayBuffer;
 interface UniAppResponse<T extends BaseResponse = BaseResponse> extends UniApp.RequestSuccessCallbackResult {

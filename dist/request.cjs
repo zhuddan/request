@@ -1,6 +1,7 @@
 'use strict';
 
 var axios = require('axios');
+var shared = require('./shared');
 
 function _interopDefault (e) { return e && e.__esModule ? e : { default: e }; }
 
@@ -3199,7 +3200,7 @@ var merge = createAssigner_default(function(object, source, srcIndex) {
 });
 var merge_default = merge;
 
-// src/request/index.ts
+// src/request.ts
 var import_qs = __toESM(require_lib());
 var HttpRequest = class {
   /**
@@ -3266,7 +3267,7 @@ var HttpRequest = class {
       method: "POST",
       data: formData,
       headers: {
-        "Content-type": "multipart/form-data;charset=UTF-8" /* FORM_DATA */
+        "Content-type": shared.ContentTypeEnum.FORM_DATA
       }
     });
   }
@@ -3278,7 +3279,7 @@ var HttpRequest = class {
     var _a;
     const headers = config.headers || this.baseConfig.headers;
     const contentType = (headers == null ? void 0 : headers["Content-Type"]) || (headers == null ? void 0 : headers["content-type"]);
-    if (contentType !== "application/x-www-form-urlencoded;charset=UTF-8" /* FORM_URLENCODED */ || config.data && typeof config.data == "object" && Object.keys(config.data.length) || ((_a = config.method) == null ? void 0 : _a.toUpperCase()) === "GET" /* GET */) {
+    if (contentType !== shared.ContentTypeEnum.FORM_URLENCODED || config.data && typeof config.data == "object" && Object.keys(config.data.length) || ((_a = config.method) == null ? void 0 : _a.toUpperCase()) === shared.RequestMethodsEnum.GET) {
       return config;
     }
     return {

@@ -2,8 +2,8 @@ import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, InternalAxiosReq
 import axios from 'axios'
 import { merge } from 'lodash-es'
 import Qs from 'qs'
-import type { ResponseResult } from '../shared'
-import { ContentTypeEnum, RequestMethodsEnum } from '../shared'
+import type { ResponseResult } from './shared'
+import { ContentTypeEnum, RequestMethodsEnum } from './shared'
 
 /**
  * 拦截器

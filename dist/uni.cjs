@@ -1039,7 +1039,7 @@ var merge = createAssigner_default(function(object, source, srcIndex) {
 });
 var merge_default = merge;
 
-// src/uni/index.ts
+// src/uni.ts
 var UniRequest = class {
   /**
    * 基础配置
