@@ -131,3 +131,5 @@ export class UniRequest<T extends object> {
     }
   }
 }
+
+export default UniRequest

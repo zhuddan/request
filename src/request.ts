@@ -174,3 +174,5 @@ export class HttpRequest<CustomConfig extends object> {
     return this.axiosInstance.request(_config)
   }
 }
+
+export default HttpRequest
