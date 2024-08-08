@@ -50,11 +50,11 @@ type UniRequestConfig<T extends object> = UniRequestBaseConfig & T;
 /**
  * 用户自定义请求配置
  */
-type UniRequestConfigWithoutMethod<T extends object> = RequiredProperty<Omit<UniRequestBaseConfig, 'method'>, 'url'> & T;
+type UniRequestConfigWithoutMethod<T extends object> = RequiredProperty<Omit<UniRequestBaseConfig, 'method' | 'baseUrl'>, 'url'> & T;
 /**
  * 用户自定义 get 请求配置 get 请求参设置请使用 params 而不是 data
  */
-type UniRequestGetConfigWithoutMethod<T extends object> = RequiredProperty<Omit<UniRequestBaseConfig, 'method' | 'data'>, 'url'> & T;
+type UniRequestGetConfigWithoutMethod<T extends object> = RequiredProperty<Omit<UniRequestBaseConfig, 'method' | 'baseUrl' | 'data'>, 'url'> & T;
 /**
  * 实现
  */
