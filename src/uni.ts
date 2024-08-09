@@ -1,4 +1,4 @@
-import { merge } from 'lodash-es'
+import merge from 'lodash-es/merge'
 import type { RequiredProperty, ResponseResult } from './shared'
 
 type BaseResponse = string | object | ArrayBuffer
