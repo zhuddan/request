@@ -1,6 +1,6 @@
 {
   "name": "@zd~/request",
-  "version": "0.0.22",
+  "version": "0.0.23",
   "private": false,
   "description": "A request library based on Axios.",
   "author": "zd",
@@ -103,8 +103,6 @@
     "rollup-plugin-delete": "^2.0.0",
     "rollup-plugin-dts": "^6.1.1",
     "rollup-plugin-terser": "^7.0.2",
-    "terser": "^5.31.3",
-    "tsup": "^8.2.4",
     "typescript": "^5.5.4"
   }
 }
