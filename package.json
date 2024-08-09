@@ -27,7 +27,7 @@
     "./shared": {
       "import": {
         "types": "./dist/shared.d.ts",
-        "default": "./dist/shared.js"
+        "default": "./dist/shared.mjs"
       },
       "require": {
         "types": "./dist/shared.d.ts",
@@ -37,7 +37,7 @@
     "./request": {
       "import": {
         "types": "./dist/request.d.ts",
-        "default": "./dist/request.js"
+        "default": "./dist/request.mjs"
       },
       "require": {
         "types": "./dist/request.d.ts",
@@ -47,7 +47,7 @@
     "./uni": {
       "import": {
         "types": "./dist/uni.d.ts",
-        "default": "./dist/uni.js"
+        "default": "./dist/uni.mjs"
       },
       "require": {
         "types": "./dist/uni.d.ts",
