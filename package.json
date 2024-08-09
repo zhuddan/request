@@ -7,7 +7,7 @@
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "https://github.com/zhuddan/http-request.git"
+    "url": "https://github.com/zhuddan/request.git"
   },
   "keywords": [
     "request"
