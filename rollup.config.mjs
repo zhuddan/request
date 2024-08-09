@@ -17,7 +17,7 @@ const buildOptions = {
     index: './src/index.ts',
     request: './src/request.ts',
     uni: './src/uni.ts',
-    shareds: './src/shared.ts',
+    shared: './src/shared.ts',
   },
   // input: './src/index.ts',
   plugins: [

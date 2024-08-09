@@ -59,7 +59,7 @@
     "@dcloudio/uni-mp-xhs": "3.0.0-4020420240722002",
     "@dcloudio/uni-quickapp-webview": "3.0.0-4020420240722002",
     "@types/lodash-es": "^4.17.12",
-    "@zd~/request": "^0.0.21",
+    "@zd~/request": "^0.0.22",
     "lodash-es": "^4.17.21",
     "vue": "^3.4.21",
     "vue-i18n": "^9.1.9"
