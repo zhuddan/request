@@ -23,8 +23,11 @@ function createInput(suffix = 'ts') {
   const input = {}
 
   for (let index = 0; index < files.length; index++) {
+    if (files[index] === 'types') {
+      continue
+    }
     const file = files[index].replace('.ts', '')
-    input[file] = `./${suffix === 'd.ts' ? 'temp' : 'dist'}/${file}.${suffix}`
+    input[file] = `./${suffix === 'd.ts' ? 'temp' : 'src'}/${file}.${suffix}`
   }
 
   return input
@@ -71,6 +74,11 @@ const buildDtsOptions = {
   }],
   plugins: [
     dts(),
+    {
+      buildEnd: () => {
+
+      },
+    },
   ],
 }
 /**
