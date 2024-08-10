@@ -7,7 +7,8 @@
       "@/*": ["./src/*"]
     },
     "types": ["@dcloudio/types", "@uni-helper/uni-app-types"],
-    "sourceMap": true
+    "sourceMap": true,
+    "ignoreDeprecations": "5.0"
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
   "vueCompilerOptions": {

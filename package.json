@@ -34,14 +34,14 @@
         "default": "./dist/shared.cjs"
       }
     },
-    "./request": {
+    "./http": {
       "import": {
-        "types": "./dist/request.d.ts",
-        "default": "./dist/request.mjs"
+        "types": "./dist/http.d.ts",
+        "default": "./dist/http.mjs"
       },
       "require": {
-        "types": "./dist/request.d.ts",
-        "default": "./dist/request.cjs"
+        "types": "./dist/http.d.ts",
+        "default": "./dist/http.cjs"
       }
     },
     "./uni": {
@@ -73,7 +73,7 @@
   "scripts": {
     "build:tsup": "tsup",
     "dev": "cross-env NODE_ENV=development rollup -c -w",
-    "build": "cross-env NODE_ENV=production rollup -c",
+    "build": "tsc -p tsconfig.build.json && cross-env NODE_ENV=production rollup -c",
     "release": "bumpp"
   },
   "peerDependencies": {

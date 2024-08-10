@@ -1,4 +1,5 @@
 import process from 'node:process'
+import fs from 'node:fs'
 import { defineConfig } from 'rollup'
 import typescript from '@rollup/plugin-typescript'
 import del from 'rollup-plugin-delete'
@@ -9,17 +10,31 @@ import { dts } from 'rollup-plugin-dts'
 import terser from '@rollup/plugin-terser'
 
 const prod = process.env.NODE_ENV === 'production'
+
+/**
+ *
+ * @param {'d.ts' | 'ts'} suffix
+ * @returns
+ */
+function createInput(suffix = 'ts') {
+  const files = fs.readdirSync('./src')
+  /**
+   * @type {{ [entryAlias: string]: string }}
+   */
+  const input = {}
+
+  for (let index = 0; index < files.length; index++) {
+    const file = files[index].replace('.ts', '')
+    input[file] = `./${suffix === 'd.ts' ? 'temp' : 'dist'}/${file}.${suffix}`
+  }
+
+  return input
+}
 /**
  * @type {import('rollup').RollupOptions}
  */
 const buildOptions = {
-  input: {
-    index: './src/index.ts',
-    request: './src/request.ts',
-    uni: './src/uni.ts',
-    shared: './src/shared.ts',
-  },
-  // input: './src/index.ts',
+  input: createInput('ts'),
   plugins: [
     del({ targets: 'dist/*' }), // 打包前清空 dist 目录
     typescript(),
@@ -27,12 +42,6 @@ const buildOptions = {
     commonjs(),
     nodeResolve(),
     terser(),
-    {
-      buildEnd() {
-        console.log(process.env.NODE_ENV)
-        console.log(prod)
-      },
-    },
   ],
   output: [
     {
@@ -56,12 +65,7 @@ const buildOptions = {
  * @type {import('rollup').RollupOptions}
  */
 const buildDtsOptions = {
-  input: {
-    index: 'temp/index.d.ts',
-    request: 'temp/request.d.ts',
-    uni: 'temp/uni.d.ts',
-    shared: 'temp/shared.d.ts',
-  },
+  input: createInput('d.ts'),
   output: [{
     dir: 'dist',
     format: 'es',
