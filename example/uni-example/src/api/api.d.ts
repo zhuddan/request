@@ -1,11 +1,28 @@
 declare namespace Api{
 
-  interface UserModel {
+  interface CaptchaImage {
+    img: string
+    uuid: string
+  }
+
+  interface LoginResponse {
+    token: string
+  }
+
+  interface LoginData {
+    username: string
+    password: string
+    code: string
+    uuid: string
+  }
+
+  interface User {
     permissions: string[]
     roles: string[]
-    user: UserInfoModel
+    user: UserInfo
   }
-  interface UserInfoModel {
+
+  interface UserInfo {
     admin: boolean
     /**
      * 头像
@@ -18,7 +35,7 @@ declare namespace Api{
     /**
      * 昵称
      */
-    nockName: string
+    nickName: string
     sex: string
     userId: number
     userName: string
@@ -30,7 +47,7 @@ declare namespace Api{
     roles: string[]
   }
 
-  interface OperlogModel {
+  interface Operlog {
     /**
      * 操作类型
      */
@@ -70,7 +87,7 @@ declare namespace Api{
 
   }
 
-  interface GenModel {
+  interface Gen {
 
     /**
      * 表名称

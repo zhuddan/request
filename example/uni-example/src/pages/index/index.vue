@@ -1,11 +1,27 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { getInfo } from '@/api/auth'
 
-const title = ref('Hello')
+const userInfo = ref<Api.UserInfo>()
+function handleGetInfo() {
+  getInfo()
+    .then((res) => {
+      // console.log(res)
+      userInfo.value = res.user
+    })
+}
 </script>
 
 <template>
-  <view class="content" />
+  <navigator url="../login/index" hover-class="navigator-hover">
+    <button>
+      login
+    </button>
+  </navigator>
+  <button @click="handleGetInfo">
+    getinfo
+  </button>
+  {{ userInfo?.nickName }}
 </template>
 
 <style>

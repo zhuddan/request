@@ -17,7 +17,7 @@ interface CacheType {
   /**
    * 用户信息
    */
-  USER_INFO: Api.UserInfoModel | null
+  USER_INFO: Api.UserInfo | null
 }
 /**
  * 缓存
@@ -69,7 +69,7 @@ export function getCacheUserInfo() {
   return cache.get('USER_INFO')
 }
 
-export function setCacheUserInfo(data: Api.UserInfoModel | null) {
+export function setCacheUserInfo(data: Api.UserInfo | null) {
   return cache.set('USER_INFO', data, -1)
 }
 

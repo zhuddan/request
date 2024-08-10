@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { getCodeImg } from '@/api/auth'
+import { getCodeImg, login } from '@/api/auth'
+import { setCacheToken } from '@/utils/cache'
 
 const form = ref({
   username: 'admin',
@@ -11,15 +12,20 @@ const form = ref({
 
 const codeImg = ref('')
 function submit() {
-
+  login(form.value)
+    .then((res) => {
+      setCacheToken(res.token)
+    })
 }
 
 function getCode() {
-  return getCodeImg().then((res) => {
-    codeImg.value = res.img
-    form.value.uuid = res.uuid
-  })
+  return getCodeImg()
+    .then((res) => {
+      codeImg.value = res.img
+      form.value.uuid = res.uuid
+    })
 }
+getCode()
 </script>
 
 <template>
@@ -35,10 +41,6 @@ function getCode() {
 
     <view class="form">
       <view class="form-item flex items-center">
-        <iconfont
-          name="user"
-          color="#666"
-        />
         <input
           v-model="form.username"
           type="text"
@@ -48,10 +50,6 @@ function getCode() {
         >
       </view>
       <view class="form-item flex items-center">
-        <iconfont
-          name="lock"
-          color="#666"
-        />
         <input
           v-model="form.password"
           type="text"

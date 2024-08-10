@@ -12,4 +12,6 @@ onHide(() => {
 })
 </script>
 
-<style></style>
+<style>
+@import url('./weapp-base');
+</style>
