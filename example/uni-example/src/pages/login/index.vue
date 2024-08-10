@@ -15,6 +15,10 @@ function submit() {
   login(form.value)
     .then((res) => {
       setCacheToken(res.token)
+      uni.navigateBack()
+      uni.showToast({
+        title: '登录成功！',
+      })
     })
 }
 
