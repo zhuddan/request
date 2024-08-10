@@ -3,12 +3,16 @@ import type { AxiosRequestConfig, Canceler } from 'axios'
 import axios, { AxiosError } from 'axios'
 import { saveAs } from 'file-saver'
 import { isObject, merge } from 'lodash-es'
-import type { RequestConfig, ResponseResult } from '@zd~/request'
+import type { RequestConfig } from '@zd~/request/http'
+import type {
+  ResponseResult,
+} from '@zd~/request'
 import {
   ContentTypeEnum,
   HttpRequest,
-  RequestMethodsEnum as HttpRequestMethodsEnum,
+  RequestMethodsEnum,
 } from '@zd~/request'
+
 import { getCacheToken, removeCacheToken } from '../cache'
 
 export interface CustomConfig {
@@ -81,7 +85,7 @@ export const request = new HttpRequest<CustomConfig>({
     /**
      * 添加时间戳到 get 请求
      */
-    if (config.method?.toUpperCase() === HttpRequestMethodsEnum.GET)
+    if (config.method?.toUpperCase() === RequestMethodsEnum.GET)
       config.params = { _t: `${Date.now()}`, ...config.params }
 
     return config

@@ -25,7 +25,7 @@ specifiers:
   '@uni-helper/uni-app-types': 1.0.0-alpha.3
   '@vue/runtime-core': ^3.4.21
   '@vue/tsconfig': ^0.1.3
-  '@zd~/request': ^0.0.23
+  '@zd~/request': ^0.0.25
   lodash-es: ^4.17.21
   sass: ^1.77.8
   typescript: ^4.9.4
@@ -51,7 +51,7 @@ dependencies:
   '@dcloudio/uni-mp-xhs': 3.0.0-4020420240722002_vue@3.4.37
   '@dcloudio/uni-quickapp-webview': 3.0.0-4020420240722002_vue@3.4.37
   '@types/lodash-es': 4.17.12
-  '@zd~/request': 0.0.23
+  '@zd~/request': 0.0.25
   lodash-es: 4.17.21
   vue: 3.4.37_typescript@4.9.5
   vue-i18n: 9.13.1_vue@3.4.37
@@ -3158,8 +3158,8 @@ packages:
         optional: true
     dev: true
 
-  /@zd~/request/0.0.23:
-    resolution: {integrity: sha512-VfjxuN350crRwbmFV4rfWg1lKGNmUIRUlb5XZTQiY4uvcGuga/iuWTyGxwbFggMGPzeKGFUfPZII8VySBQ+kbg==}
+  /@zd~/request/0.0.25:
+    resolution: {integrity: sha512-uI1Gc2oxZWViNQJ+hAkrWSnvEgW0uC08ch8FJyf8iBxrAFd56J1Okn1abDxZQai+7XMpgqywJHQ4ZfSxy8fHrQ==}
     dependencies:
       '@rollup/plugin-node-resolve': 15.2.3
       '@rollup/plugin-terser': 0.4.4
