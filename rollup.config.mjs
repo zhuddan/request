@@ -14,7 +14,6 @@ const prod = process.env.NODE_ENV === 'production'
 /**
  *
  * @param {'d.ts' | 'ts'} suffix
- * @returns
  */
 function createInput(suffix = 'ts') {
   const files = fs.readdirSync('./src')
