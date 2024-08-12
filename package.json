@@ -1,6 +1,6 @@
 {
   "name": "@zd~/request",
-  "version": "0.0.44",
+  "version": "0.0.45",
   "private": false,
   "description": "A request library based on Axios.",
   "author": "zd",
@@ -88,9 +88,7 @@
     "preinstall": "node ./scripts/preinstall.js",
     "release": "bumpp"
   },
-  "peerDependencies": {
-
-  },
+  "peerDependencies": {},
   "devDependencies": {
     "@antfu/eslint-config": "^2.24.1",
     "@dcloudio/types": "^3.4.12",
