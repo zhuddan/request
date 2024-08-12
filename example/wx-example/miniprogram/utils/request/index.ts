@@ -2,11 +2,9 @@
 //   WechatRequestConfig as RequestConfig,
 // } from '@zd~/request/wx'
 
-// import {
-//   WxRequest,
-// } from '@zd~/request/wx'
+import v from '@zd~/request'
 
-// console.log(WxRequest)
+console.log(v)
 // import {
 //   ContentTypeEnum,
 //   RequestMethodsEnum,

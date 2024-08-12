@@ -60,7 +60,7 @@ const buildOptions = {
     {
       dir: 'dist',
       format: 'cjs',
-      entryFileNames: '[name].cjs',
+      entryFileNames: '[name].js',
     },
   ],
   external: [
