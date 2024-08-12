@@ -19,7 +19,7 @@ exec('pnpm', [
   'public',
   '-no-git-checks',
 ]).then((res) => {
-  console.log(res)
+  console.log(res.stderr)
 }).finally(() => {
   fs.writeFileSync(packageJsonPath, JSON.stringify(raw, null, 2))
 })

@@ -7,6 +7,7 @@ import { Buffer } from 'node:buffer'
  * @param {string} command
  * @param {ReadonlyArray<string>} args
  * @param {object} [options]
+ * @returns  {Promise<{ok: boolean; code: number | null; stderr: string; stdout: string;}>} result
  */
 export async function exec(command, args, options) {
   return new Promise((resolve, reject) => {
