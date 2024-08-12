@@ -10,7 +10,13 @@
     "url": "https://github.com/zhuddan/request.git"
   },
   "keywords": [
-    "request"
+    "request",
+    "axios",
+    "qs",
+    "uni-app",
+    "weixin",
+    "miniprogram",
+    "http"
   ],
   "exports": {
     ".": {

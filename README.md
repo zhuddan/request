@@ -2,6 +2,8 @@
 
 一个简单的请求库封装，支持web/uni-app/原生微信小程序
 
+<!--  -->
+
 ## 约定
 
 > 注意：目的是统一不用平台的请求风格和类型的相对统一，约定如下
@@ -17,7 +19,7 @@
 
 ## 如何使用?
 
-> web([完整demo](https://github.com/zhuddan/request/tree/master/example/vue-example))
+> web
 
 1. 安装依赖 `axios` `qs` `@zd~/request`
 
@@ -127,7 +129,7 @@ const res2 = await login(data) // ==> AxiosResponse<ResponseResult<Api.LoginResp
 
 [完整示例](https://github.com/zhuddan/request/blob/master/example/vue-example/src/utils/request/index.ts)
 
-> uni-app ([完整demo](https://github.com/zhuddan/request/tree/master/example/uni-example))/ 微信小程序 ([完整demo](https://github.com/zhuddan/request/tree/master/example/wx-example))
+> uni-app / 微信小程序
 
 1. 安装依赖 `@zd~/request`
 
@@ -251,6 +253,8 @@ export const request = new UniRequest<HttpRequestUserConfig>({
 
 ## 备注:
 
-- 为了更好的 ide 支持, 建议使用[`typescript`](https://www.typescriptlang.org/)
-- 微信小程序ts支持需要安装 `miniprogram-api-typings`, 小程序内置模板中的类型声明可能过期
+- 为了更好的 ide 支持, 建议使用[typescript](https://www.typescriptlang.org/)
+- 微信小程序ts支持需要安装 [miniprogram-api-typings](https://www.npmjs.com/package/miniprogram-api-typings), 小程序内置模板中的类型声明可能过期
 - 微信小程序需要 [构建npm](https://developers.weixin.qq.com/miniprogram/dev/devtools/npm.html)
+- [完整类型声明](https://zhuddan.github.io/request)
+- [example](https://github.com/zhuddan/request/tree/master/example/)
