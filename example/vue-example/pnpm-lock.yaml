@@ -9,8 +9,8 @@ dependencies:
     specifier: ^10.9.0
     version: 10.9.0(vue@3.4.27)
   '@zd~/request':
-    specifier: ^0.0.25
-    version: 0.0.25
+    specifier: ^0.0.26
+    version: 0.0.26
   file-saver:
     specifier: ^2.0.5
     version: 2.0.5
@@ -2203,8 +2203,8 @@ packages:
       - '@vue/composition-api'
       - vue
 
-  /@zd~/request@0.0.25:
-    resolution: {integrity: sha512-uI1Gc2oxZWViNQJ+hAkrWSnvEgW0uC08ch8FJyf8iBxrAFd56J1Okn1abDxZQai+7XMpgqywJHQ4ZfSxy8fHrQ==}
+  /@zd~/request@0.0.26:
+    resolution: {integrity: sha512-9uaI+AzHIDGqLfm2qSXQoyjJ8JBjnBST4739rPRVmGL2nRhJVrwsJJVCMUyD+4RXtQt7Fj0CJyJRIWEhLPUgPw==}
     dependencies:
       '@rollup/plugin-node-resolve': 15.2.3
       '@rollup/plugin-terser': 0.4.4

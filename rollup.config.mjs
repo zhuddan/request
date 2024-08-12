@@ -38,7 +38,13 @@ function createInput(suffix = 'ts') {
 const buildOptions = {
   input: createInput('ts'),
   plugins: [
-    del({ targets: 'dist/*' }), // 打包前清空 dist 目录
+    del({
+      targets: 'dist/*',
+      runOnce: true,
+      hook: 'buildEnd',
+      force: true,
+      ignore: ['dist/types/**'],
+    }),
     typescript(),
     json(),
     commonjs(),

@@ -38,7 +38,7 @@ interface UniRequestBaseConfig extends Partial<UniNamespace.RequestOptions> {
     ignoreLoading?: boolean;
 }
 /**
- *  返回原生响应 UniAppResponse<T>
+ *  返回原生响应
  */
 interface UniRequestGetResponseConfig {
     getResponse: true;

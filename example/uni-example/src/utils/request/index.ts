@@ -9,10 +9,12 @@ import {
   type ResponseResult,
 } from '@zd~/request/shared'
 
-import isString from 'lodash-es/isString'
 import { getCacheToken } from '../cache'
 import { type HttpRequestUserConfig, tokenKey, tokenKeyScheme } from './types'
 
+function isString(value: string): value is string {
+  return typeof value == 'string'
+}
 // import {
 //   getCacheToken,
 //   isLink,

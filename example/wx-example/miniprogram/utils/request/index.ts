@@ -1,29 +1,27 @@
+import type {
+  WechatRequestConfig as RequestConfig,
+} from '@zd~/request/wx'
+
 import {
-  type WechatRequestConfig as RequestConfig,
   WxRequest,
 } from '@zd~/request/wx'
 
 import {
   ContentTypeEnum,
   RequestMethodsEnum,
-  type ResponseResult,
 } from '@zd~/request/shared'
 
-import isString from 'lodash-es/isString'
+import type {
+  ResponseResult,
+} from '@zd~/request/shared'
 
 import { getCacheToken } from '../cache'
-import { type HttpRequestUserConfig, tokenKey, tokenKeyScheme } from './types'
+import type { HttpRequestUserConfig } from './types'
+import { tokenKey, tokenKeyScheme } from './types'
 
-// import {
-//   getCacheToken,
-//   isLink,
-//   isString,
-//   joinTimestamp,
-//   removeUndefinedKeys,
-//   setParams,
-//   showToastError,
-//   toAuth,
-// } from '@/utils/index'
+function isString(value: string): value is string {
+  return typeof value == 'string'
+}
 
 function isLink(url = '') {
   return /^[a-z]+:\/\//i.test(url)
