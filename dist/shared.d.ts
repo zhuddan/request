@@ -25,7 +25,6 @@ type RequiredProperty<T, K extends keyof T> = T & Required<Pick<T, K>>;
 /**
  * Simple object check.
  * @param item
- * @returns {boolean}
  */
 declare function isObjectOrArray(item: unknown): item is Array<any> | Record<any, any>;
 /**
