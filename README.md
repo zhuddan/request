@@ -1,93 +1,55 @@
-# Request
+@zd~/request
 
-A request library based on Axios.
+一个简单的请求库封装，支持web/uni-app/原生微信小程序
 
-# Example
+## 约定
+
+> 注意：目的是统一不用平台的请求风格和类型的相对统一，约定如下
+
+- `get`请求不支持`data`传递参数, 请使用`params`代替
+- 不支持 `httpRequest({...xxx})`方式进行请求,请使用`httpRequest.get({...xxx})`显示声明[请求方法](https://github.com/zhuddan/request/blob/master/dist/shared.d.ts#L4)代替
+- 公共参数：
+  | 参数 | 说明 |
+  | -------- | ------- |
+  | baseUrl | 同axios的baseURL |
+  | getResponse | 返回原生响应, 而不是服务器自定义返回 |
+  | RequestInterceptors | 见 `axios` 拦截器 |
+
+## 如何使用?
+
+> web([完整demo](https://github.com/zhuddan/request/tree/master/example/vue-example))
+
+1. 安装依赖 `axios` `qs` `@zd~/request`
+
+```shell
+npm i axios qs @zd~/request
+yarn add axios qs @zd~/request
+pnpm add axios qs @zd~/request
+```
+
+2. 声明自定义参数：
 
 ```ts
-import type { AxiosRequestConfig, Canceler } from 'axios'
-
-import axios, { AxiosError } from 'axios'
-import { saveAs } from 'file-saver'
-import { isObject, merge } from 'lodash-es'
-import type { RequestConfig } from '@zd~/request'
-import { ContentTypeEnum, RequestMethodsEnum as HttpRequestMethodsEnum, Request } from '@zd~/request'
-import { getCacheToken, removeCacheToken } from '../cache'
-
 export interface CustomConfig {
-  /**
-   * @description 是否需要token
-   */
+/**
+ * @description 是否需要token
+ */
   withToken?: boolean
-  /**
-   * @description 忽略重复请求。第一个请求未完成时进行第二个请求，第一个会被被取消
-   *              参考 axios 取消请求 https://axios-http.com/zh/docs/cancellation
-   */
-  ignoreRepeatRequest?: boolean
-  /**
-   * 下载文件名称
-   */
-  filename?: string
 };
+```
 
-const tokenKey = 'Authorization'
-const tokenKeyScheme = 'Bearer'
-const cancelMap = new Map<string, Canceler>()
+3. 实例化
 
-function getHeaderFileName(headers: Record<string, any>) {
-  ['file-name', 'download-filename', 'File-Name', 'FileName', 'Filename'].forEach((key) => {
-    if (Object.prototype.hasOwnProperty.call(headers, key)) {
-      if (headers[key])
-        return `${headers[key]}`
-    }
-  })
-  return ''
-}
-
-export const request = new Request<CustomConfig>({
+```ts
+import { HttpRequest } from '@zd~/request'
+export const request = new HttpRequest<CustomConfig>({
   baseURL: import.meta.env.VITE_APP_API_URL,
-  timeout: 15 * 1000,
-  headers: {
-    'Content-Type': ContentTypeEnum.JSON,
-  },
-  getResponse: false,
-  ignoreRepeatRequest: false,
-  withToken: true,
-  onUploadProgress(_progressEvent) {
-    // 处理原生进度事件
-  },
-  // `onDownloadProgress` 允许为下载处理进度事件
-  // 浏览器专属
-  onDownloadProgress(progressEvent) {
-    if (progressEvent.total) {
-      const progress = Math.round((progressEvent.loaded / progressEvent.total) * 100)
-      console.log(`Download Progress: ${progress}%`)
-    }
-  },
+  withToken: true, // 默认值
 }, {
   request(config) {
-    /**
-     * token
-     */
     const token = getCacheToken()
-    if (config?.withToken && token) {
+    if (config?.withToken && token)
       config.headers![tokenKey] = `${tokenKeyScheme} ${token}`
-    }
-    /**
-     * 忽略重复请求。第一个请求未完成时进行第二个请求，第一个会被被取消
-     */
-    if (config.ignoreRepeatRequest) {
-      const key = generateKey({ ...config })
-      const cancelToken = new axios.CancelToken(c => cancelInterceptor(key, c))
-      config.cancelToken = cancelToken
-    }
-    /**
-     * 添加时间戳到 get 请求
-     */
-    if (config.method?.toUpperCase() === HttpRequestMethodsEnum.GET) {
-      config.params = { _t: `${Date.now()}`, ...config.params }
-    }
-
     return config
   },
 
@@ -96,184 +58,199 @@ export const request = new Request<CustomConfig>({
   },
 
   async response(_response) {
-    cancelMap.delete(generateKey(_response.config))
     const config = _response.config as RequestConfig<CustomConfig>
     if (config.getResponse) {
-      // 处理下载文件
-      if (_response.config.responseType === 'blob') {
-        const blob = _response.data as unknown as Blob
-        const filename = config.filename
-        if (_response.data && blob.type !== 'application/json') {
-          if (_response.data?.type && !filename) {
-            saveAs(_response.data as unknown as Blob)
-          }
-          else {
-            const urlList = config.url?.split('/')
-            const extList = config.url?.split('.')
-            const urlFileName = urlList && urlList?.length >= 0 ? urlList[urlList?.length - 1] : ''
-            const ext = extList && extList?.length >= 0 ? extList[extList?.length - 1] : ''
-            const _filename = filename || getHeaderFileName(config.headers || {}) || urlFileName || `${Date.now()}.${ext}`
-            saveAs(_response.data, decodeURI(decodeURI(_filename)))
-          }
-        }
-        else {
-          const resText = await blob.text()
-          const rspObj = JSON.parse(resText)
-          return handleError(rspObj.msg || getSystemErrorMessage(rspObj.code))
-        }
-      }
-
-      return _response
+      return _response // 返回原生相应
     }
+    // 用户自定义返回
     const responseData = _response.data as ResponseResult<object>
 
-    if (responseData.code === 200) {
+    // 用户自定义返回
+    if (responseData.code === 200)
       return responseData as any
-    }
-    /**
-     * 登录过期
-     */
-    if (responseData.code === 401) {
-      removeCacheToken()
-    }
 
-    const msg = responseData.msg || getSystemErrorMessage(responseData.code)
+    const msg = responseData.msg
 
     return handleError(msg)
   },
 
   responseError(error) {
-    if (error.config)
-      cancelMap.delete(generateKey(error.config))
-
-    if (error instanceof AxiosError) {
-      handleError(getAxiosErrorErrorMessage(error.code))
-    }
-
+    // 错误处理
     throw error
   },
 })
+```
 
-export function removeAllPenddingRequest() {
-  for (const [, value] of cancelMap) {
-    value?.('remove all pendding request')
-  }
+4. 使用
+
+```ts
+import { request } from '@/utils/request/index'
+// 登录方法
+export function login(data: {
+  username: string
+  password: string
+  code: string
+  uuid: string
+}) {
+  return request.post<{
+    token: string
+  }>({
+    url: '/login',
+    data,
+    withToken: false,
+  })
+}
+export function login2(data: {
+  username: string
+  password: string
+  code: string
+  uuid: string
+}) {
+  return request.post<{
+    token: string
+  }>({
+    url: '/login',
+    data,
+    getResponse: true
+  })
 }
 
-function cancelInterceptor(key: string, canceler: Canceler) {
-  if (cancelMap.has(key)) {
-    cancelMap.get(key)?.('cancel repeat request')
-  }
-  cancelMap.set(key, canceler)
+const data = {
+  username: 'xxx',
+  password: 'xxx',
+  code: 'xxx',
+  uuid: 'xx',
 }
+const res1 = await login(data) // ==> ResponseResult<{ token: string }>
+const res2 = await login(data) // ==> AxiosResponse<ResponseResult<Api.LoginResponse>, any>
+```
 
-function generateKey(config: AxiosRequestConfig) {
-  const { url, method, params = {}, data = {} } = config
-  return `${url}-${method}-${JSON.stringify(method === 'get' ? params : data)}`
-}
+[完整示例](https://github.com/zhuddan/request/blob/master/example/vue-example/src/utils/request/index.ts)
 
-async function handleError(msg: string) {
-  window.showError?.(new Error(msg))
-}
+> uni-app ([完整demo](https://github.com/zhuddan/request/tree/master/example/uni-example))/ 微信小程序 ([完整demo](https://github.com/zhuddan/request/tree/master/example/wx-example))
 
-function transformRequest(params?: object) {
-  if (!isObject(params))
-    return ''
-  let result = ''
-  for (const propName of Object.keys(params)) {
-    const value = params[propName as keyof typeof params]
-    const part = `${encodeURIComponent(propName)}=`
-    if (value !== null && typeof value !== 'undefined') {
-      if (typeof value === 'object') {
-        for (const key of Object.keys(value)) {
-          if (value[key] !== null && typeof value[key] !== 'undefined') {
-            const params = `${propName}[${key}]`
-            const subPart = `${encodeURIComponent(params)}=`
-            result += `${subPart + encodeURIComponent(value[key])}&`
-          }
+1. 安装依赖 `@zd~/request`
+
+```shell
+npm i @zd~/request
+yarn add @zd~/request
+pnpm add @zd~/request
+```
+
+2. 声明自定义参数：
+
+```ts
+export interface CustomConfig {
+/**
+ * @description 是否需要token
+ */
+  withToken?: boolean
+};
+```
+
+3. 实例化
+
+> [!IMPORTANT]
+> 请使用 `import { UniRequest } from '@zd~/request/uni'` 而不是 `import { UniRequest } from '@zd~/request'` 导入<br>微信小程序同理 使用 `import { WxRequest } from '@zd~/request/wx'` 而不是 `import { WxRequest } from '@zd~/request'` 导入
+
+```ts
+import { UniRequest } from '@zd~/request/uni'
+// 微信小程序
+// import { WxRequest } from '@zd~/request/wx'
+
+export const request = new UniRequest<HttpRequestUserConfig>({
+  baseUrl: '',
+  withToken: true,
+}, {
+  request(_config) {
+    const config = Object.assign({
+      ..._config,
+    }) as RequestConfig<HttpRequestUserConfig>
+
+    if (config.params !== undefined) {
+      if (config.method?.toUpperCase() === RequestMethodsEnum.GET) {
+        if (!isString(config.params)) {
+          const params = removeUndefinedKeys(config.params)
+          const _params = Object.assign(params || {}, params || {}, joinTimestamp(true, false))
+          config.data = removeUndefinedKeys(_params)
+        }
+        else {
+          config.url = `${config.url + config.params}${joinTimestamp(true, true)}`
         }
       }
       else {
-        result += `${part + encodeURIComponent(value)}&`
+        if (!isString(config.params)) {
+          config.url = setParams(config.url as string, Object.assign({}, config.params))
+        }
+        else {
+        // 兼容restful风格
+          config.url = config.url + config.params
+        }
       }
     }
-  }
-  return result
-}
 
-export function download(config: Parameters<typeof request.request>[0]) {
-  const downloadBaseConfig: typeof config = {
-    transformRequest: [
-      (params: object) => {
-        return transformRequest(params)
-      },
-    ],
-    responseType: 'blob',
-    headers: {
-      'Content-Type': ContentTypeEnum.FORM_URLENCODED,
-    },
-    getResponse: true,
-  }
-  return request.request(merge({ }, downloadBaseConfig, config))
-}
+    /**
+     * token
+     */
+    const token = getCacheToken()
+    const whiteUrlPrefix = `${config.baseUrl}/api/`
+    const isWhiteUrl = config.url!.startsWith(whiteUrlPrefix)
+    const withToken = config.withToken && `${config.withToken}` === 'true'
 
-function getAxiosErrorErrorMessage(code?: string): string {
-  switch (code) {
-    case 'ERR_BAD_OPTION_VALUE':
-      return '选项设置了错误的值'
-    case 'ERR_BAD_OPTION':
-      return '无效的或不支持的选项'
-    case 'ECONNABORTED':
-      return '网络连接被中断，通常因为请求超时'
-    case 'ETIMEDOUT':
-      return '操作超时'
-    case 'ERR_NETWORK':
-      return '网络错误'
-    case 'ERR_FR_TOO_MANY_REDIRECTS':
-      return '请求被重定向了太多次，可能导致无限循环'
-    case 'ERR_DEPRECATED':
-      return '使用了已被废弃的函数或方法'
-    case 'ERR_BAD_RESPONSE':
-      return '从服务器接收到无效或错误的响应'
-    case 'ERR_BAD_REQUEST':
-      return '发送的请求格式错误或无效'
-    case 'ERR_CANCELED':
-      return '请求已经被取消'
-    case 'ERR_NOT_SUPPORT':
-      return '使用的某个功能或方法不被支持'
-    case 'ERR_INVALID_URL':
-      return '提供的URL无效'
-    default:
-      return '未知错误'
-  }
-}
+    if (withToken && !isWhiteUrl) {
+      if (token) {
+        config.header = {
+          [tokenKey]: `${tokenKeyScheme} ${token}`,
+          ...config.header,
+        }
+      }
+      else {
+        throw new Error('no token')
+      }
+    }
+    return config
+  },
 
-function getSystemErrorMessage(status: number) {
-  switch (status) {
-    case 400:
-      return '错误请求，服务器无法理解请求的格式'
-    case 401:
-      return '无效的会话，或者会话已过期，请重新登录。'
-    case 403:
-      return '当前操作没有权限'
-    case 404:
-      return '服务器无法根据客户端的请求找到资源'
-    case 405:
-      return '网络请求错误,请求方法未允许!'
-    case 408:
-      return '网络请求超时!'
-    case 500:
-      return '服务器内部错误，无法完成请求'
-    case 502:
-      return '网关错误'
-    case 503:
-      return '服务器目前无法使用（由于超载或停机维护）'
-    case 504:
-      return '网络超时!'
-    case 505:
-      return 'http版本不支持该请求!'
-    default:
-      return '未知错误'
-  }
-}
+  requestError(e) {
+
+  },
+
+  async response({ config, response }) {
+    const { data, statusCode } = response
+    if (statusCode !== 200) {
+      const msg = getSystemErrorMessage(statusCode)
+      return handleError(msg)
+    }
+
+    if (config.getResponse) {
+      return response
+    }
+
+    const responseData = data as ResponseResult<object>
+
+    if (responseData.code === 200) {
+      return responseData as any
+    }
+
+    const msg = responseData.msg || getSystemErrorMessage(responseData.code)
+    return handleError(msg, responseData.code !== 401 && !config?.showErrorMsg)
+  },
+
+  responseError(error: any) {
+    throw error
+  },
+})
 ```
+
+4. 使用
+   略
+
+[uniapp完整示例](https://github.com/zhuddan/request/blob/master/example/uni-example/src/utils/request/index.ts)
+
+[微信小程序完整示例](https://github.com/zhuddan/request/blob/master/example/wx-example/miniprogram/utils/request/index.ts)
+
+## 备注:
+
+- 为了更好的 ide 支持, 建议使用[`typescript`](https://www.typescriptlang.org/)
+- 微信小程序ts支持需要安装 `miniprogram-api-typings`, 小程序内置模板中的类型声明可能过期
+- 微信小程序需要 [构建npm](https://developers.weixin.qq.com/miniprogram/dev/devtools/npm.html)

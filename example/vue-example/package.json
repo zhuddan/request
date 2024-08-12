@@ -16,9 +16,11 @@
     "version:patch": "pnpm version patch --force --no-git-tag-version"
   },
   "dependencies": {
+    "@types/lodash-es": "^4.17.12",
     "@vueuse/core": "^10.9.0",
     "@zd~/request": "^0.0.27",
     "file-saver": "^2.0.5",
+    "lodash-es": "^4.17.21",
     "pinia": "^2.1.7",
     "vue": "^3.4.27",
     "vue-router": "^4.3.2"
