@@ -85,7 +85,8 @@
     "dev": "cross-env NODE_ENV=development rollup -c -w",
     "build": "tsc -p tsconfig.build.json && cross-env NODE_ENV=production rollup -c",
     "publish": "node ./scripts/publish.mjs",
-    "release": "bumpp"
+    "release": "bumpp",
+    "doc": "npx typedoc --out docs src/index.ts"
   },
   "dependencies": {
     "axios": "^1.7.3",
