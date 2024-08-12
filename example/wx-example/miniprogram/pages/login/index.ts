@@ -1,4 +1,5 @@
-import { getCodeImg } from "../../api/auth"
+import { getCodeImg, login } from '../../api/auth'
+import { setCacheToken } from '../../utils/cache/index'
 
 // pages/login/index.ts
 Page({
@@ -7,13 +8,13 @@ Page({
    * 页面的初始数据
    */
   data: {
-      form:{
-        username: 'admin',
-        password: 'admin123',
-        code: '',
-        uuid: '',
-      },
-      codeImg:'',
+    form: {
+      username: 'admin',
+      password: 'admin123',
+      code: '',
+      uuid: '',
+    },
+    codeImg: '',
   },
 
   /**
@@ -22,17 +23,42 @@ Page({
   onLoad() {
     this.getCode()
   },
+  submit() {
+    const { username, code, password } = this.data.form
+    if (!username || !code || !password) {
+      console.log(username, code, password)
+      return
+    }
+    wx.showLoading({
+      title: '加载中',
+    })
+    login(this.data.form).then((res) => {
+      wx.hideLoading()
+      wx.showToast({
+        icon: 'success',
+        title: '登录成功！',
+      })
+      setCacheToken(res.token)
+      wx.navigateBack()
+    })
+  },
   getCode() {
     return getCodeImg()
       .then((res) => {
         this.setData({
-          form:{
+          form: {
             ...this.data.form,
-            uuid:res.uuid,
+            uuid: res.uuid,
           },
-          codeImg:`data:image/gif;base64,${res.img}`
+          codeImg: `data:image/gif;base64,${res.img}`,
         })
       })
+  },
+
+  bindKeyInput(e: WechatMiniprogram.Input) {
+    this.setData({
+      [`form.${e.target.dataset.field}`]: e.detail.value,
+    })
   },
 
   /**
@@ -82,5 +108,5 @@ Page({
    */
   onShareAppMessage() {
 
-  }
+  },
 })

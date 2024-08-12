@@ -1,7 +1,7 @@
 import type {
   WechatRequestConfig as RequestConfig,
 } from '@zd~/request/wx'
-import {WxRequest} from "@zd~/request/wx"
+import { WxRequest } from '@zd~/request/wx'
 
 import {
   ContentTypeEnum,

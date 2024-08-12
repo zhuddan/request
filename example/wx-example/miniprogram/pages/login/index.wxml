@@ -1,35 +1,42 @@
-<view class="w-full h-full flex flex-col items-center page  login-page">
+<view class="w-full h-full flex flex-col items-center page  login-page justify-center">
 
 
 
     <view class="form">
       <view class="form-item flex items-center justify-center">
         <input
-          v-model="form.username"
+          value="{{form.username}}"
           type="text"
           class="text-black-1 text-default"
           placeholder-class="text-black-3 text-default"
           placeholder="请输入用户名"
+          bindinput="bindKeyInput" 
+          data-field="username"
         />
       </view>
       <view class="form-item flex items-center justify-center">
         <input
-          v-model="form.password"
           type="text"
+          value="{{form.password}}"
           class="text-black-1 text-default"
           placeholder-class="text-black-3 text-default"
           password
           placeholder="请输入密码"
+          data-field="password"
+          bindinput="bindKeyInput" 
+
         />
       </view>
 
       <view class="form-item flex items-center justify-center">
         <input
-          v-model="form.code"
+          value="{{form.code}}"
           type="text"
           class="text-black-1 text-default"
           placeholder-class="text-black-3 text-default"
           placeholder="请输入验证码"
+          data-field="code"
+          bindinput="bindKeyInput" 
         />
         <image
           class="code-img"
@@ -39,9 +46,9 @@
       </view>
 
       <button
-        :disabled="!form.username || !form.password"
         class="login-btn"
         bindtap="submit"
+        type="primary"
       >
         登录
       </button>

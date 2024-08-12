@@ -1,6 +1,8 @@
 // index.ts
+
+import { getInfo } from '../../api/auth'
+
 // 获取应用实例
-const app = getApp<IAppOption>()
 const defaultAvatarUrl = 'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0'
 
 Component({
@@ -13,8 +15,16 @@ Component({
     hasUserInfo: false,
     canIUseGetUserProfile: wx.canIUse('getUserProfile'),
     canIUseNicknameComp: wx.canIUse('input.type.nickname'),
+    nickName: '',
   },
   methods: {
+    getInfo() {
+      getInfo().then((res) => {
+        this.setData({
+          nickName: res.user.nickName,
+        })
+      })
+    },
     // 事件处理函数
     bindViewTap() {
       wx.navigateTo({
