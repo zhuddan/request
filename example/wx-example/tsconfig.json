@@ -5,9 +5,7 @@
     "experimentalDecorators": true,
     "module": "CommonJS",
     "resolveJsonModule": true,
-    "typeRoots": [
-      "./typings"
-    ],
+    "types": ["miniprogram-api-typings"],
     "allowJs": true,
     "strict": true,
     "strictNullChecks": true,

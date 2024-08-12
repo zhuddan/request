@@ -1,4 +1,5 @@
-import { request } from '@/utils/request/index'
+import { request } from '../utils/request/index'
+
 /**
  * 获取代码生成列表
  */

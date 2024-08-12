@@ -1,0 +1,11 @@
+/* pages/login/index.wxss */
+
+input{
+  border:1px solid red;
+  height: 2em;
+}
+
+image{
+  width: 20px;
+  height: 20px;
+}

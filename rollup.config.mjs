@@ -3,9 +3,9 @@ import fs from 'node:fs'
 import { defineConfig } from 'rollup'
 import typescript from '@rollup/plugin-typescript'
 import del from 'rollup-plugin-delete'
-import nodeResolve from '@rollup/plugin-node-resolve'
-import commonjs from '@rollup/plugin-commonjs'
-import json from '@rollup/plugin-json'
+// import nodeResolve from '@rollup/plugin-node-resolve'
+// import commonjs from '@rollup/plugin-commonjs'
+// import json from '@rollup/plugin-json'
 import { dts } from 'rollup-plugin-dts'
 import terser from '@rollup/plugin-terser'
 
@@ -46,10 +46,10 @@ const buildOptions = {
       ignore: ['dist/types/**'],
     }),
     typescript(),
-    json(),
-    commonjs(),
-    nodeResolve(),
-    terser(),
+    // json(),
+    // commonjs(),
+    // nodeResolve(),
+    ...[prod ? [terser()] : []],
   ],
   output: [
     {
@@ -64,9 +64,8 @@ const buildOptions = {
     },
   ],
   external: [
-    'axios', // 保持 axios 为外部依赖
-    'qs', // 保持 qs 为外部依赖
-    // 不要将 lodash-es/merge 列为外部依赖
+    'axios',
+    'qs',
   ],
 }
 /**

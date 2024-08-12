@@ -5,7 +5,7 @@ import { saveAs } from 'file-saver'
 import { isObject, merge } from 'lodash-es'
 import {
   HttpRequest,
-  type RequestConfig,
+  type HttpRequestConfig as RequestConfig,
 } from '@zd~/request/http'
 import {
   ContentTypeEnum,

@@ -22,5 +22,21 @@ type ResponseResult<T extends object = object> = {
     message: string;
 } & T;
 type RequiredProperty<T, K extends keyof T> = T & Required<Pick<T, K>>;
+/**
+ * Simple object check.
+ * @param item
+ * @returns {boolean}
+ */
+declare function isObjectOrArray(item: unknown): item is Array<any> | Record<any, any>;
+/**
+ * 对象合并
+ * @param object
+ * @param source
+ */
+declare function merge<TObject, TSource>(object: TObject, source: TSource): TObject & TSource;
+declare function merge<TObject, TSource1, TSource2>(object: TObject, source1: TSource1, source2: TSource2): TObject & TSource1 & TSource2;
+declare function merge<TObject, TSource1, TSource2, TSource3>(object: TObject, source1: TSource1, source2: TSource2, source3: TSource3): TObject & TSource1 & TSource2 & TSource3;
+declare function merge<TObject, TSource1, TSource2, TSource3, TSource4>(object: TObject, source1: TSource1, source2: TSource2, source3: TSource3, source4: TSource4): TObject & TSource1 & TSource2 & TSource3 & TSource4;
+declare function merge(object: any, ...otherArgs: any[]): any;
 
-export { ContentTypeEnum, RequestMethodsEnum, type RequiredProperty, type ResponseResult };
+export { ContentTypeEnum, RequestMethodsEnum, type RequiredProperty, type ResponseResult, isObjectOrArray, merge };

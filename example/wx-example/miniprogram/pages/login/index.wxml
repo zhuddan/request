@@ -1,0 +1,49 @@
+<view class="w-full h-full flex flex-col items-center page  login-page">
+
+
+
+    <view class="form">
+      <view class="form-item flex items-center justify-center">
+        <input
+          v-model="form.username"
+          type="text"
+          class="text-black-1 text-default"
+          placeholder-class="text-black-3 text-default"
+          placeholder="请输入用户名"
+        />
+      </view>
+      <view class="form-item flex items-center justify-center">
+        <input
+          v-model="form.password"
+          type="text"
+          class="text-black-1 text-default"
+          placeholder-class="text-black-3 text-default"
+          password
+          placeholder="请输入密码"
+        />
+      </view>
+
+      <view class="form-item flex items-center justify-center">
+        <input
+          v-model="form.code"
+          type="text"
+          class="text-black-1 text-default"
+          placeholder-class="text-black-3 text-default"
+          placeholder="请输入验证码"
+        />
+        <image
+          class="code-img"
+          :src="`data:image/gif;base64,${codeImg}`"
+          bindtap="getCode"
+        />
+      </view>
+
+      <button
+        :disabled="!form.username || !form.password"
+        class="login-btn"
+        bindtap="submit"
+      >
+        登录
+      </button>
+    </view>
+  </view>

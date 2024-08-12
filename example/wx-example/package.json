@@ -6,10 +6,10 @@
   "license": "",
   "keywords": [],
   "scripts": {},
-  "devDependencies": {
-    "miniprogram-api-typings": "^2.8.3-1"
-  },
   "dependencies": {
     "@zd~/request": "^0.0.27"
+  },
+  "devDependencies": {
+    "miniprogram-api-typings": "^3.12.3"
   }
 }
