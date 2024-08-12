@@ -5,8 +5,8 @@ import { exec } from './exec.mjs'
 
 const cwd = process.cwd()
 const packageJsonPath = path.resolve(cwd, 'package.json')
-const packageJson = JSON.parse(fs.readFileSync(packageJsonPath).toString())
-const raw = { ...packageJson }
+const rawString = fs.readFileSync(packageJsonPath).toString()
+const packageJson = JSON.parse(rawString)
 
 packageJson.devDependencies = {}
 packageJson.dependencies = {}
@@ -21,5 +21,5 @@ exec('pnpm', [
 ]).then((res) => {
   console.log(res.stderr)
 }).finally(() => {
-  fs.writeFileSync(packageJsonPath, JSON.stringify(raw, null, 2))
+  fs.writeFileSync(packageJsonPath, rawString)
 })
