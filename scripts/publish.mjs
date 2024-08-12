@@ -8,7 +8,7 @@ const packageJsonPath = path.resolve(cwd, 'package.json')
 const rawString = fs.readFileSync(packageJsonPath).toString()
 const packageJson = JSON.parse(rawString)
 
-packageJson.devDependencies = {}
+// packageJson.devDependencies = {}
 packageJson.dependencies = {}
 
 fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2))
