@@ -33,7 +33,7 @@
         />
         <image
           class="code-img"
-          :src="`data:image/gif;base64,${codeImg}`"
+          src="{{codeImg}}"
           bindtap="getCode"
         />
       </view>

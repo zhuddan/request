@@ -10,5 +10,6 @@
     "miniprogram-api-typings": "^3.12.3"
   },
   "dependencies": {
+    "@zd~/request": "^0.0.39"
   }
 }
