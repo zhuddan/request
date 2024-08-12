@@ -7,4 +7,4 @@ const packageJson = require(packageJsonPath)
 packageJson.devDependencies = {}
 packageJson.peerDependencies = {}
 
-fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2))
+// fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2))
