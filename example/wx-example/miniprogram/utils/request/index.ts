@@ -1,7 +1,7 @@
 import {
-  type UniRequestConfig as RequestConfig,
-  UniRequest,
-} from '@zd~/request/uni'
+  type WechatRequestConfig as RequestConfig,
+  WxRequest,
+} from '@zd~/request/wx'
 
 import {
   ContentTypeEnum,
@@ -10,6 +10,7 @@ import {
 } from '@zd~/request/shared'
 
 import isString from 'lodash-es/isString'
+
 import { getCacheToken } from '../cache'
 import { type HttpRequestUserConfig, tokenKey, tokenKeyScheme } from './types'
 
@@ -105,7 +106,7 @@ function setParams(baseUrl: string, params: object): string {
   return /\?$/.test(baseUrl) ? baseUrl + parameters : baseUrl.replace(/\/?$/, '?') + parameters
 }
 
-export const request = new UniRequest<HttpRequestUserConfig>({
+export const request = new WxRequest<HttpRequestUserConfig>({
   baseUrl: 'https://vue.ruoyi.vip/prod-api',
   timeout: 60 * 1000,
   header: {
@@ -242,8 +243,8 @@ function getSystemErrorMessage(status: number) {
 function handleError(msg: string, showErrorMsg = true) {
   // showErrorMsg && showToastError(msg)
   if (showErrorMsg) {
-    uni.showToast({
-      icon: 'fail',
+    wx.showToast({
+      icon: 'error',
       title: msg,
     })
   }

@@ -4,6 +4,7 @@
     "lib": ["ES2020"],
     "experimentalDecorators": true,
     "module": "CommonJS",
+    "resolveJsonModule": true,
     "typeRoots": [
       "./typings"
     ],

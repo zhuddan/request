@@ -3,15 +3,15 @@ import type { AxiosRequestConfig, Canceler } from 'axios'
 import axios, { AxiosError } from 'axios'
 import { saveAs } from 'file-saver'
 import { isObject, merge } from 'lodash-es'
-import type { RequestConfig } from '@zd~/request/http'
-import type {
-  ResponseResult,
-} from '@zd~/request'
+import {
+  HttpRequest,
+  type RequestConfig,
+} from '@zd~/request/http'
 import {
   ContentTypeEnum,
-  HttpRequest,
   RequestMethodsEnum,
-} from '@zd~/request'
+  type ResponseResult,
+} from '@zd~/request/shared'
 
 import { getCacheToken, removeCacheToken } from '../cache'
 
