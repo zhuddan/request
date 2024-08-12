@@ -1,19 +1,19 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@zd~/request': ^0.0.39
+  '@zd~/request': ^0.0.41
   miniprogram-api-typings: ^3.12.3
 
 dependencies:
-  '@zd~/request': 0.0.39
+  '@zd~/request': 0.0.41
 
 devDependencies:
   miniprogram-api-typings: 3.12.3
 
 packages:
 
-  /@zd~/request/0.0.39:
-    resolution: {integrity: sha512-hhL+30MMccX78Aq9jebmzEkWK0ot15zvKcWNFNtpvc2XhPIeWD8U5zEOc7ENIgPHjmKxINV6Spw3GeMN9zWhPg==}
+  /@zd~/request/0.0.41:
+    resolution: {integrity: sha512-/2jESgazCjN4FyAV7c65GtryLudQOIPTjQhi2xdugwwe3oebgMLU58RF2aAG7MkOKt4zeWHJPgnE9Bi0t2TymA==}
     requiresBuild: true
     peerDependencies:
       axios: ^1.7.3
