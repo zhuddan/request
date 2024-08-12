@@ -82,7 +82,6 @@
     "scripts/*"
   ],
   "scripts": {
-    "build:tsup": "tsup",
     "dev": "cross-env NODE_ENV=development rollup -c -w",
     "build": "tsc -p tsconfig.build.json && cross-env NODE_ENV=production rollup -c",
     "publish": "node ./scripts/publish.mjs",
