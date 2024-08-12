@@ -1,6 +1,6 @@
 {
   "name": "@zd~/request",
-  "version": "0.0.31",
+  "version": "0.0.32",
   "private": false,
   "description": "A request library based on Axios.",
   "author": "zd",
@@ -90,10 +90,7 @@
     "axios": "^1.7.3",
     "qs": "^6.13.0"
   },
-  "dependencies": {
-    "axios": "^1.7.3",
-    "qs": "^6.13.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@antfu/eslint-config": "^2.24.1",
     "@dcloudio/types": "^3.4.12",
