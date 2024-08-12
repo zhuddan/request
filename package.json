@@ -1,6 +1,6 @@
 {
   "name": "@zd~/request",
-  "version": "0.0.46",
+  "version": "0.0.47",
   "private": false,
   "description": "A request library based on Axios.",
   "author": "zd",
@@ -85,8 +85,8 @@
     "build:tsup": "tsup",
     "dev": "cross-env NODE_ENV=development rollup -c -w",
     "build": "tsc -p tsconfig.build.json && cross-env NODE_ENV=production rollup -c",
-    "release": "bumpp",
-    "publish": "node ./scripts/publish.js"
+    "publish": "node ./scripts/publish.js",
+    "release": "bumpp"
   },
   "dependencies": {
     "axios": "^1.7.3",
