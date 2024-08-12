@@ -1,6 +1,6 @@
 {
   "name": "@zd~/request",
-  "version": "0.0.45",
+  "version": "0.0.46",
   "private": false,
   "description": "A request library based on Axios.",
   "author": "zd",
