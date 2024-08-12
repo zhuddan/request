@@ -1,4 +1,4 @@
-@zd~/request
+@zd~/request ![npm version](https://img.shields.io/npm/v/@zd~/request.svg)
 
 一个简单的请求库封装，支持web/uni-app/原生微信小程序
 

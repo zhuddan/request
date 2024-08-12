@@ -2,7 +2,7 @@
   "name": "@zd~/request",
   "version": "0.1.0",
   "private": false,
-  "description": "A request library based on Axios.",
+  "description": "A request library.",
   "author": "zd",
   "license": "ISC",
   "repository": {
