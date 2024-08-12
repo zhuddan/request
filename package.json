@@ -85,8 +85,8 @@
     "build:tsup": "tsup",
     "dev": "cross-env NODE_ENV=development rollup -c -w",
     "build": "tsc -p tsconfig.build.json && cross-env NODE_ENV=production rollup -c",
-    "release": "bumpp && pnpm publish",
-    "preinstall": "node ./scripts/preinstall.js"
+    "preinstall": "node ./scripts/preinstall.js",
+    "release": "bumpp && pnpm publish"
   },
   "peerDependencies": {
     "axios": "^1.7.3",
