@@ -78,7 +78,8 @@
   },
   "files": [
     "dist/*",
-    "index.js"
+    "index.js",
+    "script/*"
   ],
   "scripts": {
     "build:tsup": "tsup",
