@@ -50,6 +50,3 @@ export async function exec(command, args, options) {
     })
   })
 }
-
-const s = await exec('d --help', [])
-console.log(s)
