@@ -22,11 +22,3 @@ export function login(data: Api.LoginData) {
     getResponse: true,
   })
 }
-
-const data = {
-  username: 'xxx',
-  password: 'xxx',
-  code: 'xxx',
-  uuid: 'xx',
-}
-const res1 = await login(data)
