@@ -1,6 +1,6 @@
 {
   "name": "@zd~/request",
-  "version": "0.0.30",
+  "version": "0.0.31",
   "private": false,
   "description": "A request library based on Axios.",
   "author": "zd",
@@ -20,7 +20,7 @@
       },
       "require": {
         "types": "./dist/index.d.ts",
-        "default": "./dist/index.cjs"
+        "default": "./dist/index.js"
       }
     },
     "./*": "./*",
@@ -31,7 +31,7 @@
       },
       "require": {
         "types": "./dist/shared.d.ts",
-        "default": "./dist/shared.cjs"
+        "default": "./dist/shared.js"
       }
     },
     "./http": {
@@ -41,7 +41,7 @@
       },
       "require": {
         "types": "./dist/http.d.ts",
-        "default": "./dist/http.cjs"
+        "default": "./dist/http.js"
       }
     },
     "./uni": {
@@ -51,7 +51,7 @@
       },
       "require": {
         "types": "./dist/uni.d.ts",
-        "default": "./dist/uni.cjs"
+        "default": "./dist/uni.js"
       }
     },
     "./wx": {
@@ -61,7 +61,7 @@
       },
       "require": {
         "types": "./dist/wx.d.ts",
-        "default": "./dist/wx.cjs"
+        "default": "./dist/wx.js"
       }
     }
   },
