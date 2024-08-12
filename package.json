@@ -68,6 +68,7 @@
   "main": "index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
+
   "typesVersions": {
     "*": {
       "*": [
@@ -84,7 +85,8 @@
     "build:tsup": "tsup",
     "dev": "cross-env NODE_ENV=development rollup -c -w",
     "build": "tsc -p tsconfig.build.json && cross-env NODE_ENV=production rollup -c",
-    "release": "bumpp"
+    "release": "bumpp",
+    "preinstall": "node ./scripts/preinstall.js"
   },
   "peerDependencies": {
     "axios": "^1.7.3",

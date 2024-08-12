@@ -1,4 +1,3 @@
-import { name, version } from '../../../package.json'
 import { Cache } from './cache'
 
 interface CacheType {
@@ -22,7 +21,7 @@ interface CacheType {
 /**
  * 缓存
  */
-const cache = new Cache<CacheType>(name, version)
+const cache = new Cache<CacheType>('wx', 'version')
 
 /** */
 export function getCacheToken() {
