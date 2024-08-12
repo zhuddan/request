@@ -53,6 +53,16 @@
         "types": "./dist/uni.d.ts",
         "default": "./dist/uni.cjs"
       }
+    },
+    "./wx": {
+      "import": {
+        "types": "./dist/wx.d.ts",
+        "default": "./dist/wx.mjs"
+      },
+      "require": {
+        "types": "./dist/wx.d.ts",
+        "default": "./dist/wx.cjs"
+      }
     }
   },
   "main": "index.js",
