@@ -86,9 +86,13 @@
     "dev": "cross-env NODE_ENV=development rollup -c -w",
     "build": "tsc -p tsconfig.build.json && cross-env NODE_ENV=production rollup -c",
     "preinstall": "node ./scripts/preinstall.js",
+    "prepublishOnly": "node ./scripts/prepublishOnly.js",
     "release": "bumpp"
   },
-  "peerDependencies": {},
+  "peerDependencies": {
+    "axios": "^1.7.3",
+    "qs": "^6.13.0"
+  },
   "devDependencies": {
     "@antfu/eslint-config": "^2.24.1",
     "@dcloudio/types": "^3.4.12",
