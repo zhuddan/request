@@ -89,7 +89,7 @@
     "prepublishOnly": "node ./scripts/prepublishOnly.js",
     "release": "bumpp"
   },
-  "peerDependencies": {
+  "dependencies": {
     "axios": "^1.7.3",
     "qs": "^6.13.0"
   },
@@ -103,13 +103,11 @@
     "@rollup/plugin-typescript": "^11.1.6",
     "@types/qs": "^6.9.15",
     "@vue/compiler-sfc": "^3.4.37",
-    "axios": "^1.7.3",
     "bumpp": "^9.4.2",
     "cross-env": "^7.0.3",
     "eslint": "9.5.0",
     "eslint-plugin-format": "^0.1.2",
     "picocolors": "^1.0.1",
-    "qs": "^6.13.0",
     "rollup": "^4.20.0",
     "rollup-plugin-delete": "^2.0.0",
     "rollup-plugin-dts": "^6.1.1",
