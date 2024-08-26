@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/shapex/index",
     "pages/index/index",
     "pages/login/index"
   ],
