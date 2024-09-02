@@ -14,7 +14,7 @@ interface UniRequestInterceptors<T extends object> {
         config: UniRequestConfig<T>;
         response: UniAppResponse;
     }) => UniAppResponse | Promise<UniAppResponse>);
-    responseError?: (error: any) => (Promise<any> | any);
+    responseError?: (error: any, config: UniRequestConfig<T>) => (Promise<any> | any);
 }
 /**
  * UniRequestBaseConfig 请求配置

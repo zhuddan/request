@@ -13,7 +13,7 @@ export interface WechatRequestInterceptors<T extends object> {
   request?: (value: WechatRequestConfig<T>) => WechatRequestConfig<T> | Promise<WechatRequestConfig<T>>
   requestError?: (error: any) => (Promise<any> | any)
   response?: ((value: { config: WechatRequestConfig<T>, response: WechatResponse }) => WechatResponse | Promise< WechatResponse>)
-  responseError?: (error: any) => (Promise<any> | any)
+  responseError?: (error: any, config: WechatRequestConfig<T>) => (Promise<any> | any)
 }
 /**
  * RequestBaseConfig 请求配置
@@ -126,7 +126,7 @@ export class WxRequest<T extends object> {
           resolve(userResponse || response)
         },
         fail: (error) => {
-          this.interceptors?.responseError?.(error)
+          this.interceptors?.responseError?.(error, _config)
           reject(error)
         },
       })

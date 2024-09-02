@@ -13,7 +13,7 @@ export interface UniRequestInterceptors<T extends object> {
   request?: (value: UniRequestConfig<T>) => UniRequestConfig<T> | Promise<UniRequestConfig<T>>
   requestError?: (error: any) => (Promise<any> | any)
   response?: ((value: { config: UniRequestConfig<T>, response: UniAppResponse }) => UniAppResponse | Promise<UniAppResponse>)
-  responseError?: (error: any) => (Promise<any> | any)
+  responseError?: (error: any, config: UniRequestConfig<T>) => (Promise<any> | any)
 }
 /**
  * UniRequestBaseConfig 请求配置
@@ -127,7 +127,7 @@ export class UniRequest<T extends object> {
       return userResponse || response
     }
     catch (error) {
-      this.interceptors?.responseError?.(error)
+      this.interceptors?.responseError?.(error, config)
       throw error
     }
   }
