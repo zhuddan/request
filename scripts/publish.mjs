@@ -9,7 +9,7 @@ const rawString = fs.readFileSync(packageJsonPath).toString()
 const packageJson = JSON.parse(rawString)
 
 // packageJson.devDependencies = {}
-packageJson.dependencies = {}
+packageJson.dependencies = undefined
 
 fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2))
 
