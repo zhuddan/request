@@ -4,7 +4,7 @@ import process from 'node:process'
 import { exec } from './exec.mjs'
 
 const cwd = process.cwd()
-const packageJsonPath = path.resolve(cwd, 'package.json')
+const packageJsonPath = path.resolve(cwd, 'packages', 'core', 'package.json')
 const rawString = fs.readFileSync(packageJsonPath).toString()
 const packageJson = JSON.parse(rawString)
 
@@ -14,6 +14,8 @@ packageJson.dependencies = {}
 fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2))
 
 exec('pnpm', [
+  '-F',
+  '@zd~/request',
   'publish',
   '--access',
   'public',

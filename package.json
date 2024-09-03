@@ -1,124 +1,33 @@
 {
-  "name": "@zd~/request",
-  "version": "0.1.2",
-  "private": false,
-  "description": "A request library.",
-  "author": "zd",
-  "license": "ISC",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/zhuddan/request.git"
-  },
-  "keywords": [
-    "request",
-    "axios",
-    "qs",
-    "uni-app",
-    "weixin",
-    "miniprogram",
-    "http"
-  ],
-  "exports": {
-    ".": {
-      "import": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.mjs"
-      },
-      "require": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
-      }
-    },
-    "./*": "./*",
-    "./shared": {
-      "import": {
-        "types": "./dist/shared.d.ts",
-        "default": "./dist/shared.mjs"
-      },
-      "require": {
-        "types": "./dist/shared.d.ts",
-        "default": "./dist/shared.js"
-      }
-    },
-    "./http": {
-      "import": {
-        "types": "./dist/http.d.ts",
-        "default": "./dist/http.mjs"
-      },
-      "require": {
-        "types": "./dist/http.d.ts",
-        "default": "./dist/http.js"
-      }
-    },
-    "./uni": {
-      "import": {
-        "types": "./dist/uni.d.ts",
-        "default": "./dist/uni.mjs"
-      },
-      "require": {
-        "types": "./dist/uni.d.ts",
-        "default": "./dist/uni.js"
-      }
-    },
-    "./wx": {
-      "import": {
-        "types": "./dist/wx.d.ts",
-        "default": "./dist/wx.mjs"
-      },
-      "require": {
-        "types": "./dist/wx.d.ts",
-        "default": "./dist/wx.js"
-      }
-    }
-  },
-  "main": "index.js",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
-  "typesVersions": {
-    "*": {
-      "*": [
-        "./dist/*",
-        "./*"
-      ]
-    }
-  },
-  "files": [
-    "dist/*",
-    "index.js",
-    "scripts/*"
-  ],
   "scripts": {
-    "dev": "cross-env NODE_ENV=development rollup -c -w",
-    "build": "tsc -p tsconfig.build.json && cross-env NODE_ENV=production rollup -c",
+    "dev": "rollup -c rollup.config.dev.mjs -w",
+    "example:uni": "pnpm -F uni-example dev",
+    "example:vue": "pnpm -F vue-example dev",
+    "build": "rollup -c rollup.config.build.mjs",
     "publish": "node ./scripts/publish.mjs",
-    "release": "bumpp",
-    "doc": "npx typedoc --out docs src/index.ts"
-  },
-  "dependencies": {
-    "axios": "^1.7.3",
-    "qs": "^6.13.0"
+    "bumpp": "pnpm -F @zd~request bumpp",
+    "doc": "npx typedoc --out docs src/index.ts",
+    "clean": "rm -rf node_modules pnpm-lock.yaml packages/*/node_modules packages/*/pnpm-lock.yaml packages/*/dist"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^2.24.1",
+    "@antfu/eslint-config": "^2.27.3",
     "@dcloudio/types": "^3.4.12",
     "@rollup/plugin-commonjs": "^26.0.1",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.6",
-    "@types/qs": "^6.9.15",
-    "@vue/compiler-sfc": "^3.4.37",
-    "bumpp": "^9.4.2",
+    "@types/lodash-es": "^4.17.12",
+    "@vue/compiler-sfc": "^3.4.38",
+    "bumpp": "^9.5.2",
     "cross-env": "^7.0.3",
     "eslint": "9.5.0",
     "eslint-plugin-format": "^0.1.2",
-    "picocolors": "^1.0.1",
-    "rollup": "^4.20.0",
+    "picocolors": "^1.1.0",
+    "rollup": "^4.21.2",
     "rollup-plugin-delete": "^2.0.0",
     "rollup-plugin-dts": "^6.1.1",
     "rollup-plugin-terser": "^7.0.2",
-    "typedoc": "^0.26.5",
-    "typedoc-plugin-markdown": "^4.2.3",
     "typescript": "^5.5.4"
   }
 }

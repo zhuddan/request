@@ -1,0 +1,14 @@
+{
+  "name": "uni-example",
+  "version": "1.0.0",
+  "description": "",
+  "author": "",
+  "license": "",
+  "keywords": [],
+  "scripts": {},
+  "dependencies": {
+  },
+  "devDependencies": {
+    "miniprogram-api-typings": "^3.12.3"
+  }
+}

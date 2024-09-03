@@ -1,0 +1,89 @@
+{
+  "name": "@zd~/request",
+  "version": "0.1.2",
+  "private": false,
+  "description": "A request library.",
+  "author": "zd",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zhuddan/request.git"
+  },
+  "keywords": [
+    "request",
+    "axios",
+    "qs",
+    "uni-app",
+    "weixin",
+    "miniprogram",
+    "http"
+  ],
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.esm.js"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.cjs.js"
+      }
+    },
+    "./*": "./*",
+    "./http": {
+      "import": {
+        "types": "./dist/http.d.ts",
+        "default": "./dist/http.esm.js"
+      },
+      "require": {
+        "types": "./dist/http.d.ts",
+        "default": "./dist/http.cjs.js"
+      }
+    },
+    "./uni": {
+      "import": {
+        "types": "./dist/uni.d.ts",
+        "default": "./dist/uni.esm.js"
+      },
+      "require": {
+        "types": "./dist/uni.d.ts",
+        "default": "./dist/uni.cjs.js"
+      }
+    },
+    "./wx": {
+      "import": {
+        "types": "./dist/wx.d.ts",
+        "default": "./dist/wx.esm.js"
+      },
+      "require": {
+        "types": "./dist/wx.d.ts",
+        "default": "./dist/wx.cjs.js"
+      }
+    }
+  },
+  "main": "index.js",
+  "module": "./dist/index.esm.js",
+  "types": "./dist/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/*",
+        "./*"
+      ]
+    }
+  },
+  "files": [
+    "dist/*",
+    "index.js",
+    "scripts/*"
+  ],
+  "dependencies": {
+    "lodash-es": "^4.17.21",
+    "qs": "^6.13.0"
+  },
+  "devDependencies": {
+    "@types/qs": "^6.9.15",
+    "axios": "^1.7.7",
+    "miniprogram-api-typings": "^3.12.3"
+  }
+}
