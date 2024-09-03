@@ -6,18 +6,6 @@ interface UniAppResponse<T extends BaseResponse = BaseResponse> extends UniApp.R
     data: T;
 }
 /**
- * 拦截器
- */
-interface UniRequestInterceptors<T extends object> {
-    request?: (value: UniRequestConfig<T>) => UniRequestConfig<T> | Promise<UniRequestConfig<T>>;
-    requestError?: (error: any) => (Promise<any> | any);
-    response?: ((value: {
-        config: UniRequestConfig<T>;
-        response: UniAppResponse;
-    }) => UniAppResponse | Promise<UniAppResponse>);
-    responseError?: (error: any, config: UniRequestConfig<T>) => (Promise<any> | any);
-}
-/**
  * UniRequestBaseConfig 请求配置
  */
 interface UniRequestBaseConfig extends Partial<UniNamespace.RequestOptions> {
@@ -56,6 +44,18 @@ type UniRequestConfigWithoutMethod<T extends object> = RequiredProperty<Omit<Uni
  * 用户自定义 get 请求配置 get 请求参设置请使用 params 而不是 data
  */
 type UniRequestGetConfigWithoutMethod<T extends object> = RequiredProperty<Omit<UniRequestBaseConfig, 'method' | 'baseUrl' | 'data'>, 'url'> & T;
+/**
+ * 拦截器
+ */
+interface UniRequestInterceptors<T extends object> {
+    request?: (value: UniRequestConfig<T>) => UniRequestConfig<T> | Promise<UniRequestConfig<T>>;
+    requestError?: (error: any) => (Promise<any> | any);
+    response?: ((value: {
+        config: UniRequestConfig<T>;
+        response: UniAppResponse;
+    }) => UniAppResponse | Promise<UniAppResponse>);
+    responseError?: (error: any) => (Promise<any> | any);
+}
 /**
  * 实现
  */

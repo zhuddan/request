@@ -414,13 +414,6 @@ type HttpRequestConfig<T extends object> = HttpRequestBaseConfig & T;
  */
 type HttpRequestConfigWithoutMethod<T extends object> = Omit<HttpRequestBaseConfig, 'method'> & T;
 type HttpRequestGetConfigWithoutMethod<T extends object> = Omit<HttpRequestBaseConfig, 'method' | 'data'> & T;
-interface ResponseError<CustomConfig extends object> {
-    message?: string;
-    code?: string;
-    config: HttpRequestConfig<CustomConfig>;
-    request?: any;
-    response?: AxiosResponse<unknown, any>;
-}
 /**
  * 拦截器
  */
@@ -428,7 +421,7 @@ interface HttpRequestInterceptors<T extends object> {
     request?: (value: HttpRequestConfig<T>) => HttpRequestConfig<T> | Promise<HttpRequestConfig<T>>;
     requestError?: (error: any) => (Promise<any> | any);
     response?: ((value: AxiosResponse<any, any>) => AxiosResponse<any, any> | Promise<AxiosResponse<any, any>>) | null | undefined;
-    responseError?: (error: ResponseError<T>) => (Promise<any> | any);
+    responseError?: (error: any) => (Promise<any> | any);
 }
 /**
  * 实现

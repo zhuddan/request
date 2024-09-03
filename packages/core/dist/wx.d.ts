@@ -15,7 +15,7 @@ interface WechatRequestInterceptors<T extends object> {
         config: WechatRequestConfig<T>;
         response: WechatResponse;
     }) => WechatResponse | Promise<WechatResponse>);
-    responseError?: (error: any, config: WechatRequestConfig<T>) => (Promise<any> | any);
+    responseError?: (error: any) => (Promise<any> | any);
 }
 /**
  * RequestBaseConfig 请求配置
