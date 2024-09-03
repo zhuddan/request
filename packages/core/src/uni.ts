@@ -9,15 +9,7 @@ type BaseResponse = string | object | ArrayBuffer
 interface UniAppResponse<T extends BaseResponse = BaseResponse> extends UniApp.RequestSuccessCallbackResult {
   data: T
 }
-/**
- * 拦截器
- */
-export interface UniRequestInterceptors<T extends object> {
-  request?: (value: UniRequestConfig<T>) => UniRequestConfig<T> | Promise<UniRequestConfig<T>>
-  requestError?: (error: any) => (Promise<any> | any)
-  response?: ((value: { config: UniRequestConfig<T>, response: UniAppResponse }) => UniAppResponse | Promise<UniAppResponse>)
-  responseError?: (error: any, config: UniRequestConfig<T>) => (Promise<any> | any)
-}
+
 /**
  * UniRequestBaseConfig 请求配置
  */
@@ -62,6 +54,16 @@ RequiredProperty<Omit<UniRequestBaseConfig, 'method' | 'baseUrl'>, 'url'> & T
  * 用户自定义 get 请求配置 get 请求参设置请使用 params 而不是 data
  */
 type UniRequestGetConfigWithoutMethod<T extends object> = RequiredProperty<Omit<UniRequestBaseConfig, 'method' | 'baseUrl' | 'data'>, 'url'> & T
+
+/**
+ * 拦截器
+ */
+export interface UniRequestInterceptors<T extends object> {
+  request?: (value: UniRequestConfig<T>) => UniRequestConfig<T> | Promise<UniRequestConfig<T>>
+  requestError?: (error: any) => (Promise<any> | any)
+  response?: ((value: { config: UniRequestConfig<T>, response: UniAppResponse }) => UniAppResponse | Promise<UniAppResponse>)
+  responseError?: (error: any) => (Promise<any> | any)
+}
 /**
  * 实现
  */
@@ -130,7 +132,7 @@ export class UniRequest<T extends object> {
       return userResponse || response
     }
     catch (error) {
-      this.interceptors?.responseError?.(error, config)
+      this.interceptors?.responseError?.(error)
       throw error
     }
   }
