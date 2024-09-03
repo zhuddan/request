@@ -1,2 +1,23 @@
-"use strict";var e=require("./merge-Dh9r1Vru.js"),r=require("./http.cjs.js"),t=require("./uni.cjs.js"),u=require("./wx.cjs.js");require("util"),require("stream"),require("path"),require("http"),require("https"),require("url"),require("fs"),require("assert"),require("tty"),require("os"),require("zlib"),require("events"),Object.defineProperty(exports,"ContentTypeEnum",{enumerable:!0,get:function(){return e.ContentTypeEnum}}),Object.defineProperty(exports,"RequestMethodsEnum",{enumerable:!0,get:function(){return e.RequestMethodsEnum}}),exports.HttpRequest=r.HttpRequest,exports.UniRequest=t.UniRequest,exports.WxRequest=u.WxRequest;
+'use strict';
+
+var merge = require('./merge-CnaYuBEF.js');
+var http = require('./http.cjs.js');
+var uni = require('./uni.cjs.js');
+var wx = require('./wx.cjs.js');
+require('axios');
+require('qs');
+
+
+
+Object.defineProperty(exports, "ContentTypeEnum", {
+	enumerable: true,
+	get: function () { return merge.ContentTypeEnum; }
+});
+Object.defineProperty(exports, "RequestMethodsEnum", {
+	enumerable: true,
+	get: function () { return merge.RequestMethodsEnum; }
+});
+exports.HttpRequest = http.HttpRequest;
+exports.UniRequest = uni.UniRequest;
+exports.WxRequest = wx.WxRequest;
 //# sourceMappingURL=index.cjs.js.map

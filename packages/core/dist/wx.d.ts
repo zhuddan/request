@@ -1,6 +1,5 @@
-import { a as ResponseResult, b as RequiredProperty } from './shared.d-l6eAR4hM.js';
-export { C as ContentTypeEnum, R as RequestMethodsEnum } from './shared.d-l6eAR4hM.js';
-
+import type { RequiredProperty, ResponseResult } from './shared';
+export * from './shared';
 type BaseResponse = string | object | ArrayBuffer;
 interface WechatResponse<T extends BaseResponse = BaseResponse> extends WechatMiniprogram.RequestSuccessCallbackResult {
     data: T;
@@ -8,7 +7,7 @@ interface WechatResponse<T extends BaseResponse = BaseResponse> extends WechatMi
 /**
  * 拦截器
  */
-interface WechatRequestInterceptors<T extends object> {
+export interface WechatRequestInterceptors<T extends object> {
     request?: (value: WechatRequestConfig<T>) => WechatRequestConfig<T> | Promise<WechatRequestConfig<T>>;
     requestError?: (error: any) => (Promise<any> | any);
     response?: ((value: {
@@ -20,7 +19,7 @@ interface WechatRequestInterceptors<T extends object> {
 /**
  * RequestBaseConfig 请求配置
  */
-interface WechatRequestBaseConfig extends Partial<Omit<WechatMiniprogram.RequestOption, 'success' | 'fail' | 'complete'>> {
+export interface WechatRequestBaseConfig extends Partial<Omit<WechatMiniprogram.RequestOption, 'success' | 'fail' | 'complete'>> {
     /**
      * 公共url
      */
@@ -47,7 +46,7 @@ interface WechatRequestGetResponseConfig {
 /**
  * 用户自定义请求配置
  */
-type WechatRequestConfig<T extends object> = WechatRequestBaseConfig & T;
+export type WechatRequestConfig<T extends object> = WechatRequestBaseConfig & T;
 /**
  * 用户自定义请求配置
  */
@@ -59,7 +58,7 @@ type WechatRequestGetConfigWithoutMethod<T extends object> = RequiredProperty<Om
 /**
  * 实现
  */
-declare class WxRequest<T extends object> {
+export declare class WxRequest<T extends object> {
     /**
      * 基础配置
      */
@@ -84,5 +83,3 @@ declare class WxRequest<T extends object> {
     request<D extends object>(config: WechatRequestConfig<T> & WechatRequestGetResponseConfig): Promise<WechatResponse<ResponseResult<D>>>;
     request<D extends object>(config: WechatRequestConfig<T>): Promise<ResponseResult<D>>;
 }
-
-export { RequiredProperty, ResponseResult, type WechatRequestBaseConfig, type WechatRequestConfig, type WechatRequestInterceptors, WxRequest };

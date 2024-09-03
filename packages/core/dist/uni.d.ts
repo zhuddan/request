@@ -1,6 +1,5 @@
-import { a as ResponseResult, b as RequiredProperty } from './shared.d-l6eAR4hM.js';
-export { C as ContentTypeEnum, R as RequestMethodsEnum } from './shared.d-l6eAR4hM.js';
-
+import type { RequiredProperty, ResponseResult } from './shared';
+export * from './shared';
 type BaseResponse = string | object | ArrayBuffer;
 interface UniAppResponse<T extends BaseResponse = BaseResponse> extends UniApp.RequestSuccessCallbackResult {
     data: T;
@@ -8,7 +7,7 @@ interface UniAppResponse<T extends BaseResponse = BaseResponse> extends UniApp.R
 /**
  * UniRequestBaseConfig 请求配置
  */
-interface UniRequestBaseConfig extends Partial<UniNamespace.RequestOptions> {
+export interface UniRequestBaseConfig extends Partial<UniNamespace.RequestOptions> {
     /**
      * 公共url
      */
@@ -35,7 +34,7 @@ interface UniRequestGetResponseConfig {
 /**
  * 用户自定义请求配置
  */
-type UniRequestConfig<T extends object> = UniRequestBaseConfig & T;
+export type UniRequestConfig<T extends object> = UniRequestBaseConfig & T;
 /**
  * 用户自定义请求配置
  */
@@ -47,7 +46,7 @@ type UniRequestGetConfigWithoutMethod<T extends object> = RequiredProperty<Omit<
 /**
  * 拦截器
  */
-interface UniRequestInterceptors<T extends object> {
+export interface UniRequestInterceptors<T extends object> {
     request?: (value: UniRequestConfig<T>) => UniRequestConfig<T> | Promise<UniRequestConfig<T>>;
     requestError?: (error: any) => (Promise<any> | any);
     response?: ((value: {
@@ -59,7 +58,7 @@ interface UniRequestInterceptors<T extends object> {
 /**
  * 实现
  */
-declare class UniRequest<T extends object> {
+export declare class UniRequest<T extends object> {
     /**
      * 基础配置
      */
@@ -84,5 +83,3 @@ declare class UniRequest<T extends object> {
     request<D extends object>(config: UniRequestConfig<T> & UniRequestGetResponseConfig): Promise<UniAppResponse<ResponseResult<D>>>;
     request<D extends object>(config: UniRequestConfig<T>): Promise<ResponseResult<D>>;
 }
-
-export { RequiredProperty, ResponseResult, UniRequest, type UniRequestBaseConfig, type UniRequestConfig, type UniRequestInterceptors };
