@@ -27,10 +27,16 @@ export type ResponseResult<T extends object = object> = {
 export type RequiredProperty<T, K extends keyof T> = T & Required<Pick<T, K>>
 
 export class ResponseError<T> extends Error {
+  public errMsg?: string
+  public msg?: string
   constructor(
     public message: string,
     public config?: T,
   ) {
     super(message)
+  }
+
+  get errorMessage(): string {
+    return this.message || this.errMsg || this.msg || '未知错误'
   }
 }
