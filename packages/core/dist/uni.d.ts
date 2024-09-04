@@ -1,5 +1,6 @@
-import type { RequiredProperty, ResponseResult } from './shared';
-export * from './shared';
+import { c as ResponseError, a as ResponseResult, b as RequiredProperty } from './shared.d-DkE9HZLg.js';
+export { C as ContentTypeEnum, R as RequestMethodsEnum } from './shared.d-DkE9HZLg.js';
+
 type BaseResponse = string | object | ArrayBuffer;
 interface UniAppResponse<T extends BaseResponse = BaseResponse> extends UniApp.RequestSuccessCallbackResult {
     data: T;
@@ -7,7 +8,7 @@ interface UniAppResponse<T extends BaseResponse = BaseResponse> extends UniApp.R
 /**
  * UniRequestBaseConfig 请求配置
  */
-export interface UniRequestBaseConfig extends Partial<UniNamespace.RequestOptions> {
+interface UniRequestBaseConfig extends Partial<UniNamespace.RequestOptions> {
     /**
      * 公共url
      */
@@ -34,7 +35,7 @@ interface UniRequestGetResponseConfig {
 /**
  * 用户自定义请求配置
  */
-export type UniRequestConfig<T extends object> = UniRequestBaseConfig & T;
+type UniRequestConfig<T extends object> = UniRequestBaseConfig & T;
 /**
  * 用户自定义请求配置
  */
@@ -46,19 +47,19 @@ type UniRequestGetConfigWithoutMethod<T extends object> = RequiredProperty<Omit<
 /**
  * 拦截器
  */
-export interface UniRequestInterceptors<T extends object> {
+interface UniRequestInterceptors<T extends object> {
     request?: (value: UniRequestConfig<T>) => UniRequestConfig<T> | Promise<UniRequestConfig<T>>;
     requestError?: (error: any) => (Promise<any> | any);
     response?: ((value: {
         config: UniRequestConfig<T>;
         response: UniAppResponse;
     }) => UniAppResponse | Promise<UniAppResponse>);
-    responseError?: (error: any) => (Promise<any> | any);
+    responseError?: (error: ResponseError<UniRequestConfig<T>>) => (Promise<any> | any);
 }
 /**
  * 实现
  */
-export declare class UniRequest<T extends object> {
+declare class UniRequest<T extends object> {
     /**
      * 基础配置
      */
@@ -83,3 +84,5 @@ export declare class UniRequest<T extends object> {
     request<D extends object>(config: UniRequestConfig<T> & UniRequestGetResponseConfig): Promise<UniAppResponse<ResponseResult<D>>>;
     request<D extends object>(config: UniRequestConfig<T>): Promise<ResponseResult<D>>;
 }
+
+export { RequiredProperty, ResponseError, ResponseResult, UniRequest, type UniRequestBaseConfig, type UniRequestConfig, type UniRequestInterceptors };

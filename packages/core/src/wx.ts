@@ -1,5 +1,6 @@
 import merge from 'lodash-es/merge'
 import type { RequiredProperty, ResponseResult } from './shared'
+import { ResponseError } from './shared'
 
 export * from './shared'
 
@@ -15,7 +16,7 @@ export interface WechatRequestInterceptors<T extends object> {
   request?: (value: WechatRequestConfig<T>) => WechatRequestConfig<T> | Promise<WechatRequestConfig<T>>
   requestError?: (error: any) => (Promise<any> | any)
   response?: ((value: { config: WechatRequestConfig<T>, response: WechatResponse }) => WechatResponse | Promise< WechatResponse>)
-  responseError?: (error: any) => (Promise<any> | any)
+  responseError?: (error: ResponseError<WechatRequestConfig<T>>) => (Promise<any> | any)
 }
 /**
  * RequestBaseConfig 请求配置
@@ -128,7 +129,12 @@ export class WxRequest<T extends object> {
           resolve(userResponse || response)
         },
         fail: (error) => {
-          this.interceptors?.responseError?.(error)
+          if (error instanceof Error) {
+            const requestError = new ResponseError(error.message, _config)
+            this.interceptors?.responseError?.(requestError)
+            throw requestError
+          }
+
           reject(error)
         },
       })

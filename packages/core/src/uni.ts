@@ -1,6 +1,7 @@
 import merge from 'lodash-es/merge'
 
 import type { RequiredProperty, ResponseResult } from './shared'
+import { ResponseError } from './shared'
 
 export * from './shared'
 
@@ -62,7 +63,7 @@ export interface UniRequestInterceptors<T extends object> {
   request?: (value: UniRequestConfig<T>) => UniRequestConfig<T> | Promise<UniRequestConfig<T>>
   requestError?: (error: any) => (Promise<any> | any)
   response?: ((value: { config: UniRequestConfig<T>, response: UniAppResponse }) => UniAppResponse | Promise<UniAppResponse>)
-  responseError?: (error: any) => (Promise<any> | any)
+  responseError?: (error: ResponseError<UniRequestConfig<T>>) => (Promise<any> | any)
 }
 /**
  * 实现
@@ -132,7 +133,11 @@ export class UniRequest<T extends object> {
       return userResponse || response
     }
     catch (error) {
-      this.interceptors?.responseError?.(error)
+      if (error instanceof Error) {
+        const requestError = new ResponseError(error.message, _config)
+        this.interceptors?.responseError?.(requestError)
+        throw requestError
+      }
       throw error
     }
   }

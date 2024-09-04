@@ -25,3 +25,12 @@ export type ResponseResult<T extends object = object> = {
 } & T
 
 export type RequiredProperty<T, K extends keyof T> = T & Required<Pick<T, K>>
+
+export class ResponseError<T> extends Error {
+  constructor(
+    public message: string,
+    public config?: T,
+  ) {
+    super(message)
+  }
+}
