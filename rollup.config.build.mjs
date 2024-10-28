@@ -33,6 +33,10 @@ function main() {
           sourcemap: true,
         },
       ],
+      external: [
+        'axios',
+        'qs',
+      ],
       plugins: [
         del({
           targets: ['packages/core/dist/*', 'packages/core/temp/*'],
