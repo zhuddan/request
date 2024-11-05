@@ -134,7 +134,7 @@ export class HttpRequest<T extends object> {
     const contentType = headers?.['Content-Type'] || headers?.['content-type']
     if (
       (contentType !== ContentTypeEnum.FORM_URLENCODED)
-      || (config.data && typeof config.data == 'object' && Object.keys(config.data.length))
+      || (config.data && typeof config.data == 'object' && Object.keys(config.data).length)
       || config.method?.toUpperCase() === RequestMethodsEnum.GET
     ) {
       return config as HttpRequestConfig<T>
