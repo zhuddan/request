@@ -3,7 +3,7 @@
     "dev": "rollup -c rollup.config.dev.mjs -w",
     "example:uni": "pnpm -F uni-example dev",
     "example:vue": "pnpm -F vue-example dev",
-    "build": "bumpp && rollup -c rollup.config.build.mjs",
+    "build": "pnpm -F @zd~/request bumpp && rollup -c rollup.config.build.mjs",
     "publish": "node ./scripts/publish.mjs",
     "bumpp": "pnpm -F @zd~/request bumpp",
     "doc": "npx typedoc --out docs src/index.ts",
