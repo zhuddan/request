@@ -40,6 +40,17 @@
         "default": "./dist/http.cjs.js"
       }
     },
+
+    "./wx": {
+      "import": {
+        "types": "./dist/wx.d.ts",
+        "default": "./dist/wx.esm.js"
+      },
+      "require": {
+        "types": "./dist/wx.d.ts",
+        "default": "./dist/wx.cjs.js"
+      }
+    },
     "./uni": {
       "import": {
         "types": "./dist/uni.d.ts",
@@ -50,14 +61,14 @@
         "default": "./dist/uni.cjs.js"
       }
     },
-    "./wx": {
+    "./taro": {
       "import": {
-        "types": "./dist/wx.d.ts",
-        "default": "./dist/wx.esm.js"
+        "types": "./dist/taro.d.ts",
+        "default": "./dist/taro.esm.js"
       },
       "require": {
-        "types": "./dist/wx.d.ts",
-        "default": "./dist/wx.cjs.js"
+        "types": "./dist/taro.d.ts",
+        "default": "./dist/taro.cjs.js"
       }
     }
   },
