@@ -40,3 +40,41 @@ export class ResponseError<T> extends Error {
     return this.message || this.errMsg || this.msg || '未知错误'
   }
 }
+
+export type BaseResponse = string | object | ArrayBuffer
+
+export interface BaseConfig {
+  /**
+   * 公共url
+   */
+  baseUrl?: string
+  /**
+   * get 请求参数
+   */
+  params?: any
+  /**
+   * 返回原生响应  默认false
+   */
+  getResponse?: boolean
+  /**
+   * 忽略 loading 提示
+   */
+  ignoreLoading?: boolean
+}
+
+/**
+ *  返回原生响应
+ */
+export interface GetResponseConfig {
+  getResponse: true
+};
+
+/**
+ * 拦截器
+ */
+export interface BaseRequestInterceptors<RequestConfig, ResponseData> {
+  request?: (value: RequestConfig) => RequestConfig | Promise<RequestConfig>
+  requestError?: (error: any) => (Promise<any> | any)
+  response?: ((value: { config: RequestConfig, response: ResponseData }) => ResponseData | Promise<ResponseData>)
+  responseError?: (error: ResponseError<RequestConfig>) => (Promise<any> | any)
+}
