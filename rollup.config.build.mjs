@@ -16,8 +16,9 @@ function main() {
       input: {
         index: 'packages/core/src/index.ts',
         http: 'packages/core/src/http.ts',
-        uni: 'packages/core/src/uni.ts',
         wx: 'packages/core/src/wx.ts',
+        uni: 'packages/core/src/uni.ts',
+        taro: 'packages/core/src/taro.ts',
       },
       output: [
         {
@@ -36,6 +37,7 @@ function main() {
       external: [
         'axios',
         'qs',
+        '@tarojs/taro',
       ],
       plugins: [
         del({
