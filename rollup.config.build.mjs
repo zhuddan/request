@@ -71,7 +71,7 @@ function main() {
         nodeResolve(),
         commonjs(),
         dts({
-          respectExternal: true,
+          // respectExternal: true,
         }),
         {
           name: 'before',
