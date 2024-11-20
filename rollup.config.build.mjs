@@ -59,8 +59,9 @@ function main() {
       input: {
         index: './packages/core/temp/index.d.ts',
         http: './packages/core/temp/http.d.ts',
-        uni: './packages/core/temp/uni.d.ts',
         wx: './packages/core/temp/wx.d.ts',
+        uni: './packages/core/temp/uni.d.ts',
+        taro: './packages/core/temp/taro.d.ts',
       },
       output: {
         dir: './packages/core/dist',
