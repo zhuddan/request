@@ -91,7 +91,6 @@ export class TaroRequest<T extends object> {
       _config = await this.interceptors?.request?.(_config) || _config
     }
     catch (error) {
-      console.log('interceptors?.requestError ', error)
       this.interceptors?.requestError?.(error)
       throw error
     }
