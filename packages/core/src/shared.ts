@@ -17,15 +17,33 @@ export enum ContentTypeEnum {
   FORM_DATA = 'multipart/form-data;charset=UTF-8',
 }
 
-export type ResponseResult<T extends object = object> = {
+/**
+ * 默认响应结构
+ */
+export interface DefaultResponseResult {
+  /**
+   * 开发者服务器 状态码
+   */
   code: number
-  status: number
+  /**
+   * 开发者服务器 消息
+   */
   msg: string
-  message: string
-} & T
+}
 
+/**
+ *  默认请求结构
+ */
+export interface DefaultUserConfig {}
+
+/**
+ * 帮助函数
+ */
 export type RequiredProperty<T, K extends keyof T> = T & Required<Pick<T, K>>
 
+/**
+ * 错误类
+ */
 export class ResponseError<T> extends Error {
   public errMsg?: string
   public msg?: string
@@ -43,6 +61,9 @@ export class ResponseError<T> extends Error {
 
 export type BaseResponse = string | object | ArrayBuffer
 
+/**
+ * 请求配置
+ */
 export interface BaseConfig {
   /**
    * 公共url

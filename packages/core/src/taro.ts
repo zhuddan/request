@@ -1,6 +1,6 @@
 import Taro from '@tarojs/taro'
 import merge from 'lodash-es/merge'
-import type { BaseConfig, BaseRequestInterceptors, BaseResponse, GetResponseConfig, RequiredProperty, ResponseResult } from './shared'
+import type { BaseConfig, BaseRequestInterceptors, BaseResponse, DefaultResponseResult, DefaultUserConfig, GetResponseConfig, RequiredProperty } from './shared'
 import { ResponseError } from './shared'
 
 export * from './shared'
@@ -39,53 +39,62 @@ export type TaroRequestInterceptors<T extends object> = BaseRequestInterceptors<
 /**
  * 实现
  */
-export class TaroRequest<T extends object> {
+export class TaroRequest<
+  /**
+   * 用户自定义配置
+   */
+  UserConfig extends object = DefaultUserConfig,
+  /**
+   * 用户自定义响应
+   */
+  UserResponseResult extends object = DefaultResponseResult,
+> {
   /**
    * 基础配置
    */
-  private baseConfig: TaroRequestConfig<T>
+  private baseConfig: TaroRequestConfig<UserConfig>
   /**
    * 拦截器
    */
-  private interceptors?: TaroRequestInterceptors<T>
+  private interceptors?: TaroRequestInterceptors<UserConfig>
   /**
    * @param options 基础配置
    * @param interceptors 拦截器
    */
-  constructor(options: TaroRequestConfig<T>, interceptors?: TaroRequestInterceptors<T>) {
+  constructor(options: TaroRequestConfig<UserConfig>, interceptors?: TaroRequestInterceptors<UserConfig>) {
     this.baseConfig = {
       ...options,
     }
     this.interceptors = interceptors
   }
 
-  get<D extends object>(config: TaroRequestGetConfigWithoutMethod<T> & GetResponseConfig): Promise<TaroResponse<ResponseResult<D>>>
-  get<D extends object>(config: TaroRequestGetConfigWithoutMethod<T>): Promise<ResponseResult<D>>
-  get<D extends object>(config: TaroRequestGetConfigWithoutMethod<T>): Promise<TaroResponse<D> | ResponseResult<D>> {
+  get<D extends object>(config: TaroRequestGetConfigWithoutMethod<UserConfig> & GetResponseConfig): Promise<TaroResponse<UserResponseResult & D>>
+  get<D extends object>(config: TaroRequestGetConfigWithoutMethod<UserConfig>): Promise<UserResponseResult & D>
+  get<D extends object>(config: TaroRequestGetConfigWithoutMethod<UserConfig>): Promise<TaroResponse<D> | UserResponseResult & D> {
     return this.request({ ...config, method: 'GET' })
   }
 
-  post<D extends object>(config: TaroRequestConfigWithoutMethod<T> & GetResponseConfig): Promise<TaroResponse<ResponseResult<D>>>
-  post<D extends object>(config: TaroRequestConfigWithoutMethod<T>): Promise<ResponseResult<D>>
-  post<D extends object>(config: TaroRequestConfigWithoutMethod<T>): Promise<TaroResponse<D> | ResponseResult<D>> {
+  post<D extends object>(config: TaroRequestConfigWithoutMethod<UserConfig> & GetResponseConfig): Promise<TaroResponse<UserResponseResult & D>>
+  post<D extends object>(config: TaroRequestConfigWithoutMethod<UserConfig>): Promise<UserResponseResult & D>
+  post<D extends object>(config: TaroRequestConfigWithoutMethod<UserConfig>): Promise<TaroResponse<D> | UserResponseResult & D> {
     return this.request({ ...config, method: 'POST' })
   }
 
-  put<D extends object>(config: TaroRequestConfigWithoutMethod<T> & GetResponseConfig): Promise<TaroResponse<ResponseResult<D>>>
-  put<D extends object>(config: TaroRequestConfigWithoutMethod<T>): Promise<ResponseResult<D>>
-  put<D extends object>(config: TaroRequestConfigWithoutMethod<T>): Promise<TaroResponse<D> | ResponseResult<D>> {
+  put<D extends object>(config: TaroRequestConfigWithoutMethod<UserConfig> & GetResponseConfig): Promise<TaroResponse<UserResponseResult & D>>
+  put<D extends object>(config: TaroRequestConfigWithoutMethod<UserConfig>): Promise<UserResponseResult & D>
+  put<D extends object>(config: TaroRequestConfigWithoutMethod<UserConfig>): Promise<TaroResponse<D> | UserResponseResult & D> {
     return this.request({ ...config, method: 'PUT' })
   }
 
-  delete<D extends object>(config: TaroRequestConfigWithoutMethod<T> & GetResponseConfig): Promise<TaroResponse<ResponseResult<D>>>
-  delete<D extends object>(config: TaroRequestConfigWithoutMethod<T>): Promise<ResponseResult<D>>
-  delete<D extends object>(config: TaroRequestConfigWithoutMethod<T>): Promise<TaroResponse<D> | ResponseResult<D>> {
+  delete<D extends object>(config: TaroRequestConfigWithoutMethod<UserConfig> & GetResponseConfig): Promise<TaroResponse<UserResponseResult & D>>
+  delete<D extends object>(config: TaroRequestConfigWithoutMethod<UserConfig>): Promise<UserResponseResult & D>
+  delete<D extends object>(config: TaroRequestConfigWithoutMethod<UserConfig>): Promise<TaroResponse<D> | UserResponseResult & D> {
     return this.request({ ...config, method: 'DELETE' })
   }
 
-  async request<D extends object>(config: TaroRequestConfig<T> & GetResponseConfig): Promise<TaroResponse<ResponseResult<D>>>
-  async request<D extends object>(config: TaroRequestConfig<T>): Promise<ResponseResult<D>>
-  async request<D extends object>(config: TaroRequestConfig<T>): Promise<TaroResponse<D> | ResponseResult<D>> {
+  async request<D extends object>(config: TaroRequestConfig<UserConfig> & GetResponseConfig): Promise<TaroResponse<UserResponseResult & D>>
+  async request<D extends object>(config: TaroRequestConfig<UserConfig>): Promise<UserResponseResult & D>
+  async request<D extends object>(config: TaroRequestConfig<UserConfig>): Promise<TaroResponse<D> | UserResponseResult & D> {
     let _config = merge({}, this.baseConfig, config)
     try {
       _config = await this.interceptors?.request?.(_config) || _config

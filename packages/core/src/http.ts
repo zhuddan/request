@@ -3,7 +3,7 @@ import axios from 'axios'
 import Qs from 'qs'
 import merge from 'lodash-es/merge'
 import { ContentTypeEnum, RequestMethodsEnum } from './shared'
-import type { ResponseError, ResponseResult } from './shared'
+import type { BaseRequestInterceptors, DefaultResponseResult, DefaultUserConfig, ResponseError } from './shared'
 
 export * from './shared'
 
@@ -41,10 +41,20 @@ export interface HttpRequestInterceptors<T extends object> {
   response?: ((value: AxiosResponse<any, any>) => AxiosResponse<any, any> | Promise<AxiosResponse<any, any>>) | null | undefined
   responseError?: (error: ResponseError<HttpRequestConfig<T>>) => (Promise<any> | any)
 }
+
 /**
  * 实现
  */
-export class HttpRequest<T extends object> {
+export class HttpRequest<
+  /**
+   * 用户自定义配置
+   */
+  UserConfig extends object = DefaultUserConfig,
+  /**
+   * 用户自定义响应
+   */
+  UserResponseResult extends object = DefaultResponseResult,
+> {
   /**
    * @description axios 实例
    */
@@ -52,14 +62,14 @@ export class HttpRequest<T extends object> {
   /**
    * @description 基础配置
    */
-  private baseConfig: HttpRequestConfig<T>
+  private baseConfig: HttpRequestConfig<UserConfig>
 
   /**
    *
    * @param options 基础配置
    * @param interceptors 拦截器
    */
-  constructor(options: HttpRequestConfig<T>, interceptors?: HttpRequestInterceptors<T>) {
+  constructor(options: HttpRequestConfig<UserConfig>, interceptors?: HttpRequestInterceptors<UserConfig>) {
     this.baseConfig = {
       ...options,
     }
@@ -74,14 +84,14 @@ export class HttpRequest<T extends object> {
     } = interceptors || {}
 
     this.axiosInstance.interceptors.request.use(async (config) => {
-      const value = await (request?.(config as HttpRequestConfig<T>) || config)
+      const value = await (request?.(config as HttpRequestConfig<UserConfig>) || config)
       return value as InternalAxiosRequestConfig
     }, (e) => {
       requestError?.(e)
     })
     this.axiosInstance.interceptors.response.use((data) => {
       return (response?.(data) || data)
-    }, ((error: ResponseError<HttpRequestConfig<T>>) => {
+    }, ((error: ResponseError<HttpRequestConfig<UserConfig>>) => {
       return responseError?.(error) || Promise.reject(error)
     }) as any)
   }
@@ -137,47 +147,47 @@ export class HttpRequest<T extends object> {
       || (config.data && typeof config.data == 'object' && Object.keys(config.data).length)
       || config.method?.toUpperCase() === RequestMethodsEnum.GET
     ) {
-      return config as HttpRequestConfig<T>
+      return config as HttpRequestConfig<UserConfig>
     }
     return {
       ...config,
       data: Qs.stringify(config.data, { arrayFormat: 'brackets' }),
-    } as HttpRequestConfig<T>
+    } as HttpRequestConfig<UserConfig>
   }
 
   /**
    * get 请求
    * @param config
    */
-  get<D extends object>(config: HttpRequestGetConfigWithoutMethod<T> & HttpRequestGetResponseConfig): Promise<AxiosResponse<ResponseResult<D>>>
-  get<D extends object>(config: HttpRequestGetConfigWithoutMethod<T>): Promise<ResponseResult<D>>
-  get<D extends object>(config: HttpRequestGetConfigWithoutMethod<T>): Promise<AxiosResponse<D> | ResponseResult<D>> {
+  get<D extends object>(config: HttpRequestGetConfigWithoutMethod<UserConfig> & HttpRequestGetResponseConfig): Promise<AxiosResponse<UserResponseResult & D>>
+  get<D extends object>(config: HttpRequestGetConfigWithoutMethod<UserConfig>): Promise<UserResponseResult & D>
+  get<D extends object>(config: HttpRequestGetConfigWithoutMethod<UserConfig>): Promise<AxiosResponse<D> | UserResponseResult & D> {
     return this.request({ ...config, method: 'get' })
   }
 
-  post<D extends object>(config: HttpRequestConfigWithoutMethod<T> & HttpRequestGetResponseConfig): Promise<AxiosResponse<ResponseResult<D>>>
-  post<D extends object>(config: HttpRequestConfigWithoutMethod<T>): Promise<ResponseResult<D>>
-  post<D extends object>(config: HttpRequestConfigWithoutMethod<T>): Promise<AxiosResponse<D> | ResponseResult<D>> {
+  post<D extends object>(config: HttpRequestConfigWithoutMethod<UserConfig> & HttpRequestGetResponseConfig): Promise<AxiosResponse<UserResponseResult & D>>
+  post<D extends object>(config: HttpRequestConfigWithoutMethod<UserConfig>): Promise<UserResponseResult & D>
+  post<D extends object>(config: HttpRequestConfigWithoutMethod<UserConfig>): Promise<AxiosResponse<D> | UserResponseResult & D> {
     return this.request({ ...config, method: 'post' })
   }
 
-  put<D extends object>(config: HttpRequestConfigWithoutMethod<T> & HttpRequestGetResponseConfig): Promise<AxiosResponse<ResponseResult<D>>>
-  put<D extends object>(config: HttpRequestConfigWithoutMethod<T>): Promise<ResponseResult<D>>
-  put<D extends object>(config: HttpRequestConfigWithoutMethod<T>): Promise<AxiosResponse<D> | ResponseResult<D>> {
+  put<D extends object>(config: HttpRequestConfigWithoutMethod<UserConfig> & HttpRequestGetResponseConfig): Promise<AxiosResponse<UserResponseResult & D>>
+  put<D extends object>(config: HttpRequestConfigWithoutMethod<UserConfig>): Promise<UserResponseResult & D>
+  put<D extends object>(config: HttpRequestConfigWithoutMethod<UserConfig>): Promise<AxiosResponse<D> | UserResponseResult & D> {
     return this.request({ ...config, method: 'put' })
   }
 
-  delete<D extends object>(config: HttpRequestConfigWithoutMethod<T> & HttpRequestGetResponseConfig): Promise<AxiosResponse<ResponseResult<D>>>
-  delete<D extends object>(config: HttpRequestConfigWithoutMethod<T>): Promise<ResponseResult<D>>
-  delete<D extends object>(config: HttpRequestConfigWithoutMethod<T>): Promise<AxiosResponse<D> | ResponseResult<D>> {
+  delete<D extends object>(config: HttpRequestConfigWithoutMethod<UserConfig> & HttpRequestGetResponseConfig): Promise<AxiosResponse<UserResponseResult & D>>
+  delete<D extends object>(config: HttpRequestConfigWithoutMethod<UserConfig>): Promise<UserResponseResult & D>
+  delete<D extends object>(config: HttpRequestConfigWithoutMethod<UserConfig>): Promise<AxiosResponse<D> | UserResponseResult & D> {
     return this.request({ ...config, method: 'delete' })
   }
 
-  request<D extends object>(config: HttpRequestConfig<T> & {
+  request<D extends object>(config: HttpRequestConfig<UserConfig> & {
     getResponse: true
-  }): Promise<AxiosResponse<ResponseResult<D>>>
-  request<D extends object>(config: HttpRequestConfig<T>): Promise<ResponseResult<D>>
-  request<D extends object>(config: HttpRequestConfig<T>): Promise<AxiosResponse<D> | ResponseResult<D>> {
+  }): Promise<AxiosResponse<UserResponseResult & D>>
+  request<D extends object>(config: HttpRequestConfig<UserConfig>): Promise<UserResponseResult & D>
+  request<D extends object>(config: HttpRequestConfig<UserConfig>): Promise<AxiosResponse<D> | UserResponseResult & D> {
     const _config = merge({}, this.baseConfig, this.formatFormData(config))
     return this.axiosInstance.request(_config)
   }

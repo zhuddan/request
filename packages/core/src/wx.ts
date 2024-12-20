@@ -1,5 +1,5 @@
 import merge from 'lodash-es/merge'
-import type { BaseConfig, BaseRequestInterceptors, BaseResponse, GetResponseConfig, RequiredProperty, ResponseResult } from './shared'
+import type { BaseConfig, BaseRequestInterceptors, BaseResponse, DefaultResponseResult, DefaultUserConfig, GetResponseConfig, RequiredProperty } from './shared'
 import { ResponseError } from './shared'
 
 export * from './shared'
@@ -34,53 +34,62 @@ export type WechatRequestInterceptors<T extends object> = BaseRequestInterceptor
 /**
  * 实现
  */
-export class WxRequest<T extends object> {
+export class WxRequest<
+  /**
+   * 用户自定义配置
+   */
+  UserConfig extends object = DefaultUserConfig,
+  /**
+   * 用户自定义响应
+   */
+  UserResponseResult extends object = DefaultResponseResult,
+> {
   /**
    * 基础配置
    */
-  private baseConfig: WechatRequestConfig<T>
+  private baseConfig: WechatRequestConfig<UserConfig>
   /**
    * 拦截器
    */
-  private interceptors?: WechatRequestInterceptors<T>
+  private interceptors?: WechatRequestInterceptors<UserConfig>
   /**
    * @param options 基础配置
    * @param interceptors 拦截器
    */
-  constructor(options: WechatRequestConfig<T>, interceptors?: WechatRequestInterceptors<T>) {
+  constructor(options: WechatRequestConfig<UserConfig>, interceptors?: WechatRequestInterceptors<UserConfig>) {
     this.baseConfig = {
       ...options,
     }
     this.interceptors = interceptors
   }
 
-  get<D extends object>(config: WechatRequestGetConfigWithoutMethod<T> & GetResponseConfig): Promise< WechatResponse<ResponseResult<D>>>
-  get<D extends object>(config: WechatRequestGetConfigWithoutMethod<T>): Promise<ResponseResult<D>>
-  get<D extends object>(config: WechatRequestGetConfigWithoutMethod<T>): Promise< WechatResponse<D> | ResponseResult<D>> {
+  get<D extends object>(config: WechatRequestGetConfigWithoutMethod<UserConfig> & GetResponseConfig): Promise< WechatResponse<UserResponseResult & D>>
+  get<D extends object>(config: WechatRequestGetConfigWithoutMethod<UserConfig>): Promise<UserResponseResult & D>
+  get<D extends object>(config: WechatRequestGetConfigWithoutMethod<UserConfig>): Promise< WechatResponse<D> | UserResponseResult & D> {
     return this.request({ ...config, method: 'GET' })
   }
 
-  post<D extends object>(config: WechatRequestConfigWithoutMethod<T> & GetResponseConfig): Promise< WechatResponse<ResponseResult<D>>>
-  post<D extends object>(config: WechatRequestConfigWithoutMethod<T>): Promise<ResponseResult<D>>
-  post<D extends object>(config: WechatRequestConfigWithoutMethod<T>): Promise< WechatResponse<D> | ResponseResult<D>> {
+  post<D extends object>(config: WechatRequestConfigWithoutMethod<UserConfig> & GetResponseConfig): Promise< WechatResponse<UserResponseResult & D>>
+  post<D extends object>(config: WechatRequestConfigWithoutMethod<UserConfig>): Promise<UserResponseResult & D>
+  post<D extends object>(config: WechatRequestConfigWithoutMethod<UserConfig>): Promise< WechatResponse<D> | UserResponseResult & D> {
     return this.request({ ...config, method: 'POST' })
   }
 
-  put<D extends object>(config: WechatRequestConfigWithoutMethod<T> & GetResponseConfig): Promise< WechatResponse<ResponseResult<D>>>
-  put<D extends object>(config: WechatRequestConfigWithoutMethod<T>): Promise<ResponseResult<D>>
-  put<D extends object>(config: WechatRequestConfigWithoutMethod<T>): Promise< WechatResponse<D> | ResponseResult<D>> {
+  put<D extends object>(config: WechatRequestConfigWithoutMethod<UserConfig> & GetResponseConfig): Promise< WechatResponse<UserResponseResult & D>>
+  put<D extends object>(config: WechatRequestConfigWithoutMethod<UserConfig>): Promise<UserResponseResult & D>
+  put<D extends object>(config: WechatRequestConfigWithoutMethod<UserConfig>): Promise< WechatResponse<D> | UserResponseResult & D> {
     return this.request({ ...config, method: 'PUT' })
   }
 
-  delete<D extends object>(config: WechatRequestConfigWithoutMethod<T> & GetResponseConfig): Promise< WechatResponse<ResponseResult<D>>>
-  delete<D extends object>(config: WechatRequestConfigWithoutMethod<T>): Promise<ResponseResult<D>>
-  delete<D extends object>(config: WechatRequestConfigWithoutMethod<T>): Promise< WechatResponse<D> | ResponseResult<D>> {
+  delete<D extends object>(config: WechatRequestConfigWithoutMethod<UserConfig> & GetResponseConfig): Promise< WechatResponse<UserResponseResult & D>>
+  delete<D extends object>(config: WechatRequestConfigWithoutMethod<UserConfig>): Promise<UserResponseResult & D>
+  delete<D extends object>(config: WechatRequestConfigWithoutMethod<UserConfig>): Promise< WechatResponse<D> | UserResponseResult & D> {
     return this.request({ ...config, method: 'DELETE' })
   }
 
-  async request<D extends object>(config: WechatRequestConfig<T> & GetResponseConfig): Promise< WechatResponse<ResponseResult<D>>>
-  async request<D extends object>(config: WechatRequestConfig<T>): Promise<ResponseResult<D>>
-  async request<D extends object>(config: WechatRequestConfig<T>): Promise< WechatResponse<D> | ResponseResult<D>> {
+  async request<D extends object>(config: WechatRequestConfig<UserConfig> & GetResponseConfig): Promise< WechatResponse<UserResponseResult & D>>
+  async request<D extends object>(config: WechatRequestConfig<UserConfig>): Promise<UserResponseResult & D>
+  async request<D extends object>(config: WechatRequestConfig<UserConfig>): Promise< WechatResponse<D> | UserResponseResult & D> {
     let _config = merge({}, this.baseConfig, config)
     try {
       _config = await this.interceptors?.request?.(_config) || _config

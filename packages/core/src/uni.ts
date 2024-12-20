@@ -1,6 +1,14 @@
 import merge from 'lodash-es/merge'
 
-import type { BaseConfig, BaseRequestInterceptors, BaseResponse, GetResponseConfig, RequiredProperty, ResponseResult } from './shared'
+import type {
+  BaseConfig,
+  BaseRequestInterceptors,
+  BaseResponse,
+  DefaultResponseResult,
+  DefaultUserConfig,
+  GetResponseConfig,
+  RequiredProperty,
+} from './shared'
 import { ResponseError } from './shared'
 
 export * from './shared'
@@ -37,53 +45,62 @@ export type UniRequestInterceptors<T extends object> = BaseRequestInterceptors<U
 /**
  * 实现
  */
-export class UniRequest<T extends object> {
+export class UniRequest<
+  /**
+   * 用户自定义配置
+   */
+  UserConfig extends object = DefaultUserConfig,
+  /**
+   * 用户自定义响应
+   */
+  UserResponseResult extends object = DefaultResponseResult,
+> {
   /**
    * 基础配置
    */
-  private baseConfig: UniRequestConfig<T>
+  private baseConfig: UniRequestConfig<UserConfig>
   /**
    * 拦截器
    */
-  private interceptors?: UniRequestInterceptors<T>
+  private interceptors?: UniRequestInterceptors<UserConfig>
   /**
    * @param options 基础配置
    * @param interceptors 拦截器
    */
-  constructor(options: UniRequestConfig<T>, interceptors?: UniRequestInterceptors<T>) {
+  constructor(options: UniRequestConfig<UserConfig>, interceptors?: UniRequestInterceptors<UserConfig>) {
     this.baseConfig = {
       ...options,
     }
     this.interceptors = interceptors
   }
 
-  get<D extends object>(config: UniRequestGetConfigWithoutMethod<T> & GetResponseConfig): Promise<UniAppResponse<ResponseResult<D>>>
-  get<D extends object>(config: UniRequestGetConfigWithoutMethod<T>): Promise<ResponseResult<D>>
-  get<D extends object>(config: UniRequestGetConfigWithoutMethod<T>): Promise<UniAppResponse<D> | ResponseResult<D>> {
+  get<D extends object>(config: UniRequestGetConfigWithoutMethod<UserConfig> & GetResponseConfig): Promise<UniAppResponse<UserResponseResult & D>>
+  get<D extends object>(config: UniRequestGetConfigWithoutMethod<UserConfig>): Promise<UserResponseResult & D>
+  get<D extends object>(config: UniRequestGetConfigWithoutMethod<UserConfig>): Promise<UniAppResponse<D> | UserResponseResult & D> {
     return this.request({ ...config, method: 'GET' })
   }
 
-  post<D extends object>(config: UniRequestConfigWithoutMethod<T> & GetResponseConfig): Promise<UniAppResponse<ResponseResult<D>>>
-  post<D extends object>(config: UniRequestConfigWithoutMethod<T>): Promise<ResponseResult<D>>
-  post<D extends object>(config: UniRequestConfigWithoutMethod<T>): Promise<UniAppResponse<D> | ResponseResult<D>> {
+  post<D extends object>(config: UniRequestConfigWithoutMethod<UserConfig> & GetResponseConfig): Promise<UniAppResponse<UserResponseResult & D>>
+  post<D extends object>(config: UniRequestConfigWithoutMethod<UserConfig>): Promise<UserResponseResult & D>
+  post<D extends object>(config: UniRequestConfigWithoutMethod<UserConfig>): Promise<UniAppResponse<D> | UserResponseResult & D> {
     return this.request({ ...config, method: 'POST' })
   }
 
-  put<D extends object>(config: UniRequestConfigWithoutMethod<T> & GetResponseConfig): Promise<UniAppResponse<ResponseResult<D>>>
-  put<D extends object>(config: UniRequestConfigWithoutMethod<T>): Promise<ResponseResult<D>>
-  put<D extends object>(config: UniRequestConfigWithoutMethod<T>): Promise<UniAppResponse<D> | ResponseResult<D>> {
+  put<D extends object>(config: UniRequestConfigWithoutMethod<UserConfig> & GetResponseConfig): Promise<UniAppResponse<UserResponseResult & D>>
+  put<D extends object>(config: UniRequestConfigWithoutMethod<UserConfig>): Promise<UserResponseResult & D>
+  put<D extends object>(config: UniRequestConfigWithoutMethod<UserConfig>): Promise<UniAppResponse<D> | UserResponseResult & D> {
     return this.request({ ...config, method: 'PUT' })
   }
 
-  delete<D extends object>(config: UniRequestConfigWithoutMethod<T> & GetResponseConfig): Promise<UniAppResponse<ResponseResult<D>>>
-  delete<D extends object>(config: UniRequestConfigWithoutMethod<T>): Promise<ResponseResult<D>>
-  delete<D extends object>(config: UniRequestConfigWithoutMethod<T>): Promise<UniAppResponse<D> | ResponseResult<D>> {
+  delete<D extends object>(config: UniRequestConfigWithoutMethod<UserConfig> & GetResponseConfig): Promise<UniAppResponse<UserResponseResult & D>>
+  delete<D extends object>(config: UniRequestConfigWithoutMethod<UserConfig>): Promise<UserResponseResult & D>
+  delete<D extends object>(config: UniRequestConfigWithoutMethod<UserConfig>): Promise<UniAppResponse<D> | UserResponseResult & D> {
     return this.request({ ...config, method: 'DELETE' })
   }
 
-  async request<D extends object>(config: UniRequestConfig<T> & GetResponseConfig): Promise<UniAppResponse<ResponseResult<D>>>
-  async request<D extends object>(config: UniRequestConfig<T>): Promise<ResponseResult<D>>
-  async request<D extends object>(config: UniRequestConfig<T>): Promise<UniAppResponse<D> | ResponseResult<D>> {
+  async request<D extends object>(config: UniRequestConfig<UserConfig> & GetResponseConfig): Promise<UniAppResponse<UserResponseResult & D>>
+  async request<D extends object>(config: UniRequestConfig<UserConfig>): Promise<UserResponseResult & D>
+  async request<D extends object>(config: UniRequestConfig<UserConfig>): Promise<UniAppResponse<D> | UserResponseResult & D> {
     let _config = merge({}, this.baseConfig, config)
     try {
       _config = await this.interceptors?.request?.(_config) || _config
