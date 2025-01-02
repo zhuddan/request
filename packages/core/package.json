@@ -40,7 +40,6 @@
         "default": "./dist/http.cjs.js"
       }
     },
-
     "./wx": {
       "import": {
         "types": "./dist/wx.d.ts",
@@ -93,10 +92,11 @@
   },
   "dependencies": {
     "@tarojs/taro": "^4.0.7",
-    "lodash-es": "^4.17.21",
+    "lodash.merge": "^4.6.2",
     "qs": "^6.13.0"
   },
   "devDependencies": {
+    "@types/lodash.merge": "^4.6.9",
     "@types/qs": "^6.9.15",
     "axios": "^1.7.7",
     "miniprogram-api-typings": "^3.12.3"

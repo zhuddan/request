@@ -1,5 +1,5 @@
 import Taro from '@tarojs/taro'
-import merge from 'lodash-es/merge'
+import merge from 'lodash.merge'
 import type { BaseConfig, BaseRequestInterceptors, BaseResponse, DefaultResponseResult, DefaultUserConfig, GetResponseConfig, RequiredProperty } from './shared'
 import { ResponseError } from './shared'
 

@@ -1,9 +1,13 @@
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
 import axios from 'axios'
 import Qs from 'qs'
-import merge from 'lodash-es/merge'
+import merge from 'lodash.merge'
 import { ContentTypeEnum, RequestMethodsEnum } from './shared'
-import type { BaseRequestInterceptors, DefaultResponseResult, DefaultUserConfig, ResponseError } from './shared'
+import type {
+  DefaultResponseResult,
+  DefaultUserConfig,
+  ResponseError,
+} from './shared'
 
 export * from './shared'
 
