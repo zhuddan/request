@@ -68,28 +68,28 @@ importers:
 
   packages/core:
     dependencies:
-      '@tarojs/taro':
-        specifier: ^4.0.7
-        version: 4.0.7(@tarojs/components@4.0.7(@tarojs/helper@4.0.7)(postcss@8.4.44)(vue@3.4.38(typescript@5.5.4)))(@tarojs/helper@4.0.7)(@tarojs/shared@4.0.7)(postcss@8.4.44)(vue@3.4.38(typescript@5.5.4))
+      axios:
+        specifier: ^1.7.7
+        version: 1.7.7
       lodash.merge:
         specifier: ^4.6.2
         version: 4.6.2
+      miniprogram-api-typings:
+        specifier: ^3.12.3
+        version: 3.12.3
       qs:
         specifier: ^6.13.0
         version: 6.13.0
     devDependencies:
+      '@tarojs/taro':
+        specifier: ^4.0.7
+        version: 4.0.7(@tarojs/components@4.0.7(@tarojs/helper@4.0.7)(postcss@8.4.44)(rollup@4.21.2)(vue@3.4.38(typescript@5.5.4)))(@tarojs/helper@4.0.7)(@tarojs/shared@4.0.7)(postcss@8.4.44)(rollup@4.21.2)(vue@3.4.38(typescript@5.5.4))
       '@types/lodash.merge':
         specifier: ^4.6.9
         version: 4.6.9
       '@types/qs':
         specifier: ^6.9.15
         version: 6.9.15
-      axios:
-        specifier: ^1.7.7
-        version: 1.7.7
-      miniprogram-api-typings:
-        specifier: ^3.12.3
-        version: 3.12.3
 
   packages/uni-example:
     dependencies:
@@ -8798,12 +8798,12 @@ snapshots:
       '@tarojs/runtime': 4.0.7
       '@tarojs/shared': 4.0.7
 
-  '@tarojs/components-advanced@4.0.7(@tarojs/helper@4.0.7)(@tarojs/runtime@4.0.7)(@tarojs/shared@4.0.7)(@tarojs/taro@4.0.7(@tarojs/components@4.0.7(@tarojs/helper@4.0.7)(postcss@8.4.44)(vue@3.4.38(typescript@5.5.4)))(@tarojs/helper@4.0.7)(@tarojs/shared@4.0.7)(postcss@8.4.44)(vue@3.4.38(typescript@5.5.4)))(postcss@8.4.44)(vue@3.4.38(typescript@5.5.4))':
+  '@tarojs/components-advanced@4.0.7(@tarojs/helper@4.0.7)(@tarojs/runtime@4.0.7)(@tarojs/shared@4.0.7)(@tarojs/taro@4.0.7(@tarojs/components@4.0.7(@tarojs/helper@4.0.7)(postcss@8.4.44)(rollup@4.21.2)(vue@3.4.38(typescript@5.5.4)))(@tarojs/helper@4.0.7)(@tarojs/shared@4.0.7)(postcss@8.4.44)(rollup@4.21.2)(vue@3.4.38(typescript@5.5.4)))(postcss@8.4.44)(rollup@4.21.2)(vue@3.4.38(typescript@5.5.4))':
     dependencies:
-      '@tarojs/components': 4.0.7(@tarojs/helper@4.0.7)(postcss@8.4.44)(vue@3.4.38(typescript@5.5.4))
+      '@tarojs/components': 4.0.7(@tarojs/helper@4.0.7)(postcss@8.4.44)(rollup@4.21.2)(vue@3.4.38(typescript@5.5.4))
       '@tarojs/runtime': 4.0.7
       '@tarojs/shared': 4.0.7
-      '@tarojs/taro': 4.0.7(@tarojs/components@4.0.7(@tarojs/helper@4.0.7)(postcss@8.4.44)(vue@3.4.38(typescript@5.5.4)))(@tarojs/helper@4.0.7)(@tarojs/shared@4.0.7)(postcss@8.4.44)(vue@3.4.38(typescript@5.5.4))
+      '@tarojs/taro': 4.0.7(@tarojs/components@4.0.7(@tarojs/helper@4.0.7)(postcss@8.4.44)(rollup@4.21.2)(vue@3.4.38(typescript@5.5.4)))(@tarojs/helper@4.0.7)(@tarojs/shared@4.0.7)(postcss@8.4.44)(rollup@4.21.2)(vue@3.4.38(typescript@5.5.4))
       classnames: 2.5.1
       csstype: 3.1.3
       memoize-one: 6.0.0
@@ -8820,13 +8820,13 @@ snapshots:
       - webpack-chain
       - webpack-dev-server
 
-  '@tarojs/components@4.0.7(@tarojs/helper@4.0.7)(postcss@8.4.44)(vue@3.4.38(typescript@5.5.4))':
+  '@tarojs/components@4.0.7(@tarojs/helper@4.0.7)(postcss@8.4.44)(rollup@4.21.2)(vue@3.4.38(typescript@5.5.4))':
     dependencies:
       '@stencil/core': 2.22.3
-      '@tarojs/components-advanced': 4.0.7(@tarojs/helper@4.0.7)(@tarojs/runtime@4.0.7)(@tarojs/shared@4.0.7)(@tarojs/taro@4.0.7(@tarojs/components@4.0.7(@tarojs/helper@4.0.7)(postcss@8.4.44)(vue@3.4.38(typescript@5.5.4)))(@tarojs/helper@4.0.7)(@tarojs/shared@4.0.7)(postcss@8.4.44)(vue@3.4.38(typescript@5.5.4)))(postcss@8.4.44)(vue@3.4.38(typescript@5.5.4))
+      '@tarojs/components-advanced': 4.0.7(@tarojs/helper@4.0.7)(@tarojs/runtime@4.0.7)(@tarojs/shared@4.0.7)(@tarojs/taro@4.0.7(@tarojs/components@4.0.7(@tarojs/helper@4.0.7)(postcss@8.4.44)(rollup@4.21.2)(vue@3.4.38(typescript@5.5.4)))(@tarojs/helper@4.0.7)(@tarojs/shared@4.0.7)(postcss@8.4.44)(rollup@4.21.2)(vue@3.4.38(typescript@5.5.4)))(postcss@8.4.44)(rollup@4.21.2)(vue@3.4.38(typescript@5.5.4))
       '@tarojs/runtime': 4.0.7
       '@tarojs/shared': 4.0.7
-      '@tarojs/taro': 4.0.7(@tarojs/components@4.0.7(@tarojs/helper@4.0.7)(postcss@8.4.44)(vue@3.4.38(typescript@5.5.4)))(@tarojs/helper@4.0.7)(@tarojs/shared@4.0.7)(postcss@8.4.44)(vue@3.4.38(typescript@5.5.4))
+      '@tarojs/taro': 4.0.7(@tarojs/components@4.0.7(@tarojs/helper@4.0.7)(postcss@8.4.44)(rollup@4.21.2)(vue@3.4.38(typescript@5.5.4)))(@tarojs/helper@4.0.7)(@tarojs/shared@4.0.7)(postcss@8.4.44)(rollup@4.21.2)(vue@3.4.38(typescript@5.5.4))
       classnames: 2.5.1
       hammerjs: 2.0.8
       hls.js: 1.5.17
@@ -8879,16 +8879,17 @@ snapshots:
 
   '@tarojs/shared@4.0.7': {}
 
-  '@tarojs/taro@4.0.7(@tarojs/components@4.0.7(@tarojs/helper@4.0.7)(postcss@8.4.44)(vue@3.4.38(typescript@5.5.4)))(@tarojs/helper@4.0.7)(@tarojs/shared@4.0.7)(postcss@8.4.44)(vue@3.4.38(typescript@5.5.4))':
+  '@tarojs/taro@4.0.7(@tarojs/components@4.0.7(@tarojs/helper@4.0.7)(postcss@8.4.44)(rollup@4.21.2)(vue@3.4.38(typescript@5.5.4)))(@tarojs/helper@4.0.7)(@tarojs/shared@4.0.7)(postcss@8.4.44)(rollup@4.21.2)(vue@3.4.38(typescript@5.5.4))':
     dependencies:
       '@tarojs/api': 4.0.7(@tarojs/runtime@4.0.7)(@tarojs/shared@4.0.7)
-      '@tarojs/components': 4.0.7(@tarojs/helper@4.0.7)(postcss@8.4.44)(vue@3.4.38(typescript@5.5.4))
+      '@tarojs/components': 4.0.7(@tarojs/helper@4.0.7)(postcss@8.4.44)(rollup@4.21.2)(vue@3.4.38(typescript@5.5.4))
       '@tarojs/helper': 4.0.7
       '@tarojs/runtime': 4.0.7
       '@tarojs/shared': 4.0.7
       '@types/postcss-url': 10.0.4
       postcss: 8.4.44
     optionalDependencies:
+      rollup: 4.21.2
       vue: 3.4.38(typescript@5.5.4)
 
   '@tootallnate/once@1.1.2': {}
