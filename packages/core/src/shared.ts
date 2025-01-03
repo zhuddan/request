@@ -6,6 +6,8 @@ export enum RequestMethodsEnum {
   POST = 'POST',
   PUT = 'PUT',
   DELETE = 'DELETE',
+  OPTIONS = 'OPTIONS',
+  HEAD = 'HEAD',
 }
 
 /**
@@ -70,7 +72,7 @@ export interface BaseConfig {
    */
   baseUrl?: string
   /**
-   * get 请求参数
+   * 简单请求参数(get/header/options) 请求参数
    */
   params?: any
   /**

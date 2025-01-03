@@ -9,7 +9,7 @@ import type {
   GetResponseConfig,
   RequiredProperty,
 } from './shared'
-import { ResponseError } from './shared'
+import { RequestMethodsEnum, ResponseError } from './shared'
 
 export * from './shared'
 
@@ -28,15 +28,16 @@ export interface UniRequestBaseConfig extends Partial<RequestOptions>, BaseConfi
  */
 export type UniRequestConfig<T extends object> = UniRequestBaseConfig & T
 /**
- * 用户自定义请求配置  (去除 method baseUrl)
+ * UniRequestConfigWithoutMethod 配置
+ * 去除 method 为了给具体请求函数使用 get / post ...
  */
 type UniRequestConfigWithoutMethod<T extends object> =
-RequiredProperty<Omit<UniRequestBaseConfig, 'method' | 'baseUrl'>, 'url'> & T
+RequiredProperty<Omit<UniRequestBaseConfig, 'method'>, 'url'> & T
 
 /**
- * 用户自定义 get 请求配置 get 请求参设置请使用 params 而不是 data
+ * 简单请求（ GET OPTIONS HEAD ）的配置
  */
-type UniRequestGetConfigWithoutMethod<T extends object> = RequiredProperty<Omit<UniRequestBaseConfig, 'method' | 'baseUrl' | 'data'>, 'url'> & T
+type UniRequestSimpleConfig<T extends object> = RequiredProperty<Omit<UniRequestBaseConfig, 'method' | 'data'>, 'url'> & T
 
 /**
  * 拦截器
@@ -58,7 +59,7 @@ export class UniRequest<
   /**
    * 基础配置
    */
-  private baseConfig: UniRequestConfig<UserConfig>
+  private baseConfig: UniRequestConfigWithoutMethod<UserConfig>
   /**
    * 拦截器
    */
@@ -67,41 +68,77 @@ export class UniRequest<
    * @param options 基础配置
    * @param interceptors 拦截器
    */
-  constructor(options: UniRequestConfig<UserConfig>, interceptors?: UniRequestInterceptors<UserConfig>) {
+  constructor(options: UniRequestConfigWithoutMethod<UserConfig>, interceptors?: UniRequestInterceptors<UserConfig>) {
     this.baseConfig = {
       ...options,
     }
     this.interceptors = interceptors
   }
 
-  get<D extends object>(config: UniRequestGetConfigWithoutMethod<UserConfig> & GetResponseConfig): Promise<UniAppResponse<UserResponseResult & D>>
-  get<D extends object>(config: UniRequestGetConfigWithoutMethod<UserConfig>): Promise<UserResponseResult & D>
-  get<D extends object>(config: UniRequestGetConfigWithoutMethod<UserConfig>): Promise<UniAppResponse<D> | UserResponseResult & D> {
-    return this.request({ ...config, method: 'GET' })
+  /**
+   * get 请求
+   * @param config
+   */
+  get<D extends object>(config: UniRequestSimpleConfig<UserConfig> & GetResponseConfig): Promise<UniAppResponse<UserResponseResult & D>>
+  get<D extends object>(config: UniRequestSimpleConfig<UserConfig>): Promise<UserResponseResult & D>
+  get<D extends object>(config: UniRequestSimpleConfig<UserConfig>): Promise<UniAppResponse<D> | UserResponseResult & D> {
+    return this.request({ ...config, method: RequestMethodsEnum.GET })
   }
 
+  /**
+   * header 请求
+   * @param config
+   */
+  header<D extends object>(config: UniRequestSimpleConfig<UserConfig> & GetResponseConfig): Promise<UniAppResponse<UserResponseResult & D>>
+  header<D extends object>(config: UniRequestSimpleConfig<UserConfig>): Promise<UserResponseResult & D>
+  header<D extends object>(config: UniRequestSimpleConfig<UserConfig>): Promise<UniAppResponse<D> | UserResponseResult & D> {
+    return this.request({ ...config, method: RequestMethodsEnum.HEAD })
+  }
+
+  /**
+   * options 请求
+   * @param config
+   */
+  options<D extends object>(config: UniRequestSimpleConfig<UserConfig> & GetResponseConfig): Promise<UniAppResponse<UserResponseResult & D>>
+  options<D extends object>(config: UniRequestSimpleConfig<UserConfig>): Promise<UserResponseResult & D>
+  options<D extends object>(config: UniRequestSimpleConfig<UserConfig>): Promise<UniAppResponse<D> | UserResponseResult & D> {
+    return this.request({ ...config, method: RequestMethodsEnum.OPTIONS })
+  }
+
+  /**
+   * post 请求
+   * @param config
+   */
   post<D extends object>(config: UniRequestConfigWithoutMethod<UserConfig> & GetResponseConfig): Promise<UniAppResponse<UserResponseResult & D>>
   post<D extends object>(config: UniRequestConfigWithoutMethod<UserConfig>): Promise<UserResponseResult & D>
   post<D extends object>(config: UniRequestConfigWithoutMethod<UserConfig>): Promise<UniAppResponse<D> | UserResponseResult & D> {
-    return this.request({ ...config, method: 'POST' })
+    return this.request({ ...config, method: RequestMethodsEnum.POST })
   }
 
+  /**
+   * put 请求
+   * @param config
+   */
   put<D extends object>(config: UniRequestConfigWithoutMethod<UserConfig> & GetResponseConfig): Promise<UniAppResponse<UserResponseResult & D>>
   put<D extends object>(config: UniRequestConfigWithoutMethod<UserConfig>): Promise<UserResponseResult & D>
   put<D extends object>(config: UniRequestConfigWithoutMethod<UserConfig>): Promise<UniAppResponse<D> | UserResponseResult & D> {
-    return this.request({ ...config, method: 'PUT' })
+    return this.request({ ...config, method: RequestMethodsEnum.PUT })
   }
 
+  /**
+   * delete 请求
+   * @param config
+   */
   delete<D extends object>(config: UniRequestConfigWithoutMethod<UserConfig> & GetResponseConfig): Promise<UniAppResponse<UserResponseResult & D>>
   delete<D extends object>(config: UniRequestConfigWithoutMethod<UserConfig>): Promise<UserResponseResult & D>
   delete<D extends object>(config: UniRequestConfigWithoutMethod<UserConfig>): Promise<UniAppResponse<D> | UserResponseResult & D> {
-    return this.request({ ...config, method: 'DELETE' })
+    return this.request({ ...config, method: RequestMethodsEnum.DELETE })
   }
 
   async request<D extends object>(config: UniRequestConfig<UserConfig> & GetResponseConfig): Promise<UniAppResponse<UserResponseResult & D>>
   async request<D extends object>(config: UniRequestConfig<UserConfig>): Promise<UserResponseResult & D>
   async request<D extends object>(config: UniRequestConfig<UserConfig>): Promise<UniAppResponse<D> | UserResponseResult & D> {
-    let _config = merge({}, this.baseConfig, config)
+    let _config = merge({}, this.baseConfig, config) as UniRequestConfig<UserConfig>
     try {
       _config = await this.interceptors?.request?.(_config) || _config
     }

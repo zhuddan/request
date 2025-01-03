@@ -1,7 +1,7 @@
 import Taro from '@tarojs/taro'
 import merge from 'lodash.merge'
 import type { BaseConfig, BaseRequestInterceptors, BaseResponse, DefaultResponseResult, DefaultUserConfig, GetResponseConfig, RequiredProperty } from './shared'
-import { ResponseError } from './shared'
+import { RequestMethodsEnum, ResponseError } from './shared'
 
 export * from './shared'
 
@@ -22,15 +22,17 @@ export interface TaroRequestBaseConfig extends Partial<RequestOptions>, BaseConf
 export type TaroRequestConfig<T extends object> = TaroRequestBaseConfig & T
 
 /**
- * 用户自定义请求配置  (去除 method baseUrl)
+ * TaroRequestConfigWithoutMethod 配置
+ * 去除 method 为了给具体请求函数使用 get / post ...
  */
 type TaroRequestConfigWithoutMethod<T extends object> =
-RequiredProperty<Omit<TaroRequestBaseConfig, 'method' | 'baseUrl'>, 'url'> & T
+  RequiredProperty<Omit<TaroRequestBaseConfig, 'method'>, 'url'> & T
 
 /**
- * 用户自定义 get 请求配置 get 请求参设置请使用 params 而不是 data
+ * 简单请求（ GET OPTIONS HEAD ）的配置
  */
-type TaroRequestGetConfigWithoutMethod<T extends object> = RequiredProperty<Omit<TaroRequestBaseConfig, 'method' | 'baseUrl' | 'data'>, 'url'> & T
+type TaroRequestSimpleConfig<T extends object> =
+  RequiredProperty<Omit<TaroRequestBaseConfig, 'method' | 'data'>, 'url'> & T
 
 /**
  * 拦截器
@@ -52,7 +54,7 @@ export class TaroRequest<
   /**
    * 基础配置
    */
-  private baseConfig: TaroRequestConfig<UserConfig>
+  private baseConfig: TaroRequestConfigWithoutMethod<UserConfig>
   /**
    * 拦截器
    */
@@ -61,43 +63,83 @@ export class TaroRequest<
    * @param options 基础配置
    * @param interceptors 拦截器
    */
-  constructor(options: TaroRequestConfig<UserConfig>, interceptors?: TaroRequestInterceptors<UserConfig>) {
+  constructor(options: TaroRequestConfigWithoutMethod<UserConfig>, interceptors?: TaroRequestInterceptors<UserConfig>) {
     this.baseConfig = {
       ...options,
     }
     this.interceptors = interceptors
   }
 
-  get<D extends object>(config: TaroRequestGetConfigWithoutMethod<UserConfig> & GetResponseConfig): Promise<TaroResponse<UserResponseResult & D>>
-  get<D extends object>(config: TaroRequestGetConfigWithoutMethod<UserConfig>): Promise<UserResponseResult & D>
-  get<D extends object>(config: TaroRequestGetConfigWithoutMethod<UserConfig>): Promise<TaroResponse<D> | UserResponseResult & D> {
-    return this.request({ ...config, method: 'GET' })
+  /**
+   * get 请求
+   * @param config
+   */
+  get<D extends object>(config: TaroRequestSimpleConfig<UserConfig> & GetResponseConfig): Promise<TaroResponse<UserResponseResult & D>>
+  get<D extends object>(config: TaroRequestSimpleConfig<UserConfig>): Promise<UserResponseResult & D>
+  get<D extends object>(config: TaroRequestSimpleConfig<UserConfig>): Promise<TaroResponse<D> | UserResponseResult & D> {
+    return this.request({ ...config, method: RequestMethodsEnum.GET })
   }
 
+  /**
+   * header 请求
+   * @param config
+   */
+  header<D extends object>(config: TaroRequestSimpleConfig<UserConfig> & GetResponseConfig): Promise<TaroResponse<UserResponseResult & D>>
+  header<D extends object>(config: TaroRequestSimpleConfig<UserConfig>): Promise<UserResponseResult & D>
+  header<D extends object>(config: TaroRequestSimpleConfig<UserConfig>): Promise<TaroResponse<D> | UserResponseResult & D> {
+    return this.request({ ...config, method: RequestMethodsEnum.HEAD })
+  }
+
+  /**
+   * options 请求
+   * @param config
+   */
+  options<D extends object>(config: TaroRequestSimpleConfig<UserConfig> & GetResponseConfig): Promise<TaroResponse<UserResponseResult & D>>
+  options<D extends object>(config: TaroRequestSimpleConfig<UserConfig>): Promise<UserResponseResult & D>
+  options<D extends object>(config: TaroRequestSimpleConfig<UserConfig>): Promise<TaroResponse<D> | UserResponseResult & D> {
+    return this.request({ ...config, method: RequestMethodsEnum.OPTIONS })
+  }
+
+  /**
+   * post 请求
+   * @param config
+   */
   post<D extends object>(config: TaroRequestConfigWithoutMethod<UserConfig> & GetResponseConfig): Promise<TaroResponse<UserResponseResult & D>>
   post<D extends object>(config: TaroRequestConfigWithoutMethod<UserConfig>): Promise<UserResponseResult & D>
   post<D extends object>(config: TaroRequestConfigWithoutMethod<UserConfig>): Promise<TaroResponse<D> | UserResponseResult & D> {
-    return this.request({ ...config, method: 'POST' })
+    return this.request({ ...config, method: RequestMethodsEnum.POST })
   }
 
+  /**
+   * put 请求
+   * @param config
+   */
   put<D extends object>(config: TaroRequestConfigWithoutMethod<UserConfig> & GetResponseConfig): Promise<TaroResponse<UserResponseResult & D>>
   put<D extends object>(config: TaroRequestConfigWithoutMethod<UserConfig>): Promise<UserResponseResult & D>
   put<D extends object>(config: TaroRequestConfigWithoutMethod<UserConfig>): Promise<TaroResponse<D> | UserResponseResult & D> {
-    return this.request({ ...config, method: 'PUT' })
+    return this.request({ ...config, method: RequestMethodsEnum.PUT })
   }
 
+  /**
+   * delete 请求
+   * @param config
+   */
   delete<D extends object>(config: TaroRequestConfigWithoutMethod<UserConfig> & GetResponseConfig): Promise<TaroResponse<UserResponseResult & D>>
   delete<D extends object>(config: TaroRequestConfigWithoutMethod<UserConfig>): Promise<UserResponseResult & D>
   delete<D extends object>(config: TaroRequestConfigWithoutMethod<UserConfig>): Promise<TaroResponse<D> | UserResponseResult & D> {
-    return this.request({ ...config, method: 'DELETE' })
+    return this.request({ ...config, method: RequestMethodsEnum.DELETE })
   }
 
+  /**
+   * request 请求
+   * @param config
+   */
   async request<D extends object>(config: TaroRequestConfig<UserConfig> & GetResponseConfig): Promise<TaroResponse<UserResponseResult & D>>
   async request<D extends object>(config: TaroRequestConfig<UserConfig>): Promise<UserResponseResult & D>
   async request<D extends object>(config: TaroRequestConfig<UserConfig>): Promise<TaroResponse<D> | UserResponseResult & D> {
-    let _config = merge({}, this.baseConfig, config)
+    let _config = merge({}, this.baseConfig, config) as TaroRequestConfig<UserConfig>
     try {
-      _config = await this.interceptors?.request?.(_config) || _config
+      _config = (await this.interceptors?.request?.(_config) || _config)
     }
     catch (error) {
       this.interceptors?.requestError?.(error)
