@@ -22,16 +22,24 @@ export interface TaroRequestBaseConfig extends Partial<RequestOptions>, BaseConf
 export type TaroRequestConfig<T extends object> = TaroRequestBaseConfig & T
 
 /**
+ * 默认配置
+ */
+export type DefaultTaroRequestConfig<T extends object> =
+  Omit<
+    TaroRequestBaseConfig,
+    'method' | 'url' | 'params' | 'data'
+  > & T
+/**
  * TaroRequestConfigWithoutMethod 配置
  * 去除 method 为了给具体请求函数使用 get / post ...
  */
-type TaroRequestConfigWithoutMethod<T extends object> =
+export type TaroRequestConfigWithoutMethod<T extends object> =
   RequiredProperty<Omit<TaroRequestBaseConfig, 'method'>, 'url'> & T
 
 /**
  * 简单请求（ GET OPTIONS HEAD ）的配置
  */
-type TaroRequestSimpleConfig<T extends object> =
+export type TaroRequestSimpleConfig<T extends object> =
   RequiredProperty<Omit<TaroRequestBaseConfig, 'method' | 'data'>, 'url'> & T
 
 /**
@@ -54,7 +62,7 @@ export class TaroRequest<
   /**
    * 基础配置
    */
-  private baseConfig: TaroRequestConfigWithoutMethod<UserConfig>
+  private baseConfig: DefaultTaroRequestConfig<UserConfig>
   /**
    * 拦截器
    */
@@ -63,7 +71,7 @@ export class TaroRequest<
    * @param options 基础配置
    * @param interceptors 拦截器
    */
-  constructor(options: TaroRequestConfigWithoutMethod<UserConfig>, interceptors?: TaroRequestInterceptors<UserConfig>) {
+  constructor(options: DefaultTaroRequestConfig<UserConfig>, interceptors?: TaroRequestInterceptors<UserConfig>) {
     this.baseConfig = {
       ...options,
     }

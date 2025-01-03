@@ -18,6 +18,15 @@ export interface WechatRequestBaseConfig extends Partial<Omit<RequestOption, 'su
  * 用户自定义请求配置
  */
 export type WechatRequestConfig<T extends object> = WechatRequestBaseConfig & T
+
+/**
+ * 默认配置
+ */
+export type DefaultWechatRequestConfig<T extends object> =
+  Omit<
+    WechatRequestBaseConfig,
+    'method' | 'url' | 'params' | 'data'
+  > & T
 /**
  * WechatRequestConfigWithoutMethod 配置
  * 去除 method 为了给具体请求函数使用 get / post ...
@@ -48,7 +57,7 @@ export class WxRequest<
   /**
    * 基础配置
    */
-  private baseConfig: WechatRequestConfigWithoutMethod<UserConfig>
+  private baseConfig: DefaultWechatRequestConfig<UserConfig>
   /**
    * 拦截器
    */
@@ -57,7 +66,7 @@ export class WxRequest<
    * @param options 基础配置
    * @param interceptors 拦截器
    */
-  constructor(options: WechatRequestConfigWithoutMethod<UserConfig>, interceptors?: WechatRequestInterceptors<UserConfig>) {
+  constructor(options: DefaultWechatRequestConfig<UserConfig>, interceptors?: WechatRequestInterceptors<UserConfig>) {
     this.baseConfig = {
       ...options,
     }

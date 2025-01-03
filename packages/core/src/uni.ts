@@ -28,16 +28,24 @@ export interface UniRequestBaseConfig extends Partial<RequestOptions>, BaseConfi
  */
 export type UniRequestConfig<T extends object> = UniRequestBaseConfig & T
 /**
+ * 默认配置
+ */
+export type DefaultUniRequestConfig<T extends object> =
+  Omit<
+    UniRequestBaseConfig,
+    'method' | 'url' | 'params' | 'data'
+  > & T
+/**
  * UniRequestConfigWithoutMethod 配置
  * 去除 method 为了给具体请求函数使用 get / post ...
  */
-type UniRequestConfigWithoutMethod<T extends object> =
+export type UniRequestConfigWithoutMethod<T extends object> =
 RequiredProperty<Omit<UniRequestBaseConfig, 'method'>, 'url'> & T
 
 /**
  * 简单请求（ GET OPTIONS HEAD ）的配置
  */
-type UniRequestSimpleConfig<T extends object> = RequiredProperty<Omit<UniRequestBaseConfig, 'method' | 'data'>, 'url'> & T
+export type UniRequestSimpleConfig<T extends object> = RequiredProperty<Omit<UniRequestBaseConfig, 'method' | 'data'>, 'url'> & T
 
 /**
  * 拦截器
@@ -59,7 +67,7 @@ export class UniRequest<
   /**
    * 基础配置
    */
-  private baseConfig: UniRequestConfigWithoutMethod<UserConfig>
+  private baseConfig: DefaultUniRequestConfig<UserConfig>
   /**
    * 拦截器
    */
@@ -68,7 +76,7 @@ export class UniRequest<
    * @param options 基础配置
    * @param interceptors 拦截器
    */
-  constructor(options: UniRequestConfigWithoutMethod<UserConfig>, interceptors?: UniRequestInterceptors<UserConfig>) {
+  constructor(options: DefaultUniRequestConfig<UserConfig>, interceptors?: UniRequestInterceptors<UserConfig>) {
     this.baseConfig = {
       ...options,
     }

@@ -41,7 +41,7 @@ export interface DefaultUserConfig {}
 /**
  * 帮助函数
  */
-export type RequiredProperty<T, K extends keyof T> = T & Required<Pick<T, K>>
+export type RequiredProperty<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>
 
 /**
  * 错误类
@@ -70,7 +70,7 @@ export interface BaseConfig {
   /**
    * 公共url
    */
-  baseUrl?: string
+  baseURL?: string
   /**
    * 简单请求参数(get/header/options) 请求参数
    */

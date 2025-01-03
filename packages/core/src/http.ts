@@ -35,12 +35,22 @@ interface HttpRequestGetResponseConfig {
 };
 
 export type HttpRequestConfig<T extends object> = HttpRequestBaseConfig & T
+
+/**
+ * 默认配置
+ */
+export type DefaultHttpRequestConfig<T extends object> =
+  Omit<
+    HttpRequestBaseConfig,
+    'method' | 'url' | 'params' | 'data'
+  > & T
+
 /**
  * HttpRequestConfigWithoutMethod 配置
  * 去除 method 为了给具体请求函数使用 get / post ...
  */
 export type HttpRequestConfigWithoutMethod<T extends object> =
-  RequiredProperty<Omit<HttpRequestBaseConfig, 'url'>, 'method'> & T
+  RequiredProperty<Omit<HttpRequestBaseConfig, 'method'>, 'url'> & T
 
 /**
  * 简单请求（ GET OPTIONS HEAD ）的配置
@@ -78,7 +88,7 @@ export class HttpRequest<
   /**
    * @description 基础配置
    */
-  private baseConfig: HttpRequestConfigWithoutMethod<UserConfig>
+  private baseConfig: DefaultHttpRequestConfig<UserConfig>
 
   /**
    *
@@ -86,7 +96,7 @@ export class HttpRequest<
    * @param interceptors 拦截器
    */
   constructor(
-    options: HttpRequestConfigWithoutMethod<UserConfig>,
+    options: DefaultHttpRequestConfig<UserConfig>,
     interceptors?: HttpRequestInterceptors<UserConfig>,
   ) {
     this.baseConfig = {
