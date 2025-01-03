@@ -24,7 +24,7 @@ interface UniAppResponse<T extends BaseResponse = BaseResponse> extends UniApp.R
  */
 export interface UniRequestBaseConfig extends Partial<RequestOptions>, BaseConfig {}
 /**
- * 用户自定义请求配置
+ * 用户自定义请求配置(完整的配置，用于拦截器)
  */
 export type UniRequestConfig<T extends object> = UniRequestBaseConfig & T
 /**

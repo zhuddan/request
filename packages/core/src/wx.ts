@@ -15,10 +15,9 @@ interface WechatResponse<T extends BaseResponse = BaseResponse> extends WechatMi
  */
 export interface WechatRequestBaseConfig extends Partial<Omit<RequestOption, 'success' | 'fail' | 'complete'>>, BaseConfig {}
 /**
- * 用户自定义请求配置
+ * 用户自定义请求配置(完整的配置，用于拦截器)
  */
 export type WechatRequestConfig<T extends object> = WechatRequestBaseConfig & T
-
 /**
  * 默认配置
  */

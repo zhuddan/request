@@ -17,7 +17,7 @@ interface TaroResponse<T extends BaseResponse = BaseResponse> extends Taro.reque
 export interface TaroRequestBaseConfig extends Partial<RequestOptions>, BaseConfig {}
 
 /**
- * 用户自定义请求配置
+ * 用户自定义请求配置(完整的配置，用于拦截器)
  */
 export type TaroRequestConfig<T extends object> = TaroRequestBaseConfig & T
 
