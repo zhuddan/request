@@ -79,10 +79,6 @@ export interface BaseConfig {
    * 返回原生响应  默认false
    */
   getResponse?: boolean
-  /**
-   * 忽略 loading 提示
-   */
-  ignoreLoading?: boolean
 }
 
 /**

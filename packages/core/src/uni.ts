@@ -155,9 +155,6 @@ export class UniRequest<
       throw error
     }
     try {
-      /**
-       * 没有 loading 的请求 在开发环境会报错, 你可以设置 ignoreLoading 取消警告
-       */
       const response = await uni.request(_config as RequestOptions) as UniAppResponse<D>
       const userResponse = await this.interceptors?.response?.({ config: _config, response }) as UniAppResponse<D>
       return userResponse || response
