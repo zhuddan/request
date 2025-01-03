@@ -1,4 +1,9 @@
-import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
+import type {
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosResponse,
+  InternalAxiosRequestConfig,
+} from 'axios'
 import axios from 'axios'
 import Qs from 'qs'
 import merge from 'lodash.merge'
