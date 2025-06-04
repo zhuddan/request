@@ -1,6 +1,6 @@
 # @zd~/Request
 
-A request library based on Axios. Support WEB/UNI-APP/WX-PROGRAM
+统一API风格的跨平台请求库，支持Web/微信小程序/uni-app/Taro。
 
 # example
 
