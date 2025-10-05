@@ -11,7 +11,7 @@ export enum RequestMethodsEnum {
 }
 
 /**
- * @description headers ContentType
+ * 响应数据类型
  */
 export enum ContentTypeEnum {
   JSON = 'application/json;charset=UTF-8',
@@ -20,28 +20,14 @@ export enum ContentTypeEnum {
 }
 
 /**
- * 默认响应结构
+ * 默认响应数据结构（服务器返回数据）
  */
-export interface DefaultResponseResult {
-  /**
-   * 开发者服务器 状态码
-   */
-  code: number
-  /**
-   * 开发者服务器 消息
-   */
-  msg: string
-}
+export interface DefaultResponseResult {}
 
 /**
- *  默认请求结构
+ *  默认请求配置
  */
 export interface DefaultUserConfig {}
-
-/**
- * 帮助函数
- */
-export type RequiredProperty<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>
 
 /**
  * 错误类
@@ -123,3 +109,8 @@ export interface BaseRequestInterceptors<RequestConfig, ResponseData> {
    */
   responseError?: (error: ResponseError<RequestConfig>) => (Promise<any> | any)
 }
+
+/**
+ * 帮助函数
+ */
+export type RequiredProperty<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>
