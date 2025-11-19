@@ -68,6 +68,8 @@ export interface BaseConfig {
   baseURL?: string
   /**
    * 简单请求参数(get/header/options) 请求参数
+   *
+   * ps 由于小程序(uni/taro)的 参数方式都是 data 所以这里统一用 params 方便区分简单请求
    */
   params?: any
   /**
