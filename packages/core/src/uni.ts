@@ -3,19 +3,18 @@ import merge from 'lodash.merge'
 import type {
   BaseConfig,
   BaseRequestInterceptors,
-  BaseResponse,
   DefaultResponseResult,
   DefaultUserConfig,
   GetResponseConfig,
   RequiredProperty,
 } from './shared'
-import { RequestMethodsEnum, ResponseError } from './shared'
+import { RequestMethodsEnum, ResponseError, isSimpleRequest } from './shared'
 
 export * from './shared'
 
 type RequestOptions = UniNamespace.RequestOptions
 
-interface UniAppResponse<T extends BaseResponse = BaseResponse> extends UniApp.RequestSuccessCallbackResult {
+interface UniAppResponse<T = any> extends Omit<UniApp.RequestSuccessCallbackResult, 'data'> {
   data: T
 }
 
@@ -75,8 +74,7 @@ export class UniRequest<
   /**
    * @param options 基础配置
    * @param interceptors 拦截器
-   */
-  constructor(options: DefaultUniRequestConfig<UserConfig>, interceptors?: UniRequestInterceptors<UserConfig>) {
+   */ constructor(options: DefaultUniRequestConfig<UserConfig>, interceptors?: UniRequestInterceptors<UserConfig>) {
     this.baseConfig = {
       ...options,
     }
@@ -84,68 +82,88 @@ export class UniRequest<
   }
 
   /**
-   * get 请求
-   * @param config
+   * 创建请求配置
    */
-  get<D extends object>(config: UniRequestSimpleConfig<UserConfig> & GetResponseConfig): Promise<UniAppResponse<UserResponseResult & D>>
-  get<D extends object>(config: UniRequestSimpleConfig<UserConfig>): Promise<UserResponseResult & D>
-  get<D extends object>(config: UniRequestSimpleConfig<UserConfig>): Promise<UniAppResponse<D> | UserResponseResult & D> {
-    return this.request({ ...config, method: RequestMethodsEnum.GET })
+  private createRequest<D>(
+    configOrUrl: UniRequestSimpleConfig<UserConfig> | UniRequestConfigWithoutMethod<UserConfig> | string,
+      dataOrParams: Record<string, any> = { },
+      method: RequestMethodsEnum,
+  ) {
+    const config = typeof configOrUrl === 'string'
+      ? {
+          url: configOrUrl,
+          [isSimpleRequest(method) ? 'params' : 'data']: dataOrParams,
+        } as unknown as UniRequestSimpleConfig<UserConfig>
+      : configOrUrl
+    return this.request<D>({ ...config, method })
   }
 
   /**
-   * header 请求
-   * @param config
+   * get 请求
    */
-  header<D extends object>(config: UniRequestSimpleConfig<UserConfig> & GetResponseConfig): Promise<UniAppResponse<UserResponseResult & D>>
-  header<D extends object>(config: UniRequestSimpleConfig<UserConfig>): Promise<UserResponseResult & D>
-  header<D extends object>(config: UniRequestSimpleConfig<UserConfig>): Promise<UniAppResponse<D> | UserResponseResult & D> {
-    return this.request({ ...config, method: RequestMethodsEnum.HEAD })
+  get<D>(config: UniRequestSimpleConfig<UserConfig> & GetResponseConfig): Promise<UniAppResponse<UserResponseResult & D>>
+  get<D>(config: UniRequestSimpleConfig<UserConfig> | string): Promise<UserResponseResult & D>
+  get<D>(url: string, params: Record<string, any>): Promise<UserResponseResult & D>
+  get<D>(configOrUrl: UniRequestSimpleConfig<UserConfig> | string, params?: Record<string, any>): Promise<UniAppResponse<D> | UserResponseResult & D> {
+    return this.createRequest<D>(configOrUrl, params, RequestMethodsEnum.GET)
+  }
+
+  /**
+   * head 请求
+   */
+  head<D>(config: UniRequestSimpleConfig<UserConfig> & GetResponseConfig): Promise<UniAppResponse<UserResponseResult & D>>
+  head<D>(config: UniRequestSimpleConfig<UserConfig> | string): Promise<UserResponseResult & D>
+  head<D>(url: string, params: Record<string, any>): Promise<UserResponseResult & D>
+  head<D>(configOrUrl: UniRequestSimpleConfig<UserConfig> | string, params?: Record<string, any>): Promise<UniAppResponse<D> | UserResponseResult & D> {
+    return this.createRequest<D>(configOrUrl, params, RequestMethodsEnum.HEAD)
   }
 
   /**
    * options 请求
-   * @param config
    */
-  options<D extends object>(config: UniRequestSimpleConfig<UserConfig> & GetResponseConfig): Promise<UniAppResponse<UserResponseResult & D>>
-  options<D extends object>(config: UniRequestSimpleConfig<UserConfig>): Promise<UserResponseResult & D>
-  options<D extends object>(config: UniRequestSimpleConfig<UserConfig>): Promise<UniAppResponse<D> | UserResponseResult & D> {
-    return this.request({ ...config, method: RequestMethodsEnum.OPTIONS })
-  }
-
-  /**
-   * post 请求
-   * @param config
-   */
-  post<D extends object>(config: UniRequestConfigWithoutMethod<UserConfig> & GetResponseConfig): Promise<UniAppResponse<UserResponseResult & D>>
-  post<D extends object>(config: UniRequestConfigWithoutMethod<UserConfig>): Promise<UserResponseResult & D>
-  post<D extends object>(config: UniRequestConfigWithoutMethod<UserConfig>): Promise<UniAppResponse<D> | UserResponseResult & D> {
-    return this.request({ ...config, method: RequestMethodsEnum.POST })
-  }
-
-  /**
-   * put 请求
-   * @param config
-   */
-  put<D extends object>(config: UniRequestConfigWithoutMethod<UserConfig> & GetResponseConfig): Promise<UniAppResponse<UserResponseResult & D>>
-  put<D extends object>(config: UniRequestConfigWithoutMethod<UserConfig>): Promise<UserResponseResult & D>
-  put<D extends object>(config: UniRequestConfigWithoutMethod<UserConfig>): Promise<UniAppResponse<D> | UserResponseResult & D> {
-    return this.request({ ...config, method: RequestMethodsEnum.PUT })
+  options<D>(config: UniRequestSimpleConfig<UserConfig> & GetResponseConfig): Promise<UniAppResponse<UserResponseResult & D>>
+  options<D>(config: UniRequestSimpleConfig<UserConfig> | string): Promise<UserResponseResult & D>
+  options<D>(url: string, params: Record<string, any>): Promise<UserResponseResult & D>
+  options<D>(configOrUrl: UniRequestSimpleConfig<UserConfig> | string, params?: Record<string, any>): Promise<UniAppResponse<D> | UserResponseResult & D> {
+    return this.createRequest<D>(configOrUrl, params, RequestMethodsEnum.OPTIONS)
   }
 
   /**
    * delete 请求
-   * @param config
    */
-  delete<D extends object>(config: UniRequestConfigWithoutMethod<UserConfig> & GetResponseConfig): Promise<UniAppResponse<UserResponseResult & D>>
-  delete<D extends object>(config: UniRequestConfigWithoutMethod<UserConfig>): Promise<UserResponseResult & D>
-  delete<D extends object>(config: UniRequestConfigWithoutMethod<UserConfig>): Promise<UniAppResponse<D> | UserResponseResult & D> {
-    return this.request({ ...config, method: RequestMethodsEnum.DELETE })
+  delete<D>(config: UniRequestSimpleConfig<UserConfig> & GetResponseConfig): Promise<UniAppResponse<UserResponseResult & D>>
+  delete<D>(config: UniRequestSimpleConfig<UserConfig> | string): Promise<UserResponseResult & D>
+  delete<D>(url: string, params: Record<string, any>): Promise<UserResponseResult & D>
+  delete<D>(configOrUrl: UniRequestSimpleConfig<UserConfig> | string, params?: Record<string, any>): Promise<UniAppResponse<D> | UserResponseResult & D> {
+    return this.createRequest<D>(configOrUrl, params, RequestMethodsEnum.DELETE)
   }
 
-  async request<D extends object>(config: UniRequestConfig<UserConfig> & GetResponseConfig): Promise<UniAppResponse<UserResponseResult & D>>
-  async request<D extends object>(config: UniRequestConfig<UserConfig>): Promise<UserResponseResult & D>
-  async request<D extends object>(config: UniRequestConfig<UserConfig>): Promise<UniAppResponse<D> | UserResponseResult & D> {
+  /**
+   * post 请求
+   */
+  post<D>(config: UniRequestConfigWithoutMethod<UserConfig> & GetResponseConfig): Promise<UniAppResponse<UserResponseResult & D>>
+  post<D>(config: UniRequestConfigWithoutMethod<UserConfig> | string): Promise<UserResponseResult & D>
+  post<D>(url: string, data: Record<string, any>): Promise<UserResponseResult & D>
+  post<D>(configOrUrl: UniRequestConfigWithoutMethod<UserConfig> | string, data?: Record<string, any>): Promise<UniAppResponse<D> | UserResponseResult & D> {
+    return this.createRequest<D>(configOrUrl, data, RequestMethodsEnum.POST)
+  }
+
+  /**
+   * put 请求
+   */
+  put<D>(config: UniRequestConfigWithoutMethod<UserConfig> & GetResponseConfig): Promise<UniAppResponse<UserResponseResult & D>>
+  put<D>(config: UniRequestConfigWithoutMethod<UserConfig> | string): Promise<UserResponseResult & D>
+  put<D>(url: string, data: Record<string, any>): Promise<UserResponseResult & D>
+  put<D>(configOrUrl: UniRequestConfigWithoutMethod<UserConfig> | string, data?: Record<string, any>): Promise<UniAppResponse<D> | UserResponseResult & D> {
+    return this.createRequest<D>(configOrUrl, data, RequestMethodsEnum.PUT)
+  }
+
+  /**
+   * 具体实现
+   */
+  async request<D>(config: UniRequestConfig<UserConfig> & GetResponseConfig): Promise<UniAppResponse<UserResponseResult & D>>
+  async request<D>(config: UniRequestConfig<UserConfig>): Promise<UserResponseResult & D>
+  async request<D>(config: UniRequestConfig<UserConfig>): Promise<UniAppResponse<D> | UserResponseResult & D> {
     let _config = merge({}, this.baseConfig, config) as UniRequestConfig<UserConfig>
     try {
       _config = await this.interceptors?.request?.(_config) || _config

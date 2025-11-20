@@ -7,7 +7,11 @@ import type {
 import axios from 'axios'
 import Qs from 'qs'
 import merge from 'lodash.merge'
-import { ContentTypeEnum, RequestMethodsEnum } from './shared'
+import {
+  ContentTypeEnum,
+  RequestMethodsEnum,
+  isSimpleRequest,
+} from './shared'
 import type {
   DefaultResponseResult,
   DefaultUserConfig,
@@ -49,7 +53,8 @@ export type HttpRequestConfigWithoutMethod<T extends object> =
   RequiredProperty<Omit<HttpRequestBaseConfig, 'method'>, 'url'> & T
 
 /**
- * 简单请求（ GET OPTIONS HEAD ）的配置
+ * 简单请求 配置
+
  */
 export type HttpRequestSimpleConfig<T extends object> =
  RequiredProperty<Omit<HttpRequestBaseConfig, 'method' | 'data'>, 'url'> & T
@@ -85,7 +90,6 @@ export class HttpRequest<
    * @description 基础配置
    */
   private baseConfig: DefaultHttpRequestConfig<UserConfig>
-
   /**
    *
    * @param options 基础配置
@@ -181,70 +185,90 @@ export class HttpRequest<
   }
 
   /**
-   * get 请求
-   * @param config
+   * 创建请求
    */
-  get<D extends object>(config: HttpRequestSimpleConfig<UserConfig> & GetResponseConfig): Promise<AxiosResponse<UserResponseResult & D>>
-  get<D extends object>(config: HttpRequestSimpleConfig<UserConfig>): Promise<UserResponseResult & D>
-  get<D extends object>(config: HttpRequestSimpleConfig<UserConfig>): Promise<AxiosResponse<D> | UserResponseResult & D> {
-    return this.request({ ...config, method: RequestMethodsEnum.GET })
+  private createRequest<D>(
+    configOrUrl: HttpRequestSimpleConfig<UserConfig> | HttpRequestConfigWithoutMethod<UserConfig> | string,
+    dataOrParams: Record<string, any> = { },
+    method: RequestMethodsEnum,
+  ) {
+    const config = typeof configOrUrl === 'string'
+      ? {
+          url: configOrUrl,
+          [isSimpleRequest(method) ? 'params' : 'data']: dataOrParams,
+        } as unknown as HttpRequestSimpleConfig<UserConfig>
+      : configOrUrl
+    return this.request<D>({ ...config, method })
   }
 
   /**
-   * header 请求
-   * @param config
+   * get 请求
    */
-  header<D extends object>(config: HttpRequestSimpleConfig<UserConfig> & GetResponseConfig): Promise<AxiosResponse<UserResponseResult & D>>
-  header<D extends object>(config: HttpRequestSimpleConfig<UserConfig>): Promise<UserResponseResult & D>
-  header<D extends object>(config: HttpRequestSimpleConfig<UserConfig>): Promise<AxiosResponse<D> | UserResponseResult & D> {
-    return this.request({ ...config, method: RequestMethodsEnum.HEAD })
+  get<D>(config: HttpRequestSimpleConfig<UserConfig> & GetResponseConfig): Promise<AxiosResponse<UserResponseResult & D>>
+  get<D>(config: HttpRequestSimpleConfig<UserConfig> | string): Promise<UserResponseResult & D>
+  get<D>(url: string, params: Record<string, any>): Promise<UserResponseResult & D>
+  get<D>(configOrUrl: HttpRequestSimpleConfig<UserConfig> | string, params?: Record<string, any>): Promise<AxiosResponse<D> | UserResponseResult & D> {
+    return this.createRequest<D>(configOrUrl, params, RequestMethodsEnum.GET)
+  }
+
+  /**
+   * head 请求
+   */
+  head<D>(config: HttpRequestSimpleConfig<UserConfig> & GetResponseConfig): Promise<AxiosResponse<UserResponseResult & D>>
+  head<D>(config: HttpRequestSimpleConfig<UserConfig> | string): Promise<UserResponseResult & D>
+  head<D>(url: string, params: Record<string, any>): Promise<UserResponseResult & D>
+  head<D>(configOrUrl: HttpRequestSimpleConfig<UserConfig> | string, params?: Record<string, any>): Promise<AxiosResponse<D> | UserResponseResult & D> {
+    return this.createRequest<D>(configOrUrl, params, RequestMethodsEnum.HEAD)
   }
 
   /**
    * options 请求
-   * @param config
    */
-  options<D extends object>(config: HttpRequestSimpleConfig<UserConfig> & GetResponseConfig): Promise<AxiosResponse<UserResponseResult & D>>
-  options<D extends object>(config: HttpRequestSimpleConfig<UserConfig>): Promise<UserResponseResult & D>
-  options<D extends object>(config: HttpRequestSimpleConfig<UserConfig>): Promise<AxiosResponse<D> | UserResponseResult & D> {
-    return this.request({ ...config, method: RequestMethodsEnum.OPTIONS })
-  }
-
-  /**
-   * post 请求
-   * @param config
-   */
-  post<D extends object>(config: HttpRequestConfigWithoutMethod<UserConfig> & GetResponseConfig): Promise<AxiosResponse<UserResponseResult & D>>
-  post<D extends object>(config: HttpRequestConfigWithoutMethod<UserConfig>): Promise<UserResponseResult & D>
-  post<D extends object>(config: HttpRequestConfigWithoutMethod<UserConfig>): Promise<AxiosResponse<D> | UserResponseResult & D> {
-    return this.request({ ...config, method: RequestMethodsEnum.POST })
-  }
-
-  /**
-   * put 请求
-   * @param config
-   */
-  put<D extends object>(config: HttpRequestConfigWithoutMethod<UserConfig> & GetResponseConfig): Promise<AxiosResponse<UserResponseResult & D>>
-  put<D extends object>(config: HttpRequestConfigWithoutMethod<UserConfig>): Promise<UserResponseResult & D>
-  put<D extends object>(config: HttpRequestConfigWithoutMethod<UserConfig>): Promise<AxiosResponse<D> | UserResponseResult & D> {
-    return this.request({ ...config, method: RequestMethodsEnum.PUT })
+  options<D>(config: HttpRequestSimpleConfig<UserConfig> & GetResponseConfig): Promise<AxiosResponse<UserResponseResult & D>>
+  options<D>(config: HttpRequestSimpleConfig<UserConfig> | string): Promise<UserResponseResult & D>
+  options<D>(url: string, params: Record<string, any>): Promise<UserResponseResult & D>
+  options<D>(configOrUrl: HttpRequestSimpleConfig<UserConfig> | string, params?: Record<string, any>): Promise<AxiosResponse<D> | UserResponseResult & D> {
+    return this.createRequest<D>(configOrUrl, params, RequestMethodsEnum.OPTIONS)
   }
 
   /**
    * delete 请求
-   * @param config
    */
-  delete<D extends object>(config: HttpRequestConfigWithoutMethod<UserConfig> & GetResponseConfig): Promise<AxiosResponse<UserResponseResult & D>>
-  delete<D extends object>(config: HttpRequestConfigWithoutMethod<UserConfig>): Promise<UserResponseResult & D>
-  delete<D extends object>(config: HttpRequestConfigWithoutMethod<UserConfig>): Promise<AxiosResponse<D> | UserResponseResult & D> {
-    return this.request({ ...config, method: RequestMethodsEnum.DELETE })
+  delete<D>(config: HttpRequestSimpleConfig<UserConfig> & GetResponseConfig): Promise<AxiosResponse<UserResponseResult & D>>
+  delete<D>(config: HttpRequestSimpleConfig<UserConfig> | string): Promise<UserResponseResult & D>
+  delete<D>(url: string, params: Record<string, any>): Promise<UserResponseResult & D>
+  delete<D>(configOrUrl: HttpRequestSimpleConfig<UserConfig> | string, params?: Record<string, any>): Promise<AxiosResponse<D> | UserResponseResult & D> {
+    return this.createRequest<D>(configOrUrl, params, RequestMethodsEnum.DELETE)
   }
 
-  request<D extends object>(config: HttpRequestConfig<UserConfig> & {
+  /**
+   * post 请求
+   */
+  post<D>(config: HttpRequestConfigWithoutMethod<UserConfig> & GetResponseConfig): Promise<AxiosResponse<UserResponseResult & D>>
+  post<D>(config: HttpRequestConfigWithoutMethod<UserConfig> | string): Promise<UserResponseResult & D>
+  post<D>(url: string, data: Record<string, any>): Promise<UserResponseResult & D>
+  post<D>(configOrUrl: HttpRequestConfigWithoutMethod<UserConfig> | string, data?: Record<string, any>): Promise<AxiosResponse<D> | UserResponseResult & D> {
+    return this.createRequest<D>(configOrUrl, data, RequestMethodsEnum.POST)
+  }
+
+  /**
+   * put 请求
+   */
+  put<D>(config: HttpRequestConfigWithoutMethod<UserConfig> & GetResponseConfig): Promise<AxiosResponse<UserResponseResult & D>>
+  put<D>(config: HttpRequestConfigWithoutMethod<UserConfig> | string): Promise<UserResponseResult & D>
+  put<D>(url: string, data: Record<string, any>): Promise<UserResponseResult & D>
+  put<D>(configOrUrl: HttpRequestConfigWithoutMethod<UserConfig> | string, data?: Record<string, any>): Promise<AxiosResponse<D> | UserResponseResult & D> {
+    return this.createRequest<D>(configOrUrl, data, RequestMethodsEnum.PUT)
+  }
+
+  /**
+   * 具体实现
+   */
+  async request<D>(config: HttpRequestConfig<UserConfig> & {
     getResponse: true
   }): Promise<AxiosResponse<UserResponseResult & D>>
-  request<D extends object>(config: HttpRequestConfig<UserConfig>): Promise<UserResponseResult & D>
-  request<D extends object>(config: HttpRequestConfig<UserConfig>): Promise<AxiosResponse<D> | UserResponseResult & D> {
+  async request<D>(config: HttpRequestConfig<UserConfig>): Promise<UserResponseResult & D>
+  async request<D>(config: HttpRequestConfig<UserConfig>): Promise<AxiosResponse<D> | UserResponseResult & D> {
     const _config = merge({}, this.baseConfig, this.formatFormData(config))
     return this.axiosInstance.request(_config)
   }

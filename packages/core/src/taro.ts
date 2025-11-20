@@ -1,13 +1,13 @@
 import Taro from '@tarojs/taro'
 import merge from 'lodash.merge'
-import type { BaseConfig, BaseRequestInterceptors, BaseResponse, DefaultResponseResult, DefaultUserConfig, GetResponseConfig, RequiredProperty } from './shared'
-import { RequestMethodsEnum, ResponseError } from './shared'
+import type { BaseConfig, BaseRequestInterceptors, DefaultResponseResult, DefaultUserConfig, GetResponseConfig, RequiredProperty } from './shared'
+import { RequestMethodsEnum, ResponseError, isSimpleRequest } from './shared'
 
 export * from './shared'
 
 type RequestOptions<T = any, U extends string | TaroGeneral.IAnyObject | ArrayBuffer = any | any> = Taro.request.Option<T, U>
 
-interface TaroResponse<T extends BaseResponse = BaseResponse> extends Taro.request.SuccessCallbackResult {
+interface TaroResponse<T = any> extends Taro.request.SuccessCallbackResult {
   data: T
 }
 
@@ -79,72 +79,88 @@ export class TaroRequest<
   }
 
   /**
-   * get 请求
-   * @param config
+   * 创建请求
    */
-  get<D extends object>(config: TaroRequestSimpleConfig<UserConfig> & GetResponseConfig): Promise<TaroResponse<UserResponseResult & D>>
-  get<D extends object>(config: TaroRequestSimpleConfig<UserConfig>): Promise<UserResponseResult & D>
-  get<D extends object>(config: TaroRequestSimpleConfig<UserConfig>): Promise<TaroResponse<D> | UserResponseResult & D> {
-    return this.request({ ...config, method: RequestMethodsEnum.GET })
+  private createRequest<D>(
+    configOrUrl: TaroRequestSimpleConfig<UserConfig> | TaroRequestConfigWithoutMethod<UserConfig> | string,
+      dataOrParams: Record<string, any> = { },
+      method: RequestMethodsEnum,
+  ) {
+    const config = typeof configOrUrl === 'string'
+      ? {
+          url: configOrUrl,
+          [isSimpleRequest(method) ? 'params' : 'data']: dataOrParams,
+        } as unknown as TaroRequestSimpleConfig<UserConfig>
+      : configOrUrl
+    return this.request<D>({ ...config, method })
   }
 
   /**
-   * header 请求
-   * @param config
+   * get 请求
    */
-  header<D extends object>(config: TaroRequestSimpleConfig<UserConfig> & GetResponseConfig): Promise<TaroResponse<UserResponseResult & D>>
-  header<D extends object>(config: TaroRequestSimpleConfig<UserConfig>): Promise<UserResponseResult & D>
-  header<D extends object>(config: TaroRequestSimpleConfig<UserConfig>): Promise<TaroResponse<D> | UserResponseResult & D> {
-    return this.request({ ...config, method: RequestMethodsEnum.HEAD })
+  get<D>(config: TaroRequestSimpleConfig<UserConfig> & GetResponseConfig): Promise<TaroResponse<UserResponseResult & D>>
+  get<D>(config: TaroRequestSimpleConfig<UserConfig> | string): Promise<UserResponseResult & D>
+  get<D>(url: string, params: Record<string, any>): Promise<UserResponseResult & D>
+  get<D>(configOrUrl: TaroRequestSimpleConfig<UserConfig> | string, params?: Record<string, any>): Promise<TaroResponse<D> | UserResponseResult & D> {
+    return this.createRequest<D>(configOrUrl, params, RequestMethodsEnum.GET)
+  }
+
+  /**
+   * head 请求
+   */
+  head<D>(config: TaroRequestSimpleConfig<UserConfig> & GetResponseConfig): Promise<TaroResponse<UserResponseResult & D>>
+  head<D>(config: TaroRequestSimpleConfig<UserConfig> | string): Promise<UserResponseResult & D>
+  head<D>(url: string, params: Record<string, any>): Promise<UserResponseResult & D>
+  head<D>(configOrUrl: TaroRequestSimpleConfig<UserConfig> | string, params?: Record<string, any>): Promise<TaroResponse<D> | UserResponseResult & D> {
+    return this.createRequest<D>(configOrUrl, params, RequestMethodsEnum.HEAD)
   }
 
   /**
    * options 请求
-   * @param config
    */
-  options<D extends object>(config: TaroRequestSimpleConfig<UserConfig> & GetResponseConfig): Promise<TaroResponse<UserResponseResult & D>>
-  options<D extends object>(config: TaroRequestSimpleConfig<UserConfig>): Promise<UserResponseResult & D>
-  options<D extends object>(config: TaroRequestSimpleConfig<UserConfig>): Promise<TaroResponse<D> | UserResponseResult & D> {
-    return this.request({ ...config, method: RequestMethodsEnum.OPTIONS })
-  }
-
-  /**
-   * post 请求
-   * @param config
-   */
-  post<D extends object>(config: TaroRequestConfigWithoutMethod<UserConfig> & GetResponseConfig): Promise<TaroResponse<UserResponseResult & D>>
-  post<D extends object>(config: TaroRequestConfigWithoutMethod<UserConfig>): Promise<UserResponseResult & D>
-  post<D extends object>(config: TaroRequestConfigWithoutMethod<UserConfig>): Promise<TaroResponse<D> | UserResponseResult & D> {
-    return this.request({ ...config, method: RequestMethodsEnum.POST })
-  }
-
-  /**
-   * put 请求
-   * @param config
-   */
-  put<D extends object>(config: TaroRequestConfigWithoutMethod<UserConfig> & GetResponseConfig): Promise<TaroResponse<UserResponseResult & D>>
-  put<D extends object>(config: TaroRequestConfigWithoutMethod<UserConfig>): Promise<UserResponseResult & D>
-  put<D extends object>(config: TaroRequestConfigWithoutMethod<UserConfig>): Promise<TaroResponse<D> | UserResponseResult & D> {
-    return this.request({ ...config, method: RequestMethodsEnum.PUT })
+  options<D>(config: TaroRequestSimpleConfig<UserConfig> & GetResponseConfig): Promise<TaroResponse<UserResponseResult & D>>
+  options<D>(config: TaroRequestSimpleConfig<UserConfig> | string): Promise<UserResponseResult & D>
+  options<D>(url: string, params: Record<string, any>): Promise<UserResponseResult & D>
+  options<D>(configOrUrl: TaroRequestSimpleConfig<UserConfig> | string, params?: Record<string, any>): Promise<TaroResponse<D> | UserResponseResult & D> {
+    return this.createRequest<D>(configOrUrl, params, RequestMethodsEnum.OPTIONS)
   }
 
   /**
    * delete 请求
-   * @param config
    */
-  delete<D extends object>(config: TaroRequestConfigWithoutMethod<UserConfig> & GetResponseConfig): Promise<TaroResponse<UserResponseResult & D>>
-  delete<D extends object>(config: TaroRequestConfigWithoutMethod<UserConfig>): Promise<UserResponseResult & D>
-  delete<D extends object>(config: TaroRequestConfigWithoutMethod<UserConfig>): Promise<TaroResponse<D> | UserResponseResult & D> {
-    return this.request({ ...config, method: RequestMethodsEnum.DELETE })
+  delete<D>(config: TaroRequestSimpleConfig<UserConfig> & GetResponseConfig): Promise<TaroResponse<UserResponseResult & D>>
+  delete<D>(config: TaroRequestSimpleConfig<UserConfig> | string): Promise<UserResponseResult & D>
+  delete<D>(url: string, params: Record<string, any>): Promise<UserResponseResult & D>
+  delete<D>(configOrUrl: TaroRequestSimpleConfig<UserConfig> | string, params?: Record<string, any>): Promise<TaroResponse<D> | UserResponseResult & D> {
+    return this.createRequest<D>(configOrUrl, params, RequestMethodsEnum.DELETE)
+  }
+
+  /**
+   * post 请求
+   */
+  post<D>(config: TaroRequestConfigWithoutMethod<UserConfig> & GetResponseConfig): Promise<TaroResponse<UserResponseResult & D>>
+  post<D>(config: TaroRequestConfigWithoutMethod<UserConfig> | string): Promise<UserResponseResult & D>
+  post<D>(url: string, data: Record<string, any>): Promise<UserResponseResult & D>
+  post<D>(configOrUrl: TaroRequestConfigWithoutMethod<UserConfig> | string, data?: Record<string, any>): Promise<TaroResponse<D> | UserResponseResult & D> {
+    return this.createRequest<D>(configOrUrl, data, RequestMethodsEnum.POST)
+  }
+
+  /**
+   * put 请求
+   */
+  put<D>(config: TaroRequestConfigWithoutMethod<UserConfig> & GetResponseConfig): Promise<TaroResponse<UserResponseResult & D>>
+  put<D>(config: TaroRequestConfigWithoutMethod<UserConfig> | string): Promise<UserResponseResult & D>
+  put<D>(url: string, data: Record<string, any>): Promise<UserResponseResult & D>
+  put<D>(configOrUrl: TaroRequestConfigWithoutMethod<UserConfig> | string, data?: Record<string, any>): Promise<TaroResponse<D> | UserResponseResult & D> {
+    return this.createRequest<D>(configOrUrl, data, RequestMethodsEnum.PUT)
   }
 
   /**
    * request 请求
-   * @param config
    */
-  async request<D extends object>(config: TaroRequestConfig<UserConfig> & GetResponseConfig): Promise<TaroResponse<UserResponseResult & D>>
-  async request<D extends object>(config: TaroRequestConfig<UserConfig>): Promise<UserResponseResult & D>
-  async request<D extends object>(config: TaroRequestConfig<UserConfig>): Promise<TaroResponse<D> | UserResponseResult & D> {
+  async request<D>(config: TaroRequestConfig<UserConfig> & GetResponseConfig): Promise<TaroResponse<UserResponseResult & D>>
+  async request<D>(config: TaroRequestConfig<UserConfig>): Promise<UserResponseResult & D>
+  async request<D>(config: TaroRequestConfig<UserConfig>): Promise<TaroResponse<D> | UserResponseResult & D> {
     let _config = merge({}, this.baseConfig, config) as TaroRequestConfig<UserConfig>
     try {
       _config = (await this.interceptors?.request?.(_config) || _config)

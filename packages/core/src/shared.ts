@@ -11,6 +11,21 @@ export enum RequestMethodsEnum {
 }
 
 /**
+ *
+ * 狭义的认为 'get' 'head' 'options' 'delete' 请求没有 body 数据
+ *
+ * 虽然 'delete' 在规范上是可以携带 body 的，但大部分后端并不支持，也有例外，如 ElasticSearch）
+ * 一些框架甚至默认忽略 DELETE 的 body
+ */
+export function isSimpleRequest(method: RequestMethodsEnum): method is RequestMethodsEnum.GET | RequestMethodsEnum.HEAD | RequestMethodsEnum.OPTIONS | RequestMethodsEnum.DELETE {
+  return [
+    RequestMethodsEnum.GET,
+    RequestMethodsEnum.HEAD,
+    RequestMethodsEnum.OPTIONS,
+    RequestMethodsEnum.DELETE,
+  ].includes(method)
+}
+/**
  * 响应数据类型
  */
 export enum ContentTypeEnum {
@@ -55,6 +70,7 @@ export class ResponseError<T> extends Error {
 
 /**
  * 基础响应类型
+ * @deprecated
  */
 export type BaseResponse = string | object | ArrayBuffer
 

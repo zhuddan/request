@@ -45,6 +45,9 @@
     "scss",
     "pcss",
     "postcss"
+  ],
+  "cSpell.words": [
+    "tarojs"
   ]
   // "typescript.tsdk": "example\\uni-example\\node_modules\\typescript\\lib"
 }

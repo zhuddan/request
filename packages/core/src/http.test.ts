@@ -1,8 +1,8 @@
-import type {
-
-  DefaultHttpRequestConfig,
-  HttpRequestConfigWithoutMethod,
-  HttpRequestSimpleConfig,
+import {
+  type DefaultHttpRequestConfig,
+  HttpRequest,
+  type HttpRequestConfigWithoutMethod,
+  type HttpRequestSimpleConfig,
 } from './http'
 
 interface TestConfig {
@@ -19,6 +19,7 @@ interface TestConfig {
    */
   sign?: boolean
 }
+
 const _default_config_1: DefaultHttpRequestConfig<TestConfig> = {
   baseURL: '',
   timeout: 60 * 1000,
@@ -77,3 +78,23 @@ const _simple_config_config_4: HttpRequestSimpleConfig<TestConfig> = {
   // @ts-expect-error: `method` is allowed in HttpRequestSimpleConfig
   method: '',
 }
+
+const hr = new HttpRequest<TestConfig>({})
+
+hr.get('/url')
+hr.get('/url', { foo: 'bar' })
+hr.get({
+  url: '/url',
+  params: { foo: 'bar' },
+})
+
+hr.get({
+  url: '/url',
+  // @ts-expect-error: `data` is not allowed in HttpRequestSimpleConfig
+  data: { foo: 'bar' },
+})
+
+hr.post({
+  url: '/url',
+  data: { foo: 'bar' },
+})

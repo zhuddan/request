@@ -1,12 +1,12 @@
 import merge from 'lodash.merge'
-import type { BaseConfig, BaseRequestInterceptors, BaseResponse, DefaultResponseResult, DefaultUserConfig, GetResponseConfig, RequiredProperty } from './shared'
-import { RequestMethodsEnum, ResponseError } from './shared'
+import type { BaseConfig, BaseRequestInterceptors, DefaultResponseResult, DefaultUserConfig, GetResponseConfig, RequiredProperty } from './shared'
+import { RequestMethodsEnum, ResponseError, isSimpleRequest } from './shared'
 
 export * from './shared'
 
 type RequestOption = WechatMiniprogram.RequestOption
 
-interface WechatResponse<T extends BaseResponse = BaseResponse> extends WechatMiniprogram.RequestSuccessCallbackResult {
+interface WechatResponse<T = any> extends Omit<WechatMiniprogram.RequestSuccessCallbackResult, 'data'> {
   data: T
 }
 
@@ -64,8 +64,7 @@ export class WxRequest<
   /**
    * @param options 基础配置
    * @param interceptors 拦截器
-   */
-  constructor(options: DefaultWechatRequestConfig<UserConfig>, interceptors?: WechatRequestInterceptors<UserConfig>) {
+   */ constructor(options: DefaultWechatRequestConfig<UserConfig>, interceptors?: WechatRequestInterceptors<UserConfig>) {
     this.baseConfig = {
       ...options,
     }
@@ -73,68 +72,88 @@ export class WxRequest<
   }
 
   /**
-   * get 请求
-   * @param config
+   * 创建请求配置
    */
-  get<D extends object>(config: WechatRequestSimpleConfig<UserConfig> & GetResponseConfig): Promise< WechatResponse<UserResponseResult & D>>
-  get<D extends object>(config: WechatRequestSimpleConfig<UserConfig>): Promise<UserResponseResult & D>
-  get<D extends object>(config: WechatRequestSimpleConfig<UserConfig>): Promise< WechatResponse<D> | UserResponseResult & D> {
-    return this.request({ ...config, method: RequestMethodsEnum.GET })
+  private createRequest<D>(
+    configOrUrl: WechatRequestSimpleConfig<UserConfig> | WechatRequestConfigWithoutMethod<UserConfig> | string,
+      dataOrParams: Record<string, any> = { },
+      method: RequestMethodsEnum,
+  ) {
+    const config = typeof configOrUrl === 'string'
+      ? {
+          url: configOrUrl,
+          [isSimpleRequest(method) ? 'params' : 'data']: dataOrParams,
+        } as unknown as WechatRequestSimpleConfig<UserConfig>
+      : configOrUrl
+    return this.request<D>({ ...config, method })
   }
 
   /**
-   * header 请求
-   * @param config
+   * get 请求
    */
-  header<D extends object>(config: WechatRequestSimpleConfig<UserConfig> & GetResponseConfig): Promise< WechatResponse<UserResponseResult & D>>
-  header<D extends object>(config: WechatRequestSimpleConfig<UserConfig>): Promise<UserResponseResult & D>
-  header<D extends object>(config: WechatRequestSimpleConfig<UserConfig>): Promise< WechatResponse<D> | UserResponseResult & D> {
-    return this.request({ ...config, method: RequestMethodsEnum.HEAD })
+  get<D>(config: WechatRequestSimpleConfig<UserConfig> & GetResponseConfig): Promise< WechatResponse<UserResponseResult & D>>
+  get<D>(config: WechatRequestSimpleConfig<UserConfig> | string): Promise<UserResponseResult & D>
+  get<D>(url: string, params: Record<string, any>): Promise<UserResponseResult & D>
+  get<D>(configOrUrl: WechatRequestSimpleConfig<UserConfig> | string, params?: Record<string, any>): Promise< WechatResponse<D> | UserResponseResult & D> {
+    return this.createRequest<D>(configOrUrl, params, RequestMethodsEnum.GET)
+  }
+
+  /**
+   * head 请求
+   */
+  head<D>(config: WechatRequestSimpleConfig<UserConfig> & GetResponseConfig): Promise< WechatResponse<UserResponseResult & D>>
+  head<D>(config: WechatRequestSimpleConfig<UserConfig> | string): Promise<UserResponseResult & D>
+  head<D>(url: string, params: Record<string, any>): Promise<UserResponseResult & D>
+  head<D>(configOrUrl: WechatRequestSimpleConfig<UserConfig> | string, params?: Record<string, any>): Promise< WechatResponse<D> | UserResponseResult & D> {
+    return this.createRequest<D>(configOrUrl, params, RequestMethodsEnum.HEAD)
   }
 
   /**
    * options 请求
-   * @param config
    */
-  options<D extends object>(config: WechatRequestSimpleConfig<UserConfig> & GetResponseConfig): Promise< WechatResponse<UserResponseResult & D>>
-  options<D extends object>(config: WechatRequestSimpleConfig<UserConfig>): Promise<UserResponseResult & D>
-  options<D extends object>(config: WechatRequestSimpleConfig<UserConfig>): Promise< WechatResponse<D> | UserResponseResult & D> {
-    return this.request({ ...config, method: RequestMethodsEnum.OPTIONS })
-  }
-
-  /**
-   * post 请求
-   * @param config
-   */
-  post<D extends object>(config: WechatRequestConfigWithoutMethod<UserConfig> & GetResponseConfig): Promise< WechatResponse<UserResponseResult & D>>
-  post<D extends object>(config: WechatRequestConfigWithoutMethod<UserConfig>): Promise<UserResponseResult & D>
-  post<D extends object>(config: WechatRequestConfigWithoutMethod<UserConfig>): Promise< WechatResponse<D> | UserResponseResult & D> {
-    return this.request({ ...config, method: RequestMethodsEnum.POST })
-  }
-
-  /**
-   * put 请求
-   * @param config
-   */
-  put<D extends object>(config: WechatRequestConfigWithoutMethod<UserConfig> & GetResponseConfig): Promise< WechatResponse<UserResponseResult & D>>
-  put<D extends object>(config: WechatRequestConfigWithoutMethod<UserConfig>): Promise<UserResponseResult & D>
-  put<D extends object>(config: WechatRequestConfigWithoutMethod<UserConfig>): Promise< WechatResponse<D> | UserResponseResult & D> {
-    return this.request({ ...config, method: RequestMethodsEnum.PUT })
+  options<D>(config: WechatRequestSimpleConfig<UserConfig> & GetResponseConfig): Promise< WechatResponse<UserResponseResult & D>>
+  options<D>(config: WechatRequestSimpleConfig<UserConfig> | string): Promise<UserResponseResult & D>
+  options<D>(url: string, params: Record<string, any>): Promise<UserResponseResult & D>
+  options<D>(configOrUrl: WechatRequestSimpleConfig<UserConfig> | string, params?: Record<string, any>): Promise< WechatResponse<D> | UserResponseResult & D> {
+    return this.createRequest<D>(configOrUrl, params, RequestMethodsEnum.OPTIONS)
   }
 
   /**
    * delete 请求
-   * @param config
    */
-  delete<D extends object>(config: WechatRequestConfigWithoutMethod<UserConfig> & GetResponseConfig): Promise< WechatResponse<UserResponseResult & D>>
-  delete<D extends object>(config: WechatRequestConfigWithoutMethod<UserConfig>): Promise<UserResponseResult & D>
-  delete<D extends object>(config: WechatRequestConfigWithoutMethod<UserConfig>): Promise< WechatResponse<D> | UserResponseResult & D> {
-    return this.request({ ...config, method: RequestMethodsEnum.DELETE })
+  delete<D>(config: WechatRequestSimpleConfig<UserConfig> & GetResponseConfig): Promise< WechatResponse<UserResponseResult & D>>
+  delete<D>(config: WechatRequestSimpleConfig<UserConfig> | string): Promise<UserResponseResult & D>
+  delete<D>(url: string, params: Record<string, any>): Promise<UserResponseResult & D>
+  delete<D>(configOrUrl: WechatRequestSimpleConfig<UserConfig> | string, params?: Record<string, any>): Promise< WechatResponse<D> | UserResponseResult & D> {
+    return this.createRequest<D>(configOrUrl, params, RequestMethodsEnum.DELETE)
   }
 
-  async request<D extends object>(config: WechatRequestConfig<UserConfig> & GetResponseConfig): Promise< WechatResponse<UserResponseResult & D>>
-  async request<D extends object>(config: WechatRequestConfig<UserConfig>): Promise<UserResponseResult & D>
-  async request<D extends object>(config: WechatRequestConfig<UserConfig>): Promise< WechatResponse<D> | UserResponseResult & D> {
+  /**
+   * post 请求
+   */
+  post<D>(config: WechatRequestConfigWithoutMethod<UserConfig> & GetResponseConfig): Promise< WechatResponse<UserResponseResult & D>>
+  post<D>(config: WechatRequestConfigWithoutMethod<UserConfig> | string): Promise<UserResponseResult & D>
+  post<D>(url: string, data: Record<string, any>): Promise<UserResponseResult & D>
+  post<D>(configOrUrl: WechatRequestConfigWithoutMethod<UserConfig> | string, data?: Record<string, any>): Promise< WechatResponse<D> | UserResponseResult & D> {
+    return this.createRequest<D>(configOrUrl, data, RequestMethodsEnum.POST)
+  }
+
+  /**
+   * put 请求
+   */
+  put<D>(config: WechatRequestConfigWithoutMethod<UserConfig> & GetResponseConfig): Promise< WechatResponse<UserResponseResult & D>>
+  put<D>(config: WechatRequestConfigWithoutMethod<UserConfig> | string): Promise<UserResponseResult & D>
+  put<D>(url: string, data: Record<string, any>): Promise<UserResponseResult & D>
+  put<D>(configOrUrl: WechatRequestConfigWithoutMethod<UserConfig> | string, data?: Record<string, any>): Promise< WechatResponse<D> | UserResponseResult & D> {
+    return this.createRequest<D>(configOrUrl, data, RequestMethodsEnum.PUT)
+  }
+
+  /**
+   * 具体实现
+   */
+  async request<D>(config: WechatRequestConfig<UserConfig> & GetResponseConfig): Promise< WechatResponse<UserResponseResult & D>>
+  async request<D>(config: WechatRequestConfig<UserConfig>): Promise<UserResponseResult & D>
+  async request<D>(config: WechatRequestConfig<UserConfig>): Promise< WechatResponse<D> | UserResponseResult & D> {
     let _config = merge({}, this.baseConfig, config) as WechatRequestConfig<UserConfig>
     try {
       _config = await this.interceptors?.request?.(_config) || _config
